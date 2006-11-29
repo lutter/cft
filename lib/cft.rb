@@ -10,6 +10,13 @@ module Cft
     # The directories we watch during a session
     WATCH_DIRS = ['/var/run', '/var/lock/subsys', '/etc']
 
+    # Globs that we can definitely ignore
+    FILTERS = [ 
+               '*.swp', '*.swpx',    # vi leaves these behind
+               '/etc/httpd/run/**',  # symlink to /var/run
+               '/etc/printcap'       # cups keeps rewriting this
+              ]
+
     # Markers for the changes applied to files
     CHANGED = "="
     CREATED = "+"
@@ -101,7 +108,7 @@ module Cft
             @bases = {}
             # Store changes to files
             @changes = {}
-            @filters = [ '*.swp', '*.swpx' ]
+            @filters = FILTERS
         end
         
         def monitor()
@@ -146,7 +153,7 @@ module Cft
                 end
             end
             @log.close()
-            @fam.disconnect()
+            @fam.close()
             
             # Figure out what was changed and squirrel that away
             tgt = session.path("after")
@@ -162,7 +169,7 @@ module Cft
         end
      
         def unmonitor_directory(dir)
-            req = @directories.del(dir)
+            req = @directories.delete(dir)
             unless req.nil?
                 @bases.del(req.num)
                 @fam.cancel(req)
