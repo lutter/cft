@@ -1,0 +1,26 @@
+This tool (cft, pronounced 'sift') tries to follow a sysadmin as she makes
+changes to the system. For now, there is no analysis of what's recorded,
+though that's somewhat desirable.
+
+Changes are grouped into 'sessions' to let the admin indicate that they are
+fixing the mailserver, the webserver etc. Basic flow is
+
+tux# cft -w SESSION
+tux# cft -o SESSION /etc/mail
+tux# vi ...
+tux# cft -k SESSION
+tux# ls -l /tmp/cft/SESSION
+
+In full words:
+
+* Admin starts a session with 'cft -w SESSION', which essentially sets up
+  gamin to watch a number of predefined directories (CFG_WATCH_DIRS in
+  bin/cft, currently /var/run, /var/lock/subsys, and /etc) cft stores its
+  output in /tmp/cft/SESSION
+* Admin then squirrels away original files they find important with 
+  'cft -o SESSION DIR|FILE...' (This can be done repeatedly and at any point,
+  though you have to be careful not to clobber originals after making changes)
+* Admin makes changes exactly the way they would without cft
+* Stop session with 'cft -k SESSION'
+* Admire results in /tmp/cft/SESSION
+

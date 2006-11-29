@@ -1,0 +1,11 @@
+* Watch the rpm db
+* Use rsync instead of homegrown tree-copying code ?
+* Integrate with an SCM ?
+* If you keep a session running for a while you get false change info
+  from various daemons scribbling all over the place (e.g. /etc/printcap
+  and /etc/mtab)
+* Analyse the output
+  - Reconstruct events from certain things (e.g. service start/stop/restart
+    from how files appear and disappear in /var/run)
+  - Find packages that were installed from txn timestamps in rpm DB (and
+    clean the bare log from changes that are due to package installs)

@@ -1,0 +1,7 @@
+The mail/ subdir contains a sample result of running 'cft -w mail';
+initially found in /tmp/cft/mail
+
+mail/changes - log of raw changes received from gamin
+mail/std{err,out} - streams from cft deamon for debugging
+mail/orig/ - preserved original files (from invoking 'cft -o mail'
+mail/after/ - changed files at the time 'cft -k mail' was run
