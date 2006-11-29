@@ -120,7 +120,6 @@ module Cft
                 
             @fam.file(@lock)
         
-            $stderr.puts "lock = #{@lock}"
             loop do
                 ev = @fam.next_event
                 if ev.file == @lock
@@ -162,7 +161,9 @@ module Cft
             end
             
             @changes.keys.each do |c|
+                Cft::log("#{c} :: #{@changes[c].join(' ')}")
                 if File::file?(c)
+                    Cft::log("cp -pr #{c} #{tgt}")
                     FileUtils::cp_r(c, tgt, :preserve => true)
                 end
             end
@@ -199,6 +200,6 @@ module Cft
     end
 
     def self.log(msg)
-        $stderr.puts(msg)
+        $stdout.puts(msg)
     end
 end
