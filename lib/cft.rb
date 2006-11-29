@@ -162,9 +162,11 @@ module Cft
             
             @changes.keys.each do |c|
                 Cft::log("#{c} :: #{@changes[c].join(' ')}")
-                if File::file?(c)
-                    Cft::log("cp -pr #{c} #{tgt}")
-                    FileUtils::cp_r(c, tgt, :preserve => true)
+                if File::exist?(c)
+                    mkpath(c, tgt)
+                    d = File::join(tgt, c)
+                    Cft::log("cp -pr #{c} #{d}")
+                    FileUtils::cp_r(c, d, :preserve => true)
                 end
             end
         end
@@ -181,6 +183,7 @@ module Cft
             unless File::directory?(dir) && @directories[dir].nil?
                 return
             end
+            # FIXME: We should apply filters here already
             Find::find(dir) do |f|
                 if File::directory?(f)
                     req = @fam.dir(f)
@@ -196,6 +199,18 @@ module Cft
             @log.flush()
             @changes[path] ||= []
             @changes[path] << event
+        end
+
+        def mkpath(src, dst)
+            if File::file?(src)
+                src = File::dirname(src)
+            end
+            tgt = File::join(dst, src)
+            if ! File::directory?(tgt)
+                FileUtils::mkpath(tgt)
+            end
+            # FIXME: We should try to preserve owenrship/perms/mtime for the
+            # directories
         end
     end
 
