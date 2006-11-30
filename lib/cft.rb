@@ -13,6 +13,7 @@ module Cft
     # Globs that we can definitely ignore
     FILTERS = [ 
                '*.swp', '*.swpx',    # vi leaves these behind
+               '*~',                 # emacs backup files
                '/etc/httpd/run/**',  # symlink to /var/run
                '/etc/printcap'       # cups keeps rewriting this
               ]
@@ -46,7 +47,7 @@ module Cft
             File::exist?(pid)
         end
 
-        def start
+        def start(roots = WATCH_DIRS)
             if active?
                 puts "Session #{name} already running"
                 return 1
@@ -58,9 +59,10 @@ module Cft
                 $stdout = File::open(path("stdout"), "w")
                 $stderr = File::open(path("stderr"), "w")
                 $stdin = File::open("/dev/null", "r")
-                m = Monitor.new(self, WATCH_DIRS)
+                m = Monitor.new(self, roots)
                 m.monitor()
             end
+            return 0
         end
 
         def stop
@@ -96,7 +98,7 @@ module Cft
     end
 
     class Monitor
-        attr_reader :session, :filters
+        attr_reader :session, :filters, :changes
 
         def initialize(session, roots)
             @session = session
@@ -174,7 +176,7 @@ module Cft
         def unmonitor_directory(dir)
             req = @directories.delete(dir)
             unless req.nil?
-                @bases.del(req.num)
+                @bases.delete(req.num)
                 @fam.cancel(req)
             end
         end
