@@ -28,6 +28,7 @@ module Cft
 
         def initialize(name)
             @name = name
+            @monpid = nil
         end
 
         def path(sub = nil)
@@ -44,7 +45,7 @@ module Cft
         end
 
         def active?
-            File::exist?(pid)
+            not @monpid.nil?
         end
 
         def start(roots = WATCH_DIRS)
@@ -52,22 +53,32 @@ module Cft
                 puts "Session #{name} already running"
                 return 1
             end
-            fork do 
-                File::open(pid, "w") do |f|
-                    f.puts(Process::pid)
-                end
+            monitor = false
+            oldusr1 = trap("SIGUSR1") do
+                monitor = true
+            end
+            @monpid = fork do 
                 $stdout = File::open(path("stdout"), "w")
                 $stderr = File::open(path("stderr"), "w")
                 $stdin = File::open("/dev/null", "r")
                 m = Monitor.new(self, roots)
                 m.monitor()
+                exit(0)
             end
+            while not monitor
+                sleep 1
+            end
+            trap("SIGUSR1", oldusr1)
             return 0
         end
 
         def stop
             if active?
                 File::delete(pid)
+                # FIXME: There's a whole host of problems with this
+                # (timeout?, races?)
+                Process::waitpid(@monpid)
+                @monpid = nil
                 puts "Stopped session #{name}"
                 return 0
             else
@@ -95,10 +106,18 @@ module Cft
                 return 0
             end
         end
+
+        def change_file
+            path("changes")
+        end
+
+        def changes
+            Changes.new(change_file)
+        end
     end
 
     class Monitor
-        attr_reader :session, :filters, :changes
+        attr_reader :session, :filters
 
         def initialize(session, roots)
             @session = session
@@ -116,12 +135,16 @@ module Cft
         def monitor()
             @fam = Fam::Connection.new(@session.name)
             @fam.no_exists()
-            @log = File::open(session.path("changes"), "w")
+            @log = File::open(session.change_file, "w")
         
             @roots.each { |d| monitor_directory(d) }
                 
+            File::open(@lock, "w") do |f|
+                f.puts(Process::pid)
+            end
             @fam.file(@lock)
-        
+            
+            Process::kill("SIGUSR1", Process::ppid)
             loop do
                 ev = @fam.next_event
                 if ev.file == @lock
@@ -213,6 +236,22 @@ module Cft
             end
             # FIXME: We should try to preserve owenrship/perms/mtime for the
             # directories
+        end
+    end
+
+    class Changes
+        attr_reader :paths
+
+        def initialize(filename)
+            @paths = {}
+            File::open(filename, "r") do |f|
+                f.each_line do |l|
+                    puts "#{l}"
+                    p, c = l.chomp.split("//")
+                    @paths[p] ||= []
+                    @paths[p] << c
+                end
+            end
         end
     end
 
