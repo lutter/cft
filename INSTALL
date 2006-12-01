@@ -1,2 +1,3 @@
 
 Requires: ruby-fam
+(put symlink to fam.so into lib/)
