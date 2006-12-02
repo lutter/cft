@@ -1,0 +1,3 @@
+Changed /tmp/cfttest.4451/root/etc/nsswitch.conf
+/tmp/cfttest.4451/root/etc/nsswitch.conf :: =
+cp -pr /tmp/cfttest.4451/root/etc/nsswitch.conf /tmp/cft/test/after/tmp/cfttest.4451/root/etc/nsswitch.conf

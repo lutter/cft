@@ -66,7 +66,7 @@ module Cft
                 exit(0)
             end
             while not monitor
-                sleep 1
+                sleep 0.5
             end
             trap("SIGUSR1", oldusr1)
             return 0
@@ -107,12 +107,24 @@ module Cft
             end
         end
 
+        def transportable
+            Cft::Puppet::transportable(self)
+        end
+
         def change_file
             path("changes")
         end
 
         def changes
             Changes.new(change_file)
+        end
+
+        def source(p = nil)
+            if p.nil?
+                path("after")
+            else
+                File::join(path("after"), p)
+            end
         end
     end
 
@@ -137,13 +149,13 @@ module Cft
             @fam.no_exists()
             @log = File::open(session.change_file, "w")
         
-            @roots.each { |d| monitor_directory(d) }
-                
             File::open(@lock, "w") do |f|
                 f.puts(Process::pid)
             end
             @fam.file(@lock)
             
+            @roots.each { |d| monitor_directory(d) }
+                
             Process::kill("SIGUSR1", Process::ppid)
             loop do
                 ev = @fam.next_event
@@ -180,7 +192,7 @@ module Cft
             @fam.close()
             
             # Figure out what was changed and squirrel that away
-            tgt = session.path("after")
+            tgt = session.source
             unless File::directory?(tgt)
                 FileUtils::mkdir_p(tgt)
             end
@@ -246,11 +258,21 @@ module Cft
             @paths = {}
             File::open(filename, "r") do |f|
                 f.each_line do |l|
-                    puts "#{l}"
                     p, c = l.chomp.split("//")
                     @paths[p] ||= []
                     @paths[p] << c
                 end
+            end
+        end
+
+        def exist?(p)
+            c = paths[p]
+            if c.nil?
+                return nil
+            elsif c.size == 0
+                return nil
+            else
+                return c[-1] == CHANGED || c[-1] == CREATED
             end
         end
     end
@@ -259,3 +281,5 @@ module Cft
         $stdout.puts(msg)
     end
 end
+
+require 'cft/puppet'
