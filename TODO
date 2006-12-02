@@ -1,11 +1,20 @@
 * Watch the rpm db
+
 * Use rsync instead of homegrown tree-copying code ?
+
 * Integrate with an SCM ?
+
 * If you keep a session running for a while you get false change info
   from various daemons scribbling all over the place (e.g. /etc/printcap
   and /etc/mtab)
+
 * Analyse the output
   - Reconstruct events from certain things (e.g. service start/stop/restart
     from how files appear and disappear in /var/run)
   - Find packages that were installed from txn timestamps in rpm DB (and
     clean the bare log from changes that are due to package installs)
+
+* The synchronzation between the demon and the cmdline prog in Session is
+  full of races. Instead of whacky gamin stuff, we should use pipes or
+  similar. The essential issue though is that there is no telling how long
+  after gamin gets a request it will actually report events on them.
