@@ -18,3 +18,11 @@
   full of races. Instead of whacky gamin stuff, we should use pipes or
   similar. The essential issue though is that there is no telling how long
   after gamin gets a request it will actually report events on them.
+
+* Replace gamin with somethign else
+
+  Gamin causes weird races since there's no telling when it starts to
+  actually monitor a dir. All we really need is some mechanism to tell us
+  which files have been modified during the session; the nice thing about
+  gamin is that we don't have to stat a huge amount of files, though that
+  might turn out to be more robust than Gamin is.
