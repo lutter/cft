@@ -25,6 +25,14 @@ class TestMonitor < Test::Unit::TestCase
 
     def test_basic_manifest
         s = use_session('basic_manifest')
-        puts s.transportable.to_manifest
+        trans = s.transportable
+        list = trans.flatten
+        assert_equal(1, list.size)
+        file = list[0]
+        assert_equal(:file, file.type)
+        assert_equal("/etc/nsswitch.conf", file.name)
+        assert_equal("0644", file[:mode])
+        assert_equal("/tmp/cft/basic_manifest/after/etc/nsswitch.conf", 
+                     file[:source])
     end
 end
