@@ -28,7 +28,6 @@ module Cft
 
         def initialize(name)
             @name = name
-            @monpid = nil
         end
 
         def path(sub = nil)
@@ -45,7 +44,7 @@ module Cft
         end
 
         def active?
-            not @monpid.nil?
+            File::exists?(pid)
         end
 
         def start(roots = WATCH_DIRS)
@@ -57,28 +56,55 @@ module Cft
             oldusr1 = trap("SIGUSR1") do
                 monitor = true
             end
-            @monpid = fork do 
+            fork do 
                 $stdout = File::open(path("stdout"), "w")
                 $stderr = File::open(path("stderr"), "w")
                 $stdin = File::open("/dev/null", "r")
                 m = Monitor.new(self, roots)
                 m.monitor()
+                # The process stopping us by removing the pid file
+                # leaves its pid in ppid. Tell it that we are done
+                ppid = path("ppid")
+                if File::exist?(ppid)
+                    File::open(ppid, "r") do |f|
+                        id = f.read.chomp.to_i
+                        Process::kill("SIGUSR1", id)
+                    end
+                end
                 exit(0)
             end
-            while not monitor
+            slept = 0
+            while not monitor and slept < 10
+                slept += 0.5
                 sleep 0.5
             end
             trap("SIGUSR1", oldusr1)
+            if slept >= 10
+                puts "Timed out waiting for daemon to start"
+                return 1
+            end
             return 0
         end
 
         def stop
             if active?
+                ppid = path("ppid")
+                File::open(ppid, "w") { |f| f.puts "#{Process::pid}"}
+                monitor = false
+                oldusr1 = trap("SIGUSR1") do
+                    monitor = true
+                end
                 File::delete(pid)
-                # FIXME: There's a whole host of problems with this
-                # (timeout?, races?)
-                Process::waitpid(@monpid)
-                @monpid = nil
+                slept = 0
+                while not monitor and slept < 10
+                    slept += 0.5
+                    sleep 0.5
+                end
+                if slept >= 10
+                    puts "Timed out waiting for daemon to shut down"
+                    return 1
+                end
+                File::delete(ppid)
                 puts "Stopped session #{name}"
                 return 0
             else
@@ -88,6 +114,10 @@ module Cft
         end
 
         def orig(files)
+            unless active?
+                puts "Session #{name} is not active"
+                return 1
+            end
             orig = path("orig")
             unless File::directory?(orig)
                 FileUtils::mkdir_p(orig)
@@ -95,6 +125,7 @@ module Cft
             files.each do |f|
                 FileUtils::cp_r(f, orig, :preserve => true)
             end
+            return 0
         end
         
         def delete
