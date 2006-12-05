@@ -1,0 +1,64 @@
+Changed /etc/printcap
+Changed /etc/printcap
+Changed /etc/printcap
+Changed /etc/printcap
+Changed /etc/printcap
+Changed /etc/printcap
+Changed /etc/printcap
+Changed /etc/printcap
+Changed /etc/printcap
+Changed /etc/printcap
+Changed /etc/printcap
+Changed /etc/printcap
+Created /etc/.aliases.swp 
+Created /etc/.aliases.swpx 
+Deleted /etc/.aliases.swpx
+Deleted /etc/.aliases.swp
+Changed /etc/.aliases.swp
+Created /etc/4913 
+Changed /etc/4913
+Deleted /etc/4913
+Deleted /etc/aliases
+Created /etc/aliases~ 
+Created /etc/aliases 
+Changed /etc/aliases
+Deleted /etc/aliases~
+Deleted /etc/.aliases.swp
+Created /etc/postfix/.main.cf.swp 
+Created /etc/postfix/.main.cf.swx 
+Deleted /etc/postfix/.main.cf.swx
+Deleted /etc/postfix/.main.cf.swp
+Changed /etc/postfix/.main.cf.swp
+Created /etc/postfix/4913 
+Changed /etc/postfix/4913
+Deleted /etc/postfix/4913
+Deleted /etc/postfix/main.cf
+Created /etc/postfix/main.cf~ 
+Created /etc/postfix/main.cf 
+Changed /etc/postfix/main.cf
+Deleted /etc/postfix/main.cf~
+Deleted /etc/postfix/.main.cf.swp
+Deleted /var/lock/subsys/postfix
+Changed /etc/aliases.db
+Changed /etc/printcap
+Created /var/lock/subsys/postfix 
+Changed /var/lock/subsys/postfix
+Changed /etc/printcap
+Changed /etc/printcap
+Changed /etc/printcap
+Changed /etc/printcap
+Changed /etc/printcap
+Changed /etc/printcap
+Changed /etc/printcap
+Changed /etc/printcap
+/var/lock/subsys/postfix :: - + =
+cp -pr /var/lock/subsys/postfix /tmp/cft/postfix/after/var/lock/subsys/postfix
+/etc/postfix/.main.cf.swx :: + -
+/etc/postfix/4913 :: + = -
+/etc/aliases.db :: =
+cp -pr /etc/aliases.db /tmp/cft/postfix/after/etc/aliases.db
+/etc/postfix/main.cf :: - + =
+cp -pr /etc/postfix/main.cf /tmp/cft/postfix/after/etc/postfix/main.cf
+/etc/aliases :: - + =
+cp -pr /etc/aliases /tmp/cft/postfix/after/etc/aliases
+/etc/4913 :: + = -
