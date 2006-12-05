@@ -12,7 +12,7 @@ module Cft
 
     # Globs that we can definitely ignore
     FILTERS = [ 
-               '*.swp', '*.swpx',    # vi leaves these behind
+               '*.swp', '*.swpx', '*.swx',    # vi leaves these behind
                '*~',                 # emacs backup files
                '/etc/httpd/run/**',  # symlink to /var/run
                '/etc/printcap'       # cups keeps rewriting this
