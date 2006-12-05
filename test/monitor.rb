@@ -35,4 +35,13 @@ class TestMonitor < Test::Unit::TestCase
         assert_equal("/tmp/cft/basic_manifest/after/etc/nsswitch.conf", 
                      file[:source])
     end
+
+    def test_postfix
+        s = use_session('postfix')
+        s.changes.paths.each do |k,v|
+            puts "#{k} #{s.changes.paths[k].join("")}"
+        end
+        trans = s.transportable
+        puts trans.to_manifest
+    end
 end
