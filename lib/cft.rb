@@ -52,6 +52,7 @@ module Cft
                 puts "Session #{name} already running"
                 return 1
             end
+            Cft::Puppet::genstate(path("before.yaml"))
             monitor = false
             oldusr1 = trap("SIGUSR1") do
                 monitor = true
@@ -94,6 +95,7 @@ module Cft
                 oldusr1 = trap("SIGUSR1") do
                     monitor = true
                 end
+                Cft::Puppet::genstate(path("after.yaml"))
                 File::delete(pid)
                 slept = 0
                 while not monitor and slept < 10

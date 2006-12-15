@@ -11,6 +11,10 @@ module Cft::Puppet
                 @digests = digests
             end
             
+            def preserve?
+                false
+            end
+
             def type
                 Puppet::Type.type(@typnam)
             end
@@ -107,7 +111,11 @@ module Cft::Puppet
             def initialize
                 super(:service, [ "/var/lock/subsys/*" ])
             end
-            
+
+            def preserve?
+                true
+            end
+
             def transportable(session, path)
                 svc = File::basename(path)
                 state = session.changes.paths[path].reverse.find do |c| 
@@ -128,8 +136,18 @@ module Cft::Puppet
             
         end
 
+        class User < Base
+            def initialize
+                super(:user, [ "/etc/passwd" ])
+            end
+
+            def preserve?
+                true
+            end
+        end
+
         def self.digesters
-            [ Service::new, PFile::new ]
+            [ Service::new, User::new, PFile::new ]
         end
 
     end
