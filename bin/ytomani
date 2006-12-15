@@ -1,0 +1,10 @@
+#! /usr/bin/ruby
+
+require 'puppet'
+
+# Convert a puppet YAML file into a manifest
+File::open(ARGV[0], "r") do |f|
+    cfg = YAML::load(f)
+    cfg.keyword = 'manifest'
+    puts cfg.to_manifest
+end
