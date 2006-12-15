@@ -1,27 +1,11 @@
 require File::join(File::dirname(__FILE__), "util/harness")
 
 require 'cft'
+require 'yaml'
 
 class TestMonitor < Test::Unit::TestCase
 
     include Cft::Harness
-
-    def test_basic
-        s = create_session
-        populate({"/etc/nsswitch.conf" => "nsswitch.conf.0",
-                  "/etc/mailcap" => "mailcap.0"})
-        ret = s.start([ File::join(topdir, "etc") ])
-        assert_equal(0, ret)
-        populate({"/etc/nsswitch.conf" => "nsswitch.conf.1"})
-        ret = s.stop
-        assert_equal(0, ret)
-        p = s.changes.paths
-        assert_equal(1, p.size)
-        assert_equal(File::join(topdir, "/etc/nsswitch.conf"), 
-                     p.keys[0])
-        assert_equal([Cft::CHANGED], p.values[0])
-        assert(s.changes.exist?(p.keys[0]))
-    end
 
     def test_basic_manifest
         s = use_session('basic_manifest')
@@ -38,10 +22,22 @@ class TestMonitor < Test::Unit::TestCase
 
     def test_postfix
         s = use_session('postfix')
-        s.changes.paths.each do |k,v|
-            puts "#{k} #{s.changes.paths[k].join("")}"
-        end
         trans = s.transportable
-        puts trans.to_manifest
+        assert_equal(5, trans.flatten.size)
+        assert_not_nil(find_trans(trans, :service, "postfix"))
+        [ "/var/lock/subsys/postfix", "/etc/aliases.db",
+          "/etc/aliases", "/etc/postfix/main.cf" ].each do |name|
+            assert_not_nil(find_trans(trans, :file, name))
+        end
+    end
+
+    def test_genstate
+        Cft::Puppet::genstate("/tmp/state.yaml")
+    end
+
+    def find_trans(t, type, name)
+        t.find do |to|
+            to.type.to_s == type.to_s && to.name == name
+        end
     end
 end
