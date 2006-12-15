@@ -23,24 +23,50 @@ module Cft
     CREATED = "+"
     DELETED = "-"
 
+    class Error < RuntimeError
+    end
+
+    class InternalError < Error
+    end
+
     class Session
         attr_reader :name
+
+        # Map symbolic names for various files/dirs in a sesion
+        # to paths/filenames relative to the sessions top dir
+        PATHS = { 
+            :pid => "pid",               # The lockfile for the session
+            :ppid => "ppid",
+            :pp_before => "before.yaml", # List of puppet types
+            :pp_after => "after.yaml",   # as transportables in yaml
+            :stdout => "stdout",         # I/O for the daemon
+            :stderr => "stderr",
+            :orig => "orig",             # Dir where to store original files
+            :changes => "changes",       # File with change listing
+            :after => "after"            # Dir with changed files
+        }
 
         def initialize(name)
             @name = name
         end
 
-        def path(sub = nil)
+        def path(entry = nil)
             path = File::join(OUTPUT_DIR, name)
             unless File::directory?(path)
                 FileUtils::mkdir_p(path)
             end
-            path = File::join(path, sub) unless sub.nil?
+            unless entry.nil? || entry == :top
+                sub = PATHS[entry]
+                if sub.nil?
+                    raise InternalError, "Invalid session path #{entry}"
+                end
+                path = File::join(path, sub)
+            end
             return path
         end
 
         def pid
-            path("pid")
+            path(:pid)
         end
 
         def active?
@@ -52,20 +78,20 @@ module Cft
                 puts "Session #{name} already running"
                 return 1
             end
-            Cft::Puppet::genstate(path("before.yaml"))
+            Cft::Puppet::genstate(path(:pp_before))
             monitor = false
             oldusr1 = trap("SIGUSR1") do
                 monitor = true
             end
             fork do 
-                $stdout = File::open(path("stdout"), "w")
-                $stderr = File::open(path("stderr"), "w")
+                $stdout = File::open(path(:stdout), "w")
+                $stderr = File::open(path(:stderr), "w")
                 $stdin = File::open("/dev/null", "r")
                 m = Monitor.new(self, roots)
                 m.monitor()
                 # The process stopping us by removing the pid file
                 # leaves its pid in ppid. Tell it that we are done
-                ppid = path("ppid")
+                ppid = path(:ppid)
                 if File::exist?(ppid)
                     File::open(ppid, "r") do |f|
                         id = f.read.chomp.to_i
@@ -89,13 +115,13 @@ module Cft
 
         def stop
             if active?
-                ppid = path("ppid")
+                ppid = path(:ppid)
                 File::open(ppid, "w") { |f| f.puts "#{Process::pid}"}
                 monitor = false
                 oldusr1 = trap("SIGUSR1") do
                     monitor = true
                 end
-                Cft::Puppet::genstate(path("after.yaml"))
+                Cft::Puppet::genstate(path(:pp_after))
                 File::delete(pid)
                 slept = 0
                 while not monitor and slept < 10
@@ -120,7 +146,7 @@ module Cft
                 puts "Session #{name} is not active"
                 return 1
             end
-            orig = path("orig")
+            orig = path(:orig)
             unless File::directory?(orig)
                 FileUtils::mkdir_p(orig)
             end
@@ -144,19 +170,15 @@ module Cft
             Cft::Puppet::transportable(self)
         end
 
-        def change_file
-            path("changes")
-        end
-
         def changes
-            Changes.new(change_file)
+            Changes.new(path(:changes))
         end
 
         def source(p = nil)
             if p.nil?
-                path("after")
+                path(:after)
             else
-                File::join(path("after"), p)
+                File::join(path(:after), p)
             end
         end
     end
@@ -166,7 +188,7 @@ module Cft
 
         def initialize(session, roots)
             @session = session
-            @lock = session.path("pid")
+            @lock = session.path(:pid)
             @roots = roots
             # All the directories we are watching, includes the trees rooted
             # at all the ROOTS
@@ -180,7 +202,7 @@ module Cft
         def monitor()
             @fam = Fam::Connection.new(@session.name)
             @fam.no_exists()
-            @log = File::open(session.change_file, "w")
+            @log = File::open(session.path(:changes), "w")
         
             File::open(@lock, "w") do |f|
                 f.puts(Process::pid)
