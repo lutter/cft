@@ -1,6 +1,9 @@
 # Add ../../lib to the search path
 $:.unshift(File::join(File::dirname(__FILE__), "..", "..", "lib"))
 
+# Do whacky stuff to the PATH, so that we can run as a normal user
+ENV['PATH'] = "#{ENV['PATH']}:/sbin:/usr/sbin"
+
 # Use the svn version of puppet
 begin
     pdir = File::expand_path("~/code/puppet/lib")
