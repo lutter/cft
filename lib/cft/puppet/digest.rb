@@ -17,8 +17,12 @@ module Cft::Puppet
             return result
         end
 
+        def self.digesters
+            @digesters
+        end
+
         class Base
-            attr_reader :typnam, :preserve
+            attr_reader :typnam
             @@glob_cnt = 0
 
             def initialize(typnam, &block)
@@ -30,6 +34,10 @@ module Cft::Puppet
             
             def preserve
                 @preserve = true
+            end
+
+            def preserve?
+                @preserve
             end
 
             def glob(*patterns, &block)
@@ -169,10 +177,6 @@ module Cft::Puppet
             
             d.glob "/etc/passwd" do |session, path|
             end
-        end
-
-        def self.digesters
-            @digesters
         end
 
     end
