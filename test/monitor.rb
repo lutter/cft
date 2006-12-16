@@ -9,7 +9,7 @@ class TestMonitor < Test::Unit::TestCase
 
     def test_basic_manifest
         s = use_session('basic_manifest')
-        trans = s.transportable
+        trans = Cft::Puppet::transportable(s)
         list = trans.flatten
         assert_equal(1, list.size)
         file = list[0]
@@ -22,7 +22,7 @@ class TestMonitor < Test::Unit::TestCase
 
     def test_postfix
         s = use_session('postfix')
-        trans = s.transportable
+        trans = Cft::Puppet::transportable(s)
         assert_equal(4, trans.flatten.size)
         assert_not_nil(find_trans(trans, :service, "postfix"))
         [ "/etc/aliases.db", "/etc/aliases", 
@@ -37,7 +37,7 @@ class TestMonitor < Test::Unit::TestCase
 
     def test_bluetooth
         s = use_session("bluetooth")
-        trans = s.transportable
+        trans = Cft::Puppet::transportable(s)
         # FIXME: Not quite yet, we have spurious subdaemons in the result
         #assert_equal(1, trans.flatten.size)
         bluetooth = find_trans(trans, :service, "bluetooth")

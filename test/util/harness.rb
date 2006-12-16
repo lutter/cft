@@ -89,7 +89,8 @@ module Cft
         # Use a prepared session from test/data/sessions
         def use_session(name)
             result = Cft::Session.new(name)
-            result.delete
+            cmd = Cft::Commands.new(result)
+            cmd.delete
             FileUtils::cp_r(datafile(File::join("sessions", name)),
                             Cft::OUTPUT_DIR, :preserve => true)
             result

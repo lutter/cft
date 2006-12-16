@@ -73,25 +73,43 @@ module Cft
             File::exists?(pid)
         end
 
+        def changes
+            Changes.new(path(:changes))
+        end
+
+        def source(p = nil)
+            if p.nil?
+                path(:after)
+            else
+                File::join(path(:after), p)
+            end
+        end
+    end
+
+    class Commands
+        def initialize(session)
+            @s = session
+        end
+
         def start(roots = WATCH_DIRS)
-            if active?
+            if @s.active?
                 puts "Session #{name} already running"
                 return 1
             end
-            Cft::Puppet::genstate(path(:pp_before))
+            Cft::Puppet::genstate(@s.path(:pp_before))
             monitor = false
             oldusr1 = trap("SIGUSR1") do
                 monitor = true
             end
             fork do 
-                $stdout = File::open(path(:stdout), "w")
-                $stderr = File::open(path(:stderr), "w")
+                $stdout = File::open(@s.path(:stdout), "w")
+                $stderr = File::open(@s.path(:stderr), "w")
                 $stdin = File::open("/dev/null", "r")
-                m = Monitor.new(self, roots)
+                m = Monitor.new(@s, roots)
                 m.monitor()
                 # The process stopping us by removing the pid file
                 # leaves its pid in ppid. Tell it that we are done
-                ppid = path(:ppid)
+                ppid = @s.path(:ppid)
                 if File::exist?(ppid)
                     File::open(ppid, "r") do |f|
                         id = f.read.chomp.to_i
@@ -114,15 +132,15 @@ module Cft
         end
 
         def stop
-            if active?
-                ppid = path(:ppid)
+            if @s.active?
+                ppid = @s.path(:ppid)
                 File::open(ppid, "w") { |f| f.puts "#{Process::pid}"}
                 monitor = false
                 oldusr1 = trap("SIGUSR1") do
                     monitor = true
                 end
-                Cft::Puppet::genstate(path(:pp_after))
-                File::delete(pid)
+                Cft::Puppet::genstate(@s.path(:pp_after))
+                File::delete(@s.pid)
                 slept = 0
                 while not monitor and slept < 10
                     slept += 0.5
@@ -133,10 +151,10 @@ module Cft
                     return 1
                 end
                 File::delete(ppid)
-                puts "Stopped session #{name}"
+                puts "Stopped session #{@s.name}"
                 return 0
             else
-                puts "Session #{name} not running"
+                puts "Session #{@s.name} not running"
                 return 1
             end
         end
@@ -146,7 +164,7 @@ module Cft
                 puts "Session #{name} is not active"
                 return 1
             end
-            orig = path(:orig)
+            orig = @s.path(:orig)
             unless File::directory?(orig)
                 FileUtils::mkdir_p(orig)
             end
@@ -157,30 +175,15 @@ module Cft
         end
         
         def delete
-            if active?
+            if @s.active?
                 puts "Can't delete active session #{name}"
                 return 1
             else
-                system("rm -rf #{path}")
+                system("rm -rf #{@s.path}")
                 return 0
             end
         end
 
-        def transportable
-            Cft::Puppet::transportable(self)
-        end
-
-        def changes
-            Changes.new(path(:changes))
-        end
-
-        def source(p = nil)
-            if p.nil?
-                path(:after)
-            else
-                File::join(path(:after), p)
-            end
-        end
     end
 
     class Monitor

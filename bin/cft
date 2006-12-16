@@ -35,7 +35,7 @@ module Cft
             return 1
         end
 
-        s = Session.new(rest.shift)
+        s = Commands.new(Session.new(rest.shift))
         case mode
             when :watch then
             result = s.start

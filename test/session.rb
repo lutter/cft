@@ -8,12 +8,13 @@ class TestSession < Test::Unit::TestCase
 
     def test_basic
         s = create_session
+        cmd = Cft::Commands.new(s)
         populate({"/etc/nsswitch.conf" => "nsswitch.conf.0",
                   "/etc/mailcap" => "mailcap.0"})
-        ret = s.start([ File::join(topdir, "etc") ])
+        ret = cmd.start([ File::join(topdir, "etc") ])
         assert_equal(0, ret)
         populate({"/etc/nsswitch.conf" => "nsswitch.conf.1"})
-        ret = s.stop
+        ret = cmd.stop
         assert_equal(0, ret)
         p = s.changes.paths
         assert_equal(1, p.size)
