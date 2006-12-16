@@ -1,0 +1,58 @@
+Changed /etc/printcap
+Changed /etc/printcap
+Changed /etc/printcap
+Changed /etc/printcap
+Changed /etc/printcap
+Changed /etc/printcap
+Deleted /etc/rc.d/rc2.d/S25bluetooth
+Deleted /etc/rc2.d/S25bluetooth
+Created /etc/rc.d/rc2.d/K90bluetooth 
+Created /etc/rc2.d/K90bluetooth 
+Deleted /etc/rc3.d/S25bluetooth
+Deleted /etc/rc.d/rc3.d/S25bluetooth
+Created /etc/rc3.d/K90bluetooth 
+Created /etc/rc.d/rc3.d/K90bluetooth 
+Deleted /etc/rc.d/rc4.d/S25bluetooth
+Deleted /etc/rc4.d/S25bluetooth
+Created /etc/rc.d/rc4.d/K90bluetooth 
+Created /etc/rc4.d/K90bluetooth 
+Deleted /etc/rc5.d/S25bluetooth
+Deleted /etc/rc.d/rc5.d/S25bluetooth
+Created /etc/rc5.d/K90bluetooth 
+Created /etc/rc.d/rc5.d/K90bluetooth 
+Changed /etc/printcap
+Changed /etc/printcap
+Deleted /var/lock/subsys/sdpd
+Deleted /var/lock/subsys/hcid
+Deleted /var/lock/subsys/bluetooth
+Changed /etc/printcap
+Changed /etc/printcap
+Changed /etc/printcap
+Changed /etc/printcap
+/var/lock/subsys/hcid :: -
+/etc/rc5.d/K90bluetooth :: +
+cp -pr /etc/rc5.d/K90bluetooth /tmp/cft/bluetooth/after/etc/rc5.d/K90bluetooth
+/etc/rc.d/rc4.d/K90bluetooth :: +
+cp -pr /etc/rc.d/rc4.d/K90bluetooth /tmp/cft/bluetooth/after/etc/rc.d/rc4.d/K90bluetooth
+/etc/rc5.d/S25bluetooth :: -
+/etc/rc.d/rc4.d/S25bluetooth :: -
+/etc/rc.d/rc5.d/K90bluetooth :: +
+cp -pr /etc/rc.d/rc5.d/K90bluetooth /tmp/cft/bluetooth/after/etc/rc.d/rc5.d/K90bluetooth
+/etc/rc3.d/K90bluetooth :: +
+cp -pr /etc/rc3.d/K90bluetooth /tmp/cft/bluetooth/after/etc/rc3.d/K90bluetooth
+/etc/rc.d/rc2.d/K90bluetooth :: +
+cp -pr /etc/rc.d/rc2.d/K90bluetooth /tmp/cft/bluetooth/after/etc/rc.d/rc2.d/K90bluetooth
+/etc/rc3.d/S25bluetooth :: -
+/etc/rc.d/rc2.d/S25bluetooth :: -
+/var/lock/subsys/sdpd :: -
+/etc/rc.d/rc5.d/S25bluetooth :: -
+/etc/rc4.d/K90bluetooth :: +
+cp -pr /etc/rc4.d/K90bluetooth /tmp/cft/bluetooth/after/etc/rc4.d/K90bluetooth
+/etc/rc.d/rc3.d/K90bluetooth :: +
+cp -pr /etc/rc.d/rc3.d/K90bluetooth /tmp/cft/bluetooth/after/etc/rc.d/rc3.d/K90bluetooth
+/etc/rc4.d/S25bluetooth :: -
+/etc/rc.d/rc3.d/S25bluetooth :: -
+/var/lock/subsys/bluetooth :: -
+/etc/rc2.d/K90bluetooth :: +
+cp -pr /etc/rc2.d/K90bluetooth /tmp/cft/bluetooth/after/etc/rc2.d/K90bluetooth
+/etc/rc2.d/S25bluetooth :: -

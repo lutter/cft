@@ -1,0 +1,4 @@
+Created through
+> chkconfig bluetooth off
+> service bluetooth stop
+on a system that had it enabled and running
