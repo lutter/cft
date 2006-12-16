@@ -1,0 +1,23 @@
+#! /bin/bash
+
+# Script I use to run cft
+# WARNING: Will not work for anybody else unmodified
+
+CFT_DIR=`dirname $0`
+PUPPET_DIR=${CFT_DIR}/../puppet
+export RUBYLIB=${CFT_DIR}/lib:${PUPPET_DIR}/lib:${CFT_DIR}/packages/fam-ruby-0.1.4
+
+cft=${CFT_DIR}/bin/cft
+
+if [ "x$1" == "x-a" ]
+then
+    set -x
+    $cft -k foo
+    $cft --delete foo
+    $cft -w foo
+    sleep 1
+    cat /tmp/cft/foo/stderr
+else
+    $cft "$@"
+fi
+
