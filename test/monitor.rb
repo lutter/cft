@@ -32,7 +32,9 @@ class TestMonitor < Test::Unit::TestCase
     end
 
     def test_genstate
-        Cft::Puppet::genstate("/tmp/state.yaml")
+        assert_nothing_raised {
+            Cft::Puppet::genstate("/tmp/state.yaml")
+        }
     end
 
     def test_bluetooth
@@ -43,6 +45,32 @@ class TestMonitor < Test::Unit::TestCase
         bluetooth = find_trans(trans, :service, "bluetooth")
         assert_not_nil(bluetooth)
         assert_equal("stopped", bluetooth[:ensure])
+    end
+
+    def test_diff
+        s = use_session("bluetooth")
+        before = s.trans(:before)
+        after = s.trans(:after)
+        after.delete_obj(:service, "psacct")
+        before.delete_obj(:user, "adm")
+        diff = Cft::Puppet::diff(before, after)
+        assert_equal(3, diff.length)
+
+        psacct = diff.find_obj(:service, "psacct")
+        assert_not_nil(psacct)
+        assert_equal(:absent, psacct[:ensure])
+
+        bluetooth = diff.find_obj(:service, "bluetooth")
+        assert_not_nil(bluetooth)
+        assert_equal(:false, bluetooth[:enable])
+        # Should really be 'stopped' but that's a problem
+        # with puppet, not cft
+        assert_equal(:running, bluetooth[:ensure])
+
+        adm = diff.find_obj(:user, "adm")
+        assert_not_nil(adm)
+        assert_equal(:present, adm[:ensure])
+        assert_equal("/var/adm", adm[:home])
     end
 
     def find_trans(t, type, name)

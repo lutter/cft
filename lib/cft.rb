@@ -1,6 +1,7 @@
 require 'fam'
 require 'fileutils'
 require 'find'
+require 'yaml'
 
 module Cft
 
@@ -75,6 +76,13 @@ module Cft
 
         def changes
             Changes.new(path(:changes))
+        end
+
+        def trans(boa = :before)
+            kind = boa == :before ? :pp_before : :pp_after
+            File::open(path(kind), "r") do |f|
+                return YAML::load(f)
+            end
         end
 
         def source(p = nil)
