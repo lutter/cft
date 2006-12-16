@@ -35,6 +35,21 @@ class TestMonitor < Test::Unit::TestCase
         Cft::Puppet::genstate("/tmp/state.yaml")
     end
 
+    def test_bluetooth
+        Cft::Puppet::Digest::digesters.each do |d|
+            puts d.typnam
+        end
+        s = use_session("bluetooth")
+        trans = s.transportable
+        # FIXME: Not quite yet
+        #assert_equal(1, trans.flatten.size)
+        bluetooth = find_trans(trans, :service, "bluetooth")
+        assert_not_nil(bluetooth)
+        p bluetooth
+        assert_equal("stopped", bluetooth[:ensure])
+        puts trans.to_manifest
+    end
+
     def find_trans(t, type, name)
         t.find do |to|
             to.type.to_s == type.to_s && to.name == name

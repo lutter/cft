@@ -8,15 +8,11 @@ module Cft::Puppet
         result.type = session.name
         session.changes.paths.each do |p,c|
             next if Cft::FILTERS.any? { |f| File::fnmatch(f, p) }
-            Cft::Puppet::Digest::digesters.each do |ana|
-                if ana.digest?(p)
-                    trans = ana.transportable(session, p)
-                    result.push(trans) if trans
-                end
+            dig = Cft::Puppet::Digest::find(p)
+            dig.transportable(session, p).each do |to|
+                result << to
             end
         end
-        # FIXME: The keys are all symbols here, but when puppet parses a
-        # manifest, keys are strings
         result
     end
 

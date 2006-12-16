@@ -3,25 +3,58 @@ require 'etc'
 module Cft::Puppet
     module Digest
 
-        class Base
-            attr_reader :typnam
+        def self.digester(name, &block)
+            @digesters ||= []
+            # Be very careful: order is important
+            @digesters.unshift(Base::new(name, &block))
+        end
 
-            def initialize(typnam, digests)
+        def self.find(path)
+            result = @digesters.find { |dig| dig.digest?(path) }
+            unless result
+                raise InternalError, "No digester for #{path}"
+            end
+            return result
+        end
+
+        class Base
+            attr_reader :typnam, :preserve
+            @@glob_cnt = 0
+
+            def initialize(typnam, &block)
                 @typnam = typnam
-                @digests = digests
+                @preserve = false
+                @globs = {}
+                yield(self)
             end
             
-            def preserve?
-                false
+            def preserve
+                @preserve = true
             end
 
+            def glob(*patterns, &block)
+                @@glob_cnt += 1
+                name = "glob#{@@glob_cnt}".intern
+                self.class.define_method(name, &block)
+                patterns.each do |p| 
+                    @globs[p] = name
+                end
+            end
+            
             def type
                 Puppet::Type.type(@typnam)
             end
 
             def digest?(path)
-                return true if @digests.nil?
-                @digests.any? { |d| File::fnmatch(d, path) }
+                @globs.keys.any? { |d| File::fnmatch(d, path) }
+            end
+
+            def transportable(session, path)
+                @globs.keys.select { |pat|
+                    File::fnmatch(pat, path)
+                }.map { |pat|
+                    self.send(@globs[pat], session, path)
+                }.reject { |to| to.nil? }
             end
 
             def scrub_attr!(trans)
@@ -30,18 +63,21 @@ module Cft::Puppet
                 end
                 trans
             end
+
+            def mktrans(name, params)
+                to = Puppet::TransObject.new(name, typnam)
+                params.each { |k,v| to[k] = v }
+                return to
+            end
         end
 
-        class PFile < Base
-            def initialize
-                super(:file, nil)
-            end
+        digester(:file) do |d|
 
-            def skipstate?(name)
+            def d.skipstate?(name)
                 [:source, :content, :checksum, :target].include?(name)
             end
 
-            def transportable(session, path)
+            d.glob "*" do |session, path|
                 trans = nil
                 if session.changes.exist?(path)
                     # Dealing with :source is a PITA; setting it too early
@@ -57,9 +93,9 @@ module Cft::Puppet
                     trans = obj.to_trans
                     trans[:source] = trans.name
                     trans.name = path
-                    trans[:group] = PFile::gid_to_s(trans[:group])
-                    trans[:owner] = PFile::uid_to_s(trans[:owner])
-                    trans[:mode] = PFile::mode_to_s(trans[:mode])
+                    trans[:group] = gid_to_s(trans[:group])
+                    trans[:owner] = uid_to_s(trans[:owner])
+                    trans[:mode] = mode_to_s(trans[:mode])
                 else
                     # PATH was deleted
                     c = session.changes.paths[path]
@@ -81,7 +117,7 @@ module Cft::Puppet
 
             private
             # FIXME: Try and use the existing user providers for this
-            def self.gid_to_s(gid)
+            def d.gid_to_s(gid)
                 begin
                     Etc.getgrgid(gid).name
                 rescue ArgumentError
@@ -89,7 +125,7 @@ module Cft::Puppet
                 end
             end
 
-            def self.uid_to_s(uid)
+            def d.uid_to_s(uid)
                 begin
                     Etc.getpwuid(uid).name
                 rescue ArgumentError
@@ -97,7 +133,7 @@ module Cft::Puppet
                 end
             end
 
-            def self.mode_to_s(m)
+            def d.mode_to_s(m)
                 if m.is_a?(Integer)
                     "0" + m.to_s(8)
                 else
@@ -105,18 +141,12 @@ module Cft::Puppet
                 end
             end
 
-        end    
+        end
 
-        class Service < Base
-            def initialize
-                super(:service, [ "/var/lock/subsys/*" ])
-            end
-
-            def preserve?
-                true
-            end
-
-            def transportable(session, path)
+        digester(:service) do |d|
+            d.preserve
+            
+            d.glob "/var/lock/subsys/*" do |session, path|
                 svc = File::basename(path)
                 state = session.changes.paths[path].reverse.find do |c| 
                     c != Cft::CHANGED
@@ -127,27 +157,22 @@ module Cft::Puppet
                 else
                     ens = :stopped
                 end
-                trans = type.create({
-                  :name => svc,
-                  :ensure => ens
-                }).to_trans
-                scrub_attr!(trans)
+                trans = mktrans(svc, { :ensure => ens.to_s })
             end
-            
+
+            d.glob "/etc/rc?.d/*", "/etc/rc.d/rc?.d/*" do |session, path|
+            end
         end
 
-        class User < Base
-            def initialize
-                super(:user, [ "/etc/passwd" ])
-            end
-
-            def preserve?
-                true
+        digester(:user) do |d|
+            d.preserve
+            
+            d.glob "/etc/passwd" do |session, path|
             end
         end
 
         def self.digesters
-            [ Service::new, User::new, PFile::new ]
+            @digesters
         end
 
     end
