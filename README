@@ -24,3 +24,17 @@ In full words:
 * Stop session with 'cft -k SESSION'
 * Admire results in /tmp/cft/SESSION
 
+Internals
+=========
+
+Changes come in two flavors: (a) changes to things already covered by
+puppet and (b) changes to things that puppet doesn't yet know about
+
+Flow:
+
+- read&store puppet types (except those where a full list would be ludicrous)
+- user makes changes
+- based on gamin, figure out which files have changed
+- based on initial listing of types, figure out which objects have changed
+
+- take changes and map into existing manifest (???)
