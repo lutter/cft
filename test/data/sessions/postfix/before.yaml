@@ -1,0 +1,54 @@
+--- !ruby/object:Puppet::TransBucket 
+children: 
+- !ruby/object:Puppet::TransBucket 
+  type: :service
+  children: 
+  - !ruby/object:Puppet::TransObject 
+    type: :service
+    tags: 
+    - :service
+    name: postfix
+    collectable: false
+    params: 
+      :loglevel: :notice
+      :enable: :true
+      :check: &id001 
+        - :ensure
+        - :enable
+      :ensure: :running
+      :provider: :redhat
+      :path: 
+      - /etc/init.d
+      :pattern: postfix
+  keyword: class
+- !ruby/object:Puppet::TransBucket 
+  type: :user
+  children: 
+  - !ruby/object:Puppet::TransObject 
+    type: :user
+    tags: 
+    - :user
+    name: postfix
+    collectable: false
+    params: 
+      :shell: /sbin/nologin
+      :loglevel: :notice
+      :allowdupe: :false
+      :groups: 
+      - mail
+      :comment: ""
+      :uid: 89
+      :check: 
+      - :shell
+      - :groups
+      - :comment
+      - :uid
+      - :home
+      - :gid
+      - :ensure
+      :home: /var/spool/postfix
+      :gid: 89
+      :ensure: :present
+      :membership: :minimum
+      :provider: :useradd
+  keyword: class

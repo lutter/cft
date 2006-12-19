@@ -3,6 +3,7 @@ require 'etc'
 module Cft::Puppet
 
     class Digest
+        attr_reader :session, :bucket
 
         def initialize(session)
             @session = session
@@ -22,12 +23,17 @@ module Cft::Puppet
             @after
         end
 
+        def obj_seen?(type, name)
+            before.find_obj(type, name) ||
+                after.find_obj(type, name)
+        end
+
         def diff
             result = Puppet::TransBucket.new
             result.keyword = :manifest
             result.type = "diff"
-            @before.each_obj do |bto|
-                ato = @after.find_obj(bto.type, bto.name)
+            before.each_obj do |bto|
+                ato = after.find_obj(bto.type, bto.name)
                 if ato.nil?
                     # Object was deleted
                     to = Puppet::TransObject.new(bto.name, bto.type)
@@ -38,8 +44,8 @@ module Cft::Puppet
                     result << ato
                 end
             end
-            @after.each_obj do |ato|
-                bto = @before.find_obj(ato.type, ato.name)
+            after.each_obj do |ato|
+                bto = before.find_obj(ato.type, ato.name)
                 if bto.nil?
                     # Object was added
                     result << ato
@@ -49,17 +55,15 @@ module Cft::Puppet
         end
 
         def transportable
-            result = Puppet::TransBucket.new
-            result.keyword = "class"
-            result.type = @session.name
+            @bucket = diff
+            @bucket.keyword = "class"
+            @bucket.type = @session.name
             @session.changes.paths.each do |p,c|
                 next if Cft::FILTERS.any? { |f| File::fnmatch(f, p) }
                 dig = Cft::Puppet::Digest::find(p)
-                dig.transportable(@session, p).each do |to|
-                    result << to
-                end
+                dig.transportable(self, p)
             end
-            result
+            return @bucket
         end
 
         def self.digester(name, &block)
@@ -116,12 +120,12 @@ module Cft::Puppet
                 @globs.keys.any? { |d| File::fnmatch(d, path) }
             end
 
-            def transportable(session, path)
+            def transportable(digest, path)
                 @globs.keys.select { |pat|
                     File::fnmatch(pat, path)
-                }.map { |pat|
-                    self.send(@globs[pat], session, path)
-                }.reject { |to| to.nil? }
+                }.each { |pat|
+                    self.send(@globs[pat], digest, path)
+                }
             end
 
             def scrub_attr!(trans)
@@ -131,11 +135,6 @@ module Cft::Puppet
                 trans
             end
 
-            def mktrans(name, params)
-                to = Puppet::TransObject.new(name, typnam)
-                params.each { |k,v| to[k] = v }
-                return to
-            end
         end
 
         digester(:file) do |d|
@@ -144,12 +143,12 @@ module Cft::Puppet
                 [:source, :content, :checksum, :target].include?(name)
             end
 
-            d.glob "*" do |session, path|
+            d.glob "*" do |digest, path|
                 trans = nil
-                if session.changes.exist?(path)
+                if digest.session.changes.exist?(path)
                     # Dealing with :source is a PITA; setting it too early
                     # confuses puppet enormously
-                    obj = type.create({ :name => session.source(path) })
+                    obj = type.create({ :name => digest.session.source(path) })
                 
                     type.validstates.each { |n|
                         unless skipstate?(n) || obj.should(n)
@@ -165,7 +164,7 @@ module Cft::Puppet
                     trans[:mode] = mode_to_s(trans[:mode])
                 else
                     # PATH was deleted
-                    c = session.changes.paths[path]
+                    c = digest.session.changes.paths[path]
                     if c[0] == Cft::CREATED
                         # Ignore files that were created and 
                         # deleted in this session
@@ -179,7 +178,7 @@ module Cft::Puppet
                 if trans
                     scrub_attr!(trans)
                 end
-                return trans
+                digest.bucket << trans
             end
 
             private
@@ -212,29 +211,30 @@ module Cft::Puppet
 
         digester(:service) do |d|
             d.preserve
-            
-            d.glob "/var/lock/subsys/*" do |session, path|
+
+            # Use the subsys files to get a better idea of whether a
+            # service is still running or not, but don't create service
+            # entries based on subsys files, since they could be part of
+            # a bigger demon
+            d.glob "/var/lock/subsys/*" do |digest, path|
                 svc = File::basename(path)
-                state = session.changes.paths[path].reverse.find do |c| 
-                    c != Cft::CHANGED
+                if digest.obj_seen?(typnam, svc)
+                    state = digest.session.changes.paths[path].reverse.find do |c| 
+                        c != Cft::CHANGED
+                    end
+                    ens = (state == Cft::CREATED) ? "running" : "stopped"
+                    trans = digest.bucket.get_obj(typnam, svc, :ensure => ens)
                 end
-                ens = nil
-                if state == Cft::CREATED
-                    ens = :running
-                else
-                    ens = :stopped
-                end
-                trans = mktrans(svc, { :ensure => ens.to_s })
             end
 
-            d.glob "/etc/rc?.d/*", "/etc/rc.d/rc?.d/*" do |session, path|
+            d.glob "/etc/rc?.d/*", "/etc/rc.d/rc?.d/*" do |d, p|
             end
         end
 
         digester(:user) do |d|
             d.preserve
             
-            d.glob "/etc/passwd" do |session, path|
+            d.glob "/etc/passwd" do |d, p|
             end
         end
 

@@ -25,7 +25,7 @@ class TestMonitor < Test::Unit::TestCase
         s = use_session('postfix')
         digest = Cft::Puppet::Digest.new(s)
         trans = digest.transportable
-        assert_equal(4, trans.flatten.size)
+        #assert_equal(4, trans.flatten.size)
         assert_not_nil(find_trans(trans, :service, "postfix"))
         [ "/etc/aliases.db", "/etc/aliases", 
           "/etc/postfix/main.cf" ].each do |name|
@@ -39,7 +39,7 @@ class TestMonitor < Test::Unit::TestCase
         }
     end
 
-    def test_bluetooth
+    def test_bluetooth_transportable
         s = use_session("bluetooth")
         digest = Cft::Puppet::Digest.new(s)
         trans = digest.transportable
@@ -50,7 +50,7 @@ class TestMonitor < Test::Unit::TestCase
         assert_equal("stopped", bluetooth[:ensure])
     end
 
-    def test_diff
+    def test_bluetooth_diff
         s = use_session("bluetooth")
         digest = Cft::Puppet::Digest.new(s)
         digest.after.delete_obj(:service, "psacct")

@@ -29,5 +29,22 @@ module Puppet
         def find_obj(type, name)
             flatten.find { |to| to.type == type && to.name == name }
         end
+
+        def get_obj(type, name, params = {})
+            obj = find_obj(type, name)
+            unless obj
+                obj = TransObject.new(name, type)
+                self << obj
+            end
+            params.each { |k,v| obj[k] = v }
+            return obj
+        end
+
     end
+end
+
+module Cft
+    # Alias puppet's transportables
+    TransBucket = ::Puppet::TransBucket
+    TransObject = ::Puppet::TransObject
 end
