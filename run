@@ -7,6 +7,9 @@ CFT_DIR=`dirname $0`
 PUPPET_DIR=${CFT_DIR}/../puppet
 export RUBYLIB=${CFT_DIR}/lib:${PUPPET_DIR}/lib:${CFT_DIR}/packages/fam-ruby-0.1.4
 
+# Give puppet a path that makes it think root is running it
+PATH=${PATH}:/sbin:/usr/sbin
+
 cft=${CFT_DIR}/bin/cft
 
 if [ "x$1" == "x-a" ]
