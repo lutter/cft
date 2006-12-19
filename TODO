@@ -26,3 +26,18 @@
   which files have been modified during the session; the nice thing about
   gamin is that we don't have to stat a huge amount of files, though that
   might turn out to be more robust than Gamin is.
+
+* Resume a session
+  Finished a session, realize more work is needed, allow to start the
+  session again seamlessly
+  Enough to just append to various output files ?
+
+
+* RPM based session
+  Look at installed package(s) and their config files (or all files);
+  deduce changes and manifests from rpm -V for those packages
+
+* Use case:
+  
+  Yumrepo config has wrong baseurl; change on a system, map
+  back into puppetmaster, respecting overrides etc.
