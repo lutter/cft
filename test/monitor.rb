@@ -9,7 +9,8 @@ class TestMonitor < Test::Unit::TestCase
 
     def test_basic_manifest
         s = use_session('basic_manifest')
-        trans = Cft::Puppet::transportable(s)
+        digest = Cft::Puppet::Digest.new(s)
+        trans = digest.transportable
         list = trans.flatten
         assert_equal(1, list.size)
         file = list[0]
@@ -22,7 +23,8 @@ class TestMonitor < Test::Unit::TestCase
 
     def test_postfix
         s = use_session('postfix')
-        trans = Cft::Puppet::transportable(s)
+        digest = Cft::Puppet::Digest.new(s)
+        trans = digest.transportable
         assert_equal(4, trans.flatten.size)
         assert_not_nil(find_trans(trans, :service, "postfix"))
         [ "/etc/aliases.db", "/etc/aliases", 
@@ -39,7 +41,8 @@ class TestMonitor < Test::Unit::TestCase
 
     def test_bluetooth
         s = use_session("bluetooth")
-        trans = Cft::Puppet::transportable(s)
+        digest = Cft::Puppet::Digest.new(s)
+        trans = digest.transportable
         # FIXME: Not quite yet, we have spurious subdaemons in the result
         #assert_equal(1, trans.flatten.size)
         bluetooth = find_trans(trans, :service, "bluetooth")
@@ -49,11 +52,11 @@ class TestMonitor < Test::Unit::TestCase
 
     def test_diff
         s = use_session("bluetooth")
-        before = s.trans(:before)
-        after = s.trans(:after)
-        after.delete_obj(:service, "psacct")
-        before.delete_obj(:user, "adm")
-        diff = Cft::Puppet::diff(before, after)
+        digest = Cft::Puppet::Digest.new(s)
+        digest.after.delete_obj(:service, "psacct")
+        digest.before.delete_obj(:user, "adm")
+
+        diff = digest.diff
         assert_equal(3, diff.length)
 
         psacct = diff.find_obj(:service, "psacct")

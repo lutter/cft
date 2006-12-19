@@ -1,7 +1,66 @@
 require 'etc'
 
 module Cft::Puppet
-    module Digest
+
+    class Digest
+
+        def initialize(session)
+            @session = session
+        end
+
+        def before
+            if @before.nil?
+                @before = @session.trans(:before)
+            end
+            @before
+        end
+
+        def after
+            if @after.nil?
+                @after = @session.trans(:after)
+            end
+            @after
+        end
+
+        def diff
+            result = Puppet::TransBucket.new
+            result.keyword = :manifest
+            result.type = "diff"
+            @before.each_obj do |bto|
+                ato = @after.find_obj(bto.type, bto.name)
+                if ato.nil?
+                    # Object was deleted
+                    to = Puppet::TransObject.new(bto.name, bto.type)
+                    to[:ensure] = :absent
+                    result << to
+                elsif ato.any? { |p, v| ato[p] != bto[p] }
+                    # At least one param was changed
+                    result << ato
+                end
+            end
+            @after.each_obj do |ato|
+                bto = @before.find_obj(ato.type, ato.name)
+                if bto.nil?
+                    # Object was added
+                    result << ato
+                end
+            end
+            return result
+        end
+
+        def transportable
+            result = Puppet::TransBucket.new
+            result.keyword = "class"
+            result.type = @session.name
+            @session.changes.paths.each do |p,c|
+                next if Cft::FILTERS.any? { |f| File::fnmatch(f, p) }
+                dig = Cft::Puppet::Digest::find(p)
+                dig.transportable(@session, p).each do |to|
+                    result << to
+                end
+            end
+            result
+        end
 
         def self.digester(name, &block)
             @digesters ||= []
