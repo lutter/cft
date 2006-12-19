@@ -79,9 +79,11 @@ module Cft
         end
 
         def trans(boa = :before)
-            kind = boa == :before ? :pp_before : :pp_after
-            File::open(path(kind), "r") do |f|
-                return YAML::load(f)
+            fname = path(boa == :before ? :pp_before : :pp_after)
+            if File::exist?(fname)
+                File::open(fname, "r") { |f|  return YAML::load(f) }
+            else
+                return TransBucket.new
             end
         end
 
