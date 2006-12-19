@@ -90,13 +90,19 @@ module Cft
         # Use a prepared session from test/data/sessions
         def use_session(name)
             result = Cft::Session.new(name)
-            cmd = Cft::Commands.new(result)
-            cmd.delete
+            cmd = find_cmd(:erase)
+            cmd.execute(result, [])
             FileUtils::cp_r(datafile(File::join("sessions", name)),
                             Cft::OUTPUT_DIR, :preserve => true)
             result
         end
 
+        # Find the command with the given name
+        def find_cmd(name)
+            l = Cft::Commands::Base::find(name)
+            assert_equal(1, l.size)
+            l[0]
+        end
     end
 
 end

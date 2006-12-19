@@ -4,48 +4,4 @@ require 'optparse'
 require 'fileutils'
 require 'cft'
 
-module Cft
-    def self.main()
-        # Option parsing fun
-        usage = "usage: #{$0} [options] session"
-        mode = nil
-        opts = OptionParser.new(usage)
-        # FIXME: Don't let users specify more than one mode
-        opts.on("-w", "--watch", 
-                "start a new session and watch file changes") do |val|
-            mode = :watch
-        end
-        opts.on("-k", "--kill", "stop an existing session") do |val|
-            mode = :kill
-        end
-        opts.on("-o", "--orig", "save files as originals") do |val|
-            mode = :orig
-        end
-        opts.on("--delete", "delete a session") do |val|
-            mode = :delete
-        end
-        rest = opts.order(ARGV)
-        if mode.nil?
-            $stderr.puts "You must specify one of --watch, --kill, or --delete"
-            $stderr.puts opts
-            return 1
-        elsif rest.size == 0
-            $stderr.puts "You must provide a session name"
-            $stderr.puts opts
-            return 1
-        end
-
-        s = Commands.new(Session.new(rest.shift))
-        case mode
-            when :watch then
-            result = s.start
-            when :kill then
-            result = s.stop
-            when :orig then
-            result = s.orig(rest)
-            when :delete then
-            result = s.delete
-        end
-    end
-end
-exit(Cft::main())
+exit(Cft::Commands::Base::main.run(ARGV))

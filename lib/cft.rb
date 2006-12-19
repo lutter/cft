@@ -96,106 +96,6 @@ module Cft
         end
     end
 
-    class Commands
-        def initialize(session)
-            @s = session
-        end
-
-        def start(roots = WATCH_DIRS)
-            if @s.active?
-                puts "Session #{name} already running"
-                return 1
-            end
-            Cft::Puppet::genstate(@s.path(:pp_before))
-            monitor = false
-            oldusr1 = trap("SIGUSR1") do
-                monitor = true
-            end
-            fork do 
-                $stdout = File::open(@s.path(:stdout), "w")
-                $stderr = File::open(@s.path(:stderr), "w")
-                $stdin = File::open("/dev/null", "r")
-                m = Monitor.new(@s, roots)
-                m.monitor()
-                # The process stopping us by removing the pid file
-                # leaves its pid in ppid. Tell it that we are done
-                ppid = @s.path(:ppid)
-                if File::exist?(ppid)
-                    File::open(ppid, "r") do |f|
-                        id = f.read.chomp.to_i
-                        Process::kill("SIGUSR1", id)
-                    end
-                end
-                exit(0)
-            end
-            slept = 0
-            while not monitor and slept < 10
-                slept += 0.5
-                sleep 0.5
-            end
-            trap("SIGUSR1", oldusr1)
-            if slept >= 10
-                puts "Timed out waiting for daemon to start"
-                return 1
-            end
-            return 0
-        end
-
-        def stop
-            if @s.active?
-                ppid = @s.path(:ppid)
-                File::open(ppid, "w") { |f| f.puts "#{Process::pid}"}
-                monitor = false
-                oldusr1 = trap("SIGUSR1") do
-                    monitor = true
-                end
-                Cft::Puppet::genstate(@s.path(:pp_after))
-                File::delete(@s.pid)
-                slept = 0
-                while not monitor and slept < 10
-                    slept += 0.5
-                    sleep 0.5
-                end
-                if slept >= 10
-                    puts "Timed out waiting for daemon to shut down"
-                    return 1
-                end
-                File::delete(ppid)
-                puts "Stopped session #{@s.name}"
-                return 0
-            else
-                puts "Session #{@s.name} not running"
-                return 1
-            end
-        end
-
-        def orig(files)
-            unless active?
-                puts "Session #{name} is not active"
-                return 1
-            end
-            orig = @s.path(:orig)
-            unless File::directory?(orig)
-                FileUtils::mkdir_p(orig)
-            end
-            files.each do |f|
-                FileUtils::cp_r(f, orig, :preserve => true)
-            end
-            return 0
-        end
-        
-        def delete
-            if @s.active?
-                puts "Can't delete active session #{name}"
-                return 1
-            else
-                system("rm -rf #{@s.path}")
-                return 0
-            end
-        end
-
-    end
-
     class Monitor
         attr_reader :session, :filters
 
@@ -351,3 +251,4 @@ module Cft
 end
 
 require 'cft/puppet'
+require 'cft/commands'
