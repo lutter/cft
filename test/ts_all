@@ -1,0 +1,7 @@
+#! /usr/bin/ruby
+require File::join(File::dirname(__FILE__), "util/harness")
+
+require 'test/unit'
+
+require 'tc_monitor'
+require 'tc_session'
