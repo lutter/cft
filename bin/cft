@@ -4,4 +4,4 @@ require 'optparse'
 require 'fileutils'
 require 'cft'
 
-exit(Cft::Commands::Base::main.run(ARGV))
+exit(Cft::Commands::Base::main.execute(ARGV))
