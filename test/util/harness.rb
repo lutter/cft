@@ -1,5 +1,6 @@
-# Add ../../lib to the search path
+# Add ../../lib and ../ to the search path
 $:.unshift(File::join(File::dirname(__FILE__), "..", "..", "lib"))
+$:.unshift(File::join(File::dirname(__FILE__), ".."))
 
 # Do whacky stuff to the PATH, so that we can run as a normal user
 ENV['PATH'] = "#{ENV['PATH']}:/sbin:/usr/sbin"
