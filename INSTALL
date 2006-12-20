@@ -8,3 +8,9 @@ You need ruby-fam and gamin installed; you can get ruby-fam from
   source: http://www.pablotron.org/software/fam-ruby/
 
 You need the puppet client installed on the machine running cft
+
+There's no installation support yet for cft; to run it from a source
+checkout, all you need to do is
+  > export RUBYLIB=$source_checkout/lib
+  > $source_checkout/bin/cft --help
+

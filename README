@@ -1,40 +1,91 @@
-This tool (cft, pronounced 'sift') tries to follow a sysadmin as she makes
-changes to the system. For now, there is no analysis of what's recorded,
-though that's somewhat desirable.
+
+** Read INSTALL first !!
+
+Overview
+========
+
+This tool (cft, pronounced 'sift') follows a sysadmin as she makes changes
+to the system. Its basic workings are inspired by Gnome's sabayon, a tool
+that watches a user make configuration changes to their desktop and
+collects them into a reusable bundle. Instead of the desktop though, cft is
+focused on traditional system admins and how they maintain machines, mostly
+with command line tools. Cft uses puppet[2] as its backbone for expressing
+the configuration of a system, and for understanding in greater detail what
+changes the admin has made to the system.
 
 Changes are grouped into 'sessions' to let the admin indicate that they are
 fixing the mailserver, the webserver etc. Basic flow is
 
-tux# cft -w SESSION
-tux# cft -o SESSION /etc/mail
-tux# vi ...
-tux# cft -k SESSION
-tux# ls -l /tmp/cft/SESSION
+tux:1# cft begin SESSION
+tux:2# cft orig SESSION /etc/mail
+tux:3# vi ...
+tux:4# cft finish SESSION
+tux:5# cft manifest SESSION
+tux:6# cft manifest -b myball.tgz SESSION
 
 In full words:
 
-* Admin starts a session with 'cft -w SESSION', which essentially sets up
-  gamin to watch a number of predefined directories (CFG_WATCH_DIRS in
-  bin/cft, currently /var/run, /var/lock/subsys, and /etc) cft stores its
-  output in /tmp/cft/SESSION
-* Admin then squirrels away original files they find important with 
-  'cft -o SESSION DIR|FILE...' (This can be done repeatedly and at any point,
-  though you have to be careful not to clobber originals after making changes)
-* Admin makes changes exactly the way they would without cft
-* Stop session with 'cft -k SESSION'
-* Admire results in /tmp/cft/SESSION
+1) Admin starts a session with 'cft begin SESSION', which sets everything up
+   for watching teh admin perform changes; it also saves some system state
+   for later comparison by the digest phase. All data about a session is
+   (for now) stored in /tmp/cft/SESSION
+2) Admin then squirrels away original files they find important with
+   'cft orig SESSION DIR|FILE...' This can be done repeatedly and at any point,
+   though be careful to not clobber originals after making changes. For now,
+   original files are not used any further
+3) Make changes with whatever tools you would usually make them without cft
+4) Finish session with 'cft finish SESSION'
+5) Generate a manifest from the session and print it on stdout
+6) Bundle the manifest and all needed supporting files into a tarball,
+   e.g. for upload to a central puppetmaster
 
-Internals
-=========
+Behind the scenes
+=================
 
-Changes come in two flavors: (a) changes to things already covered by
-puppet and (b) changes to things that puppet doesn't yet know about
+Cft draws information from two sources: notifications about file changes it
+receives from gamin while the admin is changing the system, and structural
+differences between puppet resources before and after the admin makes their
+changes.
 
-Flow:
+For example, when the admin edits '/etc/postfix/main.cf', gamin tells cft
+that the file has changed. When generating a manifest, cft will include the
+file and all its current properties (owner, mode, etc.) in the generated
+manifest, something like
+  file { "/etc/postfix/main.cf": 
+    owner => root, mode => 0644, 
+    source => "..location of copy of modified file.."
+  }
 
-- read&store puppet types (except those where a full list would be ludicrous)
-- user makes changes
-- based on gamin, figure out which files have changed
-- based on initial listing of types, figure out which objects have changed
+If the admin changes resources that puppet understands at a
+deeper level (e.g. users or services), cft uses puppet's understanding of
+these resources for the generated manifest. For example, if the admin
+enables a service and starts that service with
+  # chkconfig foo on
+  # service foo start
+the generated manifest will contain a puppet resource of the form
+  service { foo: enable => true, ensure => running }
 
-- take changes and map into existing manifest (???)
+
+Future work
+===========
+
+Cft is quite is quite immature at this stage; in fact, it only understands
+puppet's user and service type currently. Obviously, it needs to deal with
+_all_ of puppet's standard types. It might even be desirable to merge some
+of cft's type digestion back into puppet.
+
+A second are that needs improvement is better integration into an admin's
+workflow: at present, cft only produces a tarball. If the machine on which
+the changes were made is controlled by a puppetmaster, cft should offer
+simple mechanisms to integrate the changes back onto the central
+server. Suggestions for how that should work from a user's point of veiw
+are mroe than welcome.
+
+Legal/License
+=============
+
+Cft is under the GPL; the exact license covering all of cft can be found in
+the file COPYING
+
+[1] http://www.gnome.org/~seth/blog/sabayon
+[2] http://reductivelabs.com/projects/puppet
