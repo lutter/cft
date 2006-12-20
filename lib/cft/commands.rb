@@ -261,6 +261,33 @@ module Cft::Commands
                 return 0
             end
         end
+
+        newcommand(:manifest) do
+            doc "Generate a puppet manifest"
+            
+            def opts
+                opts = super("cft manifest [options] SESSION")
+                opts.separator "Generate a puppet manifest from a finished session"
+                opts.on("-b", "--bundle FILE", 
+                        "Bundle manifest and needed files") do |val|
+                    @bundle = val
+                end
+                opts
+            end
+
+            require_session :active => "Can't generate from an active session"
+
+            def execute(session, args)
+                digest = Cft::Puppet::Digest.new(session)
+                if @bundle
+                    digest.create_bundle(@bundle)
+                else
+                    trans = digest.transportable
+                    puts trans.to_manifest
+                end
+                return 0
+            end
+        end
     end
 
 end

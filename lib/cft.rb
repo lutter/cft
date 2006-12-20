@@ -44,7 +44,8 @@ module Cft
             :stderr => "stderr",
             :orig => "orig",             # Dir where to store original files
             :changes => "changes",       # File with change listing
-            :after => "after"            # Dir with changed files
+            :after => "after",           # Dir with changed files
+            :bundle => "bundle"          # Dir for bundle creation
         }
 
         def initialize(name)

@@ -33,6 +33,18 @@ class TestMonitor < Test::Unit::TestCase
         end
     end
 
+    def test_postfix_bundle
+        s = use_session('postfix')
+        digest = Cft::Puppet::Digest.new(s)
+        bundle = File::join(tmpdir, "bundle.tgz")
+        digest.create_bundle(bundle)
+        assert(File::exist?(bundle))
+        files = %x{tar tzf /tmp/cfttest.28159/bundle.tgz}.split.sort
+        assert_equal(["bundle/", "bundle/aliases", "bundle/aliases.db", 
+                      "bundle/main.cf", "bundle/manifest.pp"],
+                     files)
+    end
+
     def test_genstate
         assert_nothing_raised {
             Cft::Puppet::genstate("/tmp/state.yaml")

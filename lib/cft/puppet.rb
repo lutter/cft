@@ -1,7 +1,7 @@
 require 'puppet'
 
 module Cft::Puppet
-    
+
     def self.genstate(fname)
         result = Puppet::TransBucket.new
         Cft::Puppet::Digest::digesters.select { |dig|
