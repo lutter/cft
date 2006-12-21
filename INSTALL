@@ -2,6 +2,9 @@
 Installation
 ============
 
+cft is written in Ruby, so you need a reasonably recent version of ruby
+installed. I use ruby-1.8.5, but older versions should be ok, too.
+
 You need ruby-fam and gamin installed; you can get ruby-fam from
   SRPM: http://people.redhat.com/dlutter/yum/SRPMS/ruby-fam-0.2.0-1.src.rpm
   binary RPM: dig around in http://people.redhat.com/dlutter/yum/
