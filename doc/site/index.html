@@ -1,0 +1,213 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+   
+
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en-US" xml:lang="en-US">
+
+<head>
+<meta http-equiv="content-type" content="text/html;charset=UTF-8" />
+<link rel="stylesheet" href="style.css" type="text/css" />
+<title>Cft -- configuration file tracking.</title>
+</head>
+<body>
+
+<div id="topbar">
+
+<div id="page-title">
+<h1 id="product-name">Cft
+<span id="blurb">Configuration File Tracking</span></h1>
+</div>
+
+</div>
+
+<div class="topbar-line">
+</div>
+
+<ul class="topnav">
+<li><a href="#about">About</a></li>
+<li><a href="#example">Example</a></li>
+<li><a href="#news">News</a></li>
+<li><a href="#downloads">Downloads</a></li>
+<li><a href="#faq">FAQ</a></li>
+<li><a href="#Contact">Contact</a></li>
+</ul>
+
+<div id="content-main">
+<h2 id="about">About</h2>
+
+<p>Cft (pronounced <em>sift</em>) watches a system administrator as she
+makes changes to a system. Its basic principle is heavily influenced by
+Gnome's <a
+href="http://www.gnome.org/~seth/blog/sabayon">Sabayon</a>. Instead of the
+desktop though, cft is focused on traditional system administrators and how
+they maintain machines, mostly with command line tools.</p>
+
+<p>Cft uses <a href="http://reductivelabs.com/projects/puppet">puppet</a>
+as its backbone for expressing the configuration of a system, and for
+understanding in greater detail what changes the admin has made to the
+system. Sites that already use <tt>puppet</tt> to manage their
+configuration can easily integrate <tt>cft</tt>'s output into the overall
+site configuration; for sites that use some other means of configuration
+management, <tt>cft</tt>'s output provides a complete record of changes
+made and serves as a good starting point of integrating the changes back
+into the site's configuration.
+</p>
+
+<h2 id="example">Example</h2>
+
+<p>In lieu of colorful screenshots, a simple example will explain in more
+detail how <tt>cft</tt> works: <tt>cft</tt> organizes changes in
+<em>sessions</em> to let the user better indicate what aspect of the system
+they are fixing (the webserver, the mailserver etc.) A simple session to
+fix the configuration of postfix and to start and enable the service might
+entail root running the following commands:
+</p>
+
+<pre>
+  tux:1# cft begin postfix
+  tux:2# vi /etc/postfix/main.cf
+  tux:3# chkconfig postfix on
+  tux:4# service postfix start
+  tux:5# cft finish postfix
+</pre>
+
+<p>Note that the user only had to issue two additonal commands to begin and
+finish the session, everything else in the session is <em>exactly</em> the
+same as if the changes had been made without <tt>cft</tt>. The command
+<tt>cft begin postfix</tt> tells <tt>cft</tt> to start a session called
+<tt>postfix</tt>, and the last command <tt>cft finish postfix</tt> tells it
+to do the final bookkeeping necessary for analysing the results</p>
+
+<p>Once the commands above have been issued, running <tt>cft manifest
+postfix</tt> will print the changes in the form of a <tt>puppet</tt>
+manifest:</p>
+<pre>
+  tux:6# cft manifest postfix
+    class postfix {
+        service { "postfix":
+            enable => "true",
+            pattern => "postfix",
+            ensure => "running"
+        }
+    
+        file { "/etc/aliases.db":
+            group => "smmsp",
+            owner => "root",
+            mode => "0640",
+            source => "/tmp/cft/postfix/after/etc/aliases.db"
+        }
+    
+        file { "/etc/postfix/main.cf":
+            group => "root",
+            owner => "root",
+            mode => "0644",
+            source => "/tmp/cft/postfix/after/etc/postfix/main.cf"
+        }
+    }
+</pre>
+
+<p>This manifest tells puppet that puppet should enable and start the
+<tt>postfix</tt> service, and that the two files should be copied from the
+location mentioned as the <tt>source</tt> and receive the given owner,
+group, and mode. <tt>cft</tt> takes care of copying all modified files into
+a safe location so that they can be copied off the machine into a central
+location. The mention of the file <tt>aliases.db</tt> is somewhat spurious:
+it gets automatically recreated by the init script for <tt>postfix</tt>,
+and <tt>cft</tt> treats it exactly as if the user had created the file.</p>
+
+<p>To facilitate moving the changes onto a central serevr, <tt>cft</tt> can
+also convert a session into a tarball that contains both the
+<tt>puppet</tt> manifest and all the files that are mentioned in it, in
+this case <tt>aliases.db</tt> and <tt>main.cf</tt>. Fancier, more
+convenient methods of integrating changes back into a central
+<tt>puppet</tt> server are planned for the future.
+</p>
+
+<h2 id="news">News</h2>
+<p>
+This website is here. Lots of stuff still needs to be done ... stay tuned.
+</p>
+
+<A NAME="Downloads"></A>
+<h2>Downloads</h2>
+<p>
+Cft is licensed under the GPL.
+</p>
+
+<p>
+Source code (it's Ruby) is available through <A
+HREF="http://www.selenic.com/mercurial/">Mercurial</A>. There are no
+releases yet, and you will have to check cft out from teh source
+repository.
+</p>
+
+<p><A HREF="http://hg.et.redhat.com/hg/emd/applications/cft">Mercurial
+repository</A></p>
+
+<A NAME="FAQ"></A>
+<h2 id="faq">FAQ</h2>
+<p>
+<B>What can Cft do for me?</B><br/>
+Cft watches you as you make configuration changes to your system and
+remembers those changes. When you are done with making the changes, Cft
+digests and summarizes them in a format suitable for feeding them to <a href="http://reductivelabs.com/projects/puppet">Puppet</a>
+</p>
+
+<p>
+<B>Who is the intended audience?</B><br/> Anyone who makes changes to a
+system as root, especially system administrators at small and large
+sites. Cft will be particularly useful to you if you use <a
+href="http://reductivelabs.com/projects/puppet">Puppet</a> to manage the
+configuration of your machines.
+</p>
+
+<p>
+<B>How is Cft used?</B><br/> Cft is used from the command line, just before
+you begin making configuration changes, and right after you finished making
+them. It only requires you to issue two additonal commands, there's no need
+to learn any other special tools or avoid using your favorite tool. (Well,
+if that's <tt>vi</tt> there's a special restriction in the license to keep
+you from using it) (I KEED, I KEED, you can use <tt>vi</tt> though it's bad
+for the character)
+</p>
+
+<p>
+<B>How can I contribute?</B><br/>
+Send in bug reports, patches, ideas, or comments to the <A
+HREF="https://www.redhat.com/mailman/listinfo/et-mgmt-tools">et-mgmt-tools</A>
+list.  We're interested in hearing about real-world provisioning problems
+and how we can solve them for system administrators everywhere.
+</p>
+
+<h2 id="contact">Contact</h2>
+<p>Cft is written and maintained by <A HREF="mailto:dlutter (AT) redhat
+/dot/ COM">David Lutterkort</A>.
+</p>
+<p>
+Send comments, questions, patches, and suggestions to the <A HREF="https://www.redhat.com/mailman/listinfo/et-mgmt-tools">et-mgmt-tools</A> list.  You can send mail even if you aren't a list member.
+</p>
+
+<hr/>
+</div>
+
+
+<div class="content-right">
+<div class="callout-1">
+<h2>Convenience.</h2>
+<p>
+Cft saves you from having to remember what exactly you changed on a
+system&nbsp;&mdash;&nbsp;it watches you and remembers for&nbsp;you, leaving
+you free to focus on the result you need to achieve.</p>
+</div>
+
+<!--
+<div class="callout-2">
+<h2>Power.</h2>
+<p>
+Advanced features include kickstart templating, dhcpd.conf generation, kernel parameter customization, and reinstallation of remote systems.  There's a lot here.
+</p>
+</div>
+-->
+</div>
+
+</body>
+</html>
