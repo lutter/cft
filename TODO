@@ -41,3 +41,8 @@
   
   Yumrepo config has wrong baseurl; change on a system, map
   back into puppetmaster, respecting overrides etc.
+
+* Add a way to document better what a session is about
+
+  Jim Meyering suggests that users should be able to say sth like
+  cft begin postfix "Install postfix and set it up to relay to mail.example.com"
