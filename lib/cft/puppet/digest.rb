@@ -88,7 +88,10 @@ module Cft::Puppet
             File::open(File::join(bpath, "manifest.pp"), "w") do |f|
                 f.puts(trans.to_manifest)
             end
-            %x{tar -czf #{fname} -C #{File::join(bpath, "..")} #{File::basename(bpath)}}
+            %x{tar -czf #{fname} -C #{File::join(bpath, "..")} #{File::basename(bpath)} 2>&1}
+            unless $? == 0
+                raise Error, "Failed to create #{fname}"
+            end
         end
 
 

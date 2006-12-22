@@ -39,7 +39,8 @@ class TestMonitor < Test::Unit::TestCase
         bundle = File::join(tmpdir, "bundle.tgz")
         digest.create_bundle(bundle)
         assert(File::exist?(bundle))
-        files = %x{tar tzf /tmp/cfttest.28159/bundle.tgz}.split.sort
+        files = %x{tar tzf #{bundle}}.split.sort
+        assert_equal(0, $?.exitstatus)
         assert_equal(["bundle/", "bundle/aliases", "bundle/aliases.db", 
                       "bundle/main.cf", "bundle/manifest.pp"],
                      files)
