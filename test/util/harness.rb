@@ -20,6 +20,7 @@ require 'fileutils'
 require 'cft'
 
 module Cft
+
     module Harness
 
 
@@ -44,6 +45,12 @@ module Cft
             if defined? @tmpdir && @tmpdir && File::exists?(@tmpdir)
                 system("rm -rf #{@tmpdir}")
             end
+            ::Puppet::Type.allclear
+            ::Puppet::Storage.clear
+            if defined? ::Puppet::Rails
+                ::Puppet::Rails.clear
+            end
+            ::Puppet.clear
         end
 
         def tmpdir
