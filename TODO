@@ -46,3 +46,11 @@
 
   Jim Meyering suggests that users should be able to say sth like
   cft begin postfix "Install postfix and set it up to relay to mail.example.com"
+Small fixes
+===========
+
+* Running 'manifest session' creates an empty session if one doesn't exist - 
+  kinda ugly
+
+* 'cft manifest' should accept a complete path to a session (for moving
+  tarred up sessions around)
