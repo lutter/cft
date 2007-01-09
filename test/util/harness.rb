@@ -47,9 +47,6 @@ module Cft
             end
             ::Puppet::Type.allclear
             ::Puppet::Storage.clear
-            if defined? ::Puppet::Rails
-                ::Puppet::Rails.clear
-            end
             ::Puppet.clear
         end
 
