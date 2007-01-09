@@ -1,0 +1,97 @@
+Changed /etc/printcap
+Changed /etc/printcap
+Changed /etc/printcap
+Changed /etc/printcap
+Changed /etc/printcap
+Changed /etc/printcap
+Changed /etc/printcap
+Changed /etc/printcap
+Changed /etc/printcap
+Created /etc/group.3857 
+Changed /etc/group.3857
+Created /etc/group.lock 
+Deleted /etc/group.3857
+Created /etc/gshadow.3857 
+Changed /etc/gshadow.3857
+Created /etc/gshadow.lock 
+Deleted /etc/gshadow.3857
+Changed /etc/group-
+Created /etc/group+ 
+Changed /etc/group+
+Deleted /etc/group+
+Created /etc/group 
+Deleted /etc/group.lock
+Changed /etc/gshadow-
+Created /etc/gshadow+ 
+Changed /etc/gshadow+
+Deleted /etc/gshadow+
+Created /etc/gshadow 
+Deleted /etc/gshadow.lock
+Changed /etc/printcap
+Changed /etc/printcap
+Changed /etc/printcap
+Changed /etc/printcap
+Changed /etc/printcap
+Changed /etc/printcap
+Changed /etc/printcap
+Created /etc/passwd.3862 
+Changed /etc/passwd.3862
+Created /etc/passwd.lock 
+Deleted /etc/passwd.3862
+Created /etc/shadow.3862 
+Changed /etc/shadow.3862
+Created /etc/shadow.lock 
+Deleted /etc/shadow.3862
+Created /etc/group.3862 
+Changed /etc/group.3862
+Created /etc/group.lock 
+Deleted /etc/group.3862
+Created /etc/gshadow.3862 
+Changed /etc/gshadow.3862
+Created /etc/gshadow.lock 
+Deleted /etc/gshadow.3862
+Changed /etc/passwd-
+Created /etc/passwd+ 
+Changed /etc/passwd+
+Deleted /etc/passwd+
+Created /etc/passwd 
+Changed /etc/shadow-
+Created /etc/shadow+ 
+Changed /etc/shadow+
+Deleted /etc/shadow+
+Created /etc/shadow 
+Deleted /etc/shadow.lock
+Deleted /etc/passwd.lock
+Deleted /etc/group.lock
+Deleted /etc/gshadow.lock
+Changed /etc/printcap
+/etc/gshadow.3862 :: + = -
+/etc/group+ :: + = -
+/etc/shadow+ :: + = -
+/etc/group- :: =
+cp -pr /etc/group- /tmp/cft/user_foo/after/etc/group-
+/etc/shadow- :: =
+cp -pr /etc/shadow- /tmp/cft/user_foo/after/etc/shadow-
+/etc/group :: +
+cp -pr /etc/group /tmp/cft/user_foo/after/etc/group
+/etc/shadow.lock :: + -
+/etc/group.lock :: + - + -
+/etc/group.3857 :: + = -
+/etc/gshadow.lock :: + - + -
+/etc/gshadow.3857 :: + = -
+/etc/passwd+ :: + = -
+/etc/passwd.3862 :: + = -
+/etc/gshadow :: +
+cp -pr /etc/gshadow /tmp/cft/user_foo/after/etc/gshadow
+/etc/gshadow+ :: + = -
+/etc/passwd :: +
+cp -pr /etc/passwd /tmp/cft/user_foo/after/etc/passwd
+/etc/group.3862 :: + = -
+/etc/passwd- :: =
+cp -pr /etc/passwd- /tmp/cft/user_foo/after/etc/passwd-
+/etc/shadow.3862 :: + = -
+/etc/gshadow- :: =
+cp -pr /etc/gshadow- /tmp/cft/user_foo/after/etc/gshadow-
+/etc/shadow :: +
+cp -pr /etc/shadow /tmp/cft/user_foo/after/etc/shadow
+/etc/passwd.lock :: + -
