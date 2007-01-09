@@ -132,12 +132,22 @@ module Cft::Puppet
                 @preserve
             end
 
+            # Digester handles PATTERNS; actual handling is done by the BLOCK
+            # which is called with the digester and the matching path
             def glob(*patterns, &block)
                 @@glob_cnt += 1
                 name = "glob#{@@glob_cnt}".intern
                 self.class.define_method(name, &block)
                 patterns.each do |p| 
                     @globs[p] = name
+                end
+            end
+
+            # Indicate that PATTERNS is handled by the digester, but
+            # don't do anything for them
+            def ignore(*patterns)
+                patterns.each do |p|
+                    @globs[p] = :glob_ignore
                 end
             end
             
@@ -164,6 +174,10 @@ module Cft::Puppet
                 trans
             end
 
+            private
+            # Used as the filter for ignored globs
+            def glob_ignore(d,p)
+            end
         end
 
         digester(:file) do |d|
@@ -256,16 +270,22 @@ module Cft::Puppet
                 end
             end
 
-            d.glob "/etc/rc?.d/*", "/etc/rc.d/rc?.d/*" do |d, p|
-            end
+            d.ignore "/etc/rc?.d/*", "/etc/rc.d/rc?.d/*"
         end
 
         digester(:user) do |d|
             d.preserve
             
-            d.glob "/etc/passwd" do |d, p|
-            end
+            d.ignore "/etc/passwd", "/etc/passwd-"
+            d.ignore "/etc/shadow", "/etc/shadow-"
         end
 
+        digester(:group) do |d|
+            d.preserve
+
+            d.ignore "/etc/group", "/etc/group-"
+            d.ignore "/etc/gshadow", "/etc/gshadow-"
+        end
+        
     end
 end

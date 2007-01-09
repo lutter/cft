@@ -89,6 +89,26 @@ class TestMonitor < Test::Unit::TestCase
         assert_equal("/var/adm", adm[:home])
     end
 
+    def test_sys_user_add
+        s = use_session("sys_user_add")
+        digest = Cft::Puppet::Digest.new(s)
+        trans = digest.transportable
+
+        user = find_trans(trans, :user, "example")
+        assert_not_nil(user)
+        assert_equal(504, user[:uid])
+        assert_equal(103, user[:gid])
+        assert_equal("/home/example", user[:home])
+        assert_equal("/sbin/nologin", user[:shell])
+        assert_equal("Example system user", user[:comment])
+        assert_equal(:present, user[:ensure])
+        
+        group = find_trans(trans, :group, "example")
+        assert_not_nil(group)
+        assert_equal(103, group[:gid])
+        assert_equal(:present, group[:ensure])
+    end
+
     def find_trans(t, type, name)
         t.find do |to|
             to.type.to_s == type.to_s && to.name == name
