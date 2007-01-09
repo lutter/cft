@@ -14,9 +14,14 @@ PKG_VERSION='0.0.1'
 
 PKG_FILES = FileList[
   "Rakefile", "AUTHORS", "COPYING", "INSTALL", "README", "TODO",
+  "cft.spec",
   "bin/cft",
   "lib/**/*.rb",
   "test/**/*"
+]
+
+DIST_FILES = FileList[
+  "pkg/*.rpm",  "pkg/*.gem",  "pkg/*.zip", "pkg/*.tgz"
 ]
 
 Rake::TestTask.new(:test) do |t|
@@ -60,4 +65,20 @@ else
         p.need_zip = true
         p.package_files = PKG_FILES
     end
+end
+
+desc "Build (S)RPM for #{PKG_NAME}"
+task :rpm => [ :package ] do |t|
+    Dir::chdir("pkg")
+    dir = Dir::getwd()
+    puts "Building RPM"
+    system("rpmbuild --define '_topdir #{dir}' --define '_sourcedir #{dir}' --define '_srcrpmdir #{dir}' --define '_rpmdir #{dir}' -ba ../#{PKG_NAME}.spec > rpmbuild.log 2>&1")
+end
+
+desc "Release a version to the site"
+task :dist => [ ] do |t|
+    puts "Copying files"
+    system "scp -p #{DIST_FILES.to_s} lutter@et.redhat.com:/var/www/sites/cft.et.redhat.com/download"
+    puts "Making release links"
+    system "ssh lutter@et.redhat.com /home/lutter/bin/cft-release #{PKG_VERSION}"
 end
