@@ -39,6 +39,9 @@ module Cft::Commands
                         elsif errs[:inactive] && ! s.active?
                             $stderr.puts "Session #{s.name}: #{errs[:inactive]}"
                             return nil
+                        elsif errs[:missing] && ! s.exist?
+                            $stderr.puts "Session #{s.name}: #{errs[:missing]}"
+                            return nil
                         end
                         return s
                     end
@@ -275,7 +278,8 @@ module Cft::Commands
                 opts
             end
 
-            require_session :active => "Can't generate from an active session"
+            require_session :active => "Can't generate from an active session",
+              :missing => "Could not find session"
 
             def execute(session, args)
                 digest = Cft::Puppet::Digest.new(session)

@@ -75,6 +75,10 @@ module Cft
             File::exists?(pid)
         end
 
+        def exist?
+            File::exists?(path(:changes))
+        end
+
         def changes
             Changes.new(path(:changes))
         end
