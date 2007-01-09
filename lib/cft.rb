@@ -80,7 +80,10 @@ module Cft
         end
 
         def changes
-            Changes.new(path(:changes))
+            unless @changes
+                @changes = Changes.new(path(:changes))
+            end
+            @changes
         end
 
         def trans(boa = :before)
