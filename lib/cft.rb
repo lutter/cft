@@ -145,7 +145,8 @@ module Cft
 
                 dir = @bases[ev.req]
                 if dir.nil?
-                    raise "No basedir for request #{ev.req} and file #{ev.file}"
+                    $stderr.puts "No basedir for request #{ev.req} and file #{ev.file}"
+                    next
                 end
                 path = File::expand_path(ev.file, dir)
 
