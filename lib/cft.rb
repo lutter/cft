@@ -9,7 +9,11 @@ module Cft
     OUTPUT_DIR = "/tmp/cft"
 
     # The directories we watch during a session
-    WATCH_DIRS = ['/var/run', '/var/lock/subsys', '/etc']
+    WATCH_DIRS = [ 
+                  '/etc',
+                  '/var/run', '/var/lock/subsys',  # For tracking services
+                  '/var/spool/cron'                # vixie-cron crontabs
+                 ]
 
     # Globs that we can definitely ignore
     FILTERS = [ 
