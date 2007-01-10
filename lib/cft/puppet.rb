@@ -5,7 +5,11 @@ module Cft::Puppet
     def self.genstate(fname)
         result = Puppet::TransBucket.new
         Cft::Puppet::Digest::digesters.select { |dig|
-            dig.preserve? 
+            unless dig.type.respond_to?(:list)
+                $stderr.puts "Warning: type #{dig.type.name} can not be listed, ignoring"
+                next false
+            end
+            dig.preserve?
         }.each { |dig|
             type = dig.type
             bucket = Puppet::TransBucket.new
