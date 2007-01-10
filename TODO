@@ -49,8 +49,14 @@
 Small fixes
 ===========
 
-* Running 'manifest session' creates an empty session if one doesn't exist - 
+* Running 'manifest SESSION' creates an empty session if one doesn't exist - 
   kinda ugly
 
 * 'cft manifest' should accept a complete path to a session (for moving
   tarred up sessions around)
+
+* Missing types
+  cron, host, mount, sshkey, yumrepo
+  
+* Support package type (requires some smarts since we can't just list all
+  packages)
