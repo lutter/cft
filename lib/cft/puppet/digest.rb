@@ -286,6 +286,14 @@ module Cft::Puppet
             d.ignore "/etc/group", "/etc/group-"
             d.ignore "/etc/gshadow", "/etc/gshadow-"
         end
-        
+
+        digester(:yumrepo) do |d|
+            d.preserve
+            
+            # In theory, yum.conf can contain repos, too
+            d.ignore "/etc/yum.repos.d/*.repo"
+            d.ignore "/etc/yum/repos.d/*.repo"
+            
+        end
     end
 end

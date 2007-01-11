@@ -1,0 +1,44 @@
+Deleted /etc/yum.repos.d/trivial.repo
+Created /etc/yum.repos.d/.dlutter-rhel5.repo.swp 
+Created /etc/yum.repos.d/.dlutter-rhel5.repo.swx 
+Deleted /etc/yum.repos.d/.dlutter-rhel5.repo.swx
+Deleted /etc/yum.repos.d/.dlutter-rhel5.repo.swp
+Changed /etc/yum.repos.d/.dlutter-rhel5.repo.swp
+Changed /etc/yum.repos.d/.dlutter-rhel5.repo.swp
+Changed /etc/printcap
+Changed /etc/printcap
+Created /etc/yum.repos.d/4913 
+Changed /etc/yum.repos.d/4913
+Deleted /etc/yum.repos.d/4913
+Deleted /etc/yum.repos.d/dlutter-rhel5.repo
+Created /etc/yum.repos.d/dlutter-rhel5.repo~ 
+Created /etc/yum.repos.d/dlutter-rhel5.repo 
+Changed /etc/yum.repos.d/dlutter-rhel5.repo
+Changed /etc/yum.repos.d/.dlutter-rhel5.repo.swp
+Deleted /etc/yum.repos.d/dlutter-rhel5.repo~
+Deleted /etc/yum.repos.d/.dlutter-rhel5.repo.swp
+Changed /etc/printcap
+Changed /etc/printcap
+Created /etc/.yum.conf.swp 
+Created /etc/.yum.conf.swx 
+Deleted /etc/.yum.conf.swx
+Deleted /etc/.yum.conf.swp
+Changed /etc/.yum.conf.swp
+Changed /etc/.yum.conf.swp
+Created /etc/4913 
+Changed /etc/4913
+Deleted /etc/4913
+Deleted /etc/yum.conf
+Created /etc/yum.conf~ 
+Created /etc/yum.conf 
+Changed /etc/yum.conf
+Changed /etc/.yum.conf.swp
+Deleted /etc/yum.conf~
+Deleted /etc/.yum.conf.swp
+/etc/yum.conf :: - + =
+cp -pr /etc/yum.conf /tmp/cft/yumrepo/after/etc/yum.conf
+/etc/yum.repos.d/trivial.repo :: -
+/etc/yum.repos.d/4913 :: + = -
+/etc/yum.repos.d/dlutter-rhel5.repo :: - + =
+cp -pr /etc/yum.repos.d/dlutter-rhel5.repo /tmp/cft/yumrepo/after/etc/yum.repos.d/dlutter-rhel5.repo
+/etc/4913 :: + = -

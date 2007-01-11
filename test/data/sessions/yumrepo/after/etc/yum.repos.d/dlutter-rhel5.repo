@@ -1,0 +1,5 @@
+[dlutter-rhel5]
+name=Additional RHEL5 packages
+baseurl=http://people.redhat.com/dlutter/yum/rhel5/
+enabled=1
+gpgcheck=0

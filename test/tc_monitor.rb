@@ -109,6 +109,40 @@ class TestMonitor < Test::Unit::TestCase
         assert_equal(:present, group[:ensure])
     end
 
+    def test_yumrepo
+        s = use_session("yumrepo")
+        digest = Cft::Puppet::Digest.new(s)
+        trans = digest.transportable
+        
+        assert_equal(3, trans.length)
+        assert_resource(trans, :yumrepo, "trivial",
+                        :ensure => :absent)
+
+        assert_resource(trans, :yumrepo, "dlutter-rhel5",
+                        :baseurl => 'http://people.redhat.com/dlutter/yum/rhel5/',
+                        :enabled => '1',
+                        :gpgcheck => '0',
+                        :loglevel => :notice,
+                        :descr => 'Additional RHEL5 packages')
+ 
+        assert_resource(trans, :file, "/etc/yum.conf",
+                        :group => 'lutter',
+                        :ensure => :file,
+                        :source => '/tmp/cft/yumrepo/after/etc/yum.conf',
+                        :type => 'file',
+                        :owner => 'lutter',
+                        :mode => '0644')
+    end
+
+
+    def assert_resource(trans, type, name, hash)
+        res = find_trans(trans, type, name)
+        assert_not_nil(res)
+        hash.each do |k, v|
+            assert_equal(v, res[k])
+        end
+    end
+
     def find_trans(t, type, name)
         t.find do |to|
             to.type.to_s == type.to_s && to.name == name
