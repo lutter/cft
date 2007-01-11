@@ -30,8 +30,9 @@ module Cft
 
         def teardown
             @sessions.each do |s|
+                fin = find_cmd(:finish)
                 if s.active?
-                    ret = s.stop
+                    ret = fin.execute(s, [])
                     if ret != 0
                         $stderr.puts "Warning: stopping #{s.name} returned #{ret}"
                     end
