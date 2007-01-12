@@ -108,6 +108,18 @@ module Cft
             assert_equal(1, l.size)
             l[0]
         end
+
+        # Assert that the resource _type_[_name_] in _trans_
+        # exists and has the attributes listed in _hash_ with
+        # the values from _hash_
+        def assert_resource(trans, type, name, hash)
+            res = trans.find_obj(type, name)
+            assert_not_nil(res)
+            hash.each do |k, v|
+                assert_equal(v, res[k])
+            end
+        end
+
     end
 
 end

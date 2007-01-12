@@ -26,10 +26,10 @@ class TestMonitor < Test::Unit::TestCase
         digest = Cft::Puppet::Digest.new(s)
         trans = digest.transportable
         #assert_equal(4, trans.flatten.size)
-        assert_not_nil(find_trans(trans, :service, "postfix"))
+        assert_not_nil(trans.find_obj(:service, "postfix"))
         [ "/etc/aliases.db", "/etc/aliases", 
           "/etc/postfix/main.cf" ].each do |name|
-            assert_not_nil(find_trans(trans, :file, name))
+            assert_not_nil(trans.find_obj(:file, name))
         end
     end
 
@@ -132,17 +132,4 @@ class TestMonitor < Test::Unit::TestCase
     end
 
 
-    def assert_resource(trans, type, name, hash)
-        res = find_trans(trans, type, name)
-        assert_not_nil(res)
-        hash.each do |k, v|
-            assert_equal(v, res[k])
-        end
-    end
-
-    def find_trans(t, type, name)
-        t.find do |to|
-            to.type.to_s == type.to_s && to.name == name
-        end
-    end
 end
