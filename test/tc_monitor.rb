@@ -58,9 +58,8 @@ class TestMonitor < Test::Unit::TestCase
         trans = digest.transportable
         # FIXME: Not quite yet, we have spurious subdaemons in the result
         #assert_equal(1, trans.flatten.size)
-        bluetooth = find_trans(trans, :service, "bluetooth")
-        assert_not_nil(bluetooth)
-        assert_equal("stopped", bluetooth[:ensure])
+        assert_resource(trans, :service, "bluetooth",
+                        :ensure => "stopped")
     end
 
     def test_bluetooth_diff
@@ -94,19 +93,18 @@ class TestMonitor < Test::Unit::TestCase
         digest = Cft::Puppet::Digest.new(s)
         trans = digest.transportable
 
-        user = find_trans(trans, :user, "example")
-        assert_not_nil(user)
-        assert_equal(504, user[:uid])
-        assert_equal(103, user[:gid])
-        assert_equal("/home/example", user[:home])
-        assert_equal("/sbin/nologin", user[:shell])
-        assert_equal("Example system user", user[:comment])
-        assert_equal(:present, user[:ensure])
         
-        group = find_trans(trans, :group, "example")
-        assert_not_nil(group)
-        assert_equal(103, group[:gid])
-        assert_equal(:present, group[:ensure])
+        assert_resource(trans, :user, "example",
+                        :uid => 504,
+                        :gid => 103,
+                        :home => "/home/example",
+                        :shell => "/sbin/nologin",
+                        :comment => "Example system user",
+                        :ensure => :present)
+        
+        assert_resource(trans, :group, "example",
+                        :gid => 103,
+                        :ensure => :present)
     end
 
     def test_yumrepo
