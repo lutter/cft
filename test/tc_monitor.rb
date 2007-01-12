@@ -149,5 +149,23 @@ class TestMonitor < Test::Unit::TestCase
  
     end
 
+    def test_mount
+        s = use_session("mount")
+        digest = Cft::Puppet::Digest.new(s)
+        trans = digest.transportable
+        
+        assert_equal(2, trans.length)
+        assert_resource(trans, :mount, '/mnt/yam',
+                        :ensure => :absent)
+ 
+        assert_resource(trans, :mount, '/mnt/rpmbuild',
+                        :options => 'rw',
+                        :target => '/etc/fstab',
+                        :dump => '1',
+                        :device => 'lemon:/data/rpmbuild',
+                        :pass => '2',
+                        :fstype => 'nfs',
+                        :ensure => :mounted)
+    end
 
 end

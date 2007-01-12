@@ -56,7 +56,7 @@ Small fixes
   tarred up sessions around)
 
 * Missing types
-  cron, mount, sshkey
+  cron, sshkey
   
 * Support package type (requires some smarts since we can't just list all
   packages)

@@ -1,0 +1,5 @@
+<device DEVNO="0xfd01" TIME="1168385164" PRI="40" TYPE="swap">/dev/mapper/domu-lv01</device>
+<device DEVNO="0xfd00" TIME="1168385164" PRI="40" UUID="21a1307b-4fc2-47ff-b89b-5c39f8685924" SEC_TYPE="ext2" TYPE="ext3">/dev/mapper/domu-lv00</device>
+<device DEVNO="0xca01" TIME="1168567245" LABEL="/boot" UUID="577e6da0-2861-4463-b273-16a87c12bab2" SEC_TYPE="ext2" TYPE="ext3">/dev/xvda1</device>
+<device DEVNO="0xfd01" TIME="1168536665" TYPE="swap">/dev/domu/lv01</device>
+<device DEVNO="0xfd00" TIME="1168385164" UUID="21a1307b-4fc2-47ff-b89b-5c39f8685924" SEC_TYPE="ext2" TYPE="ext3">/dev/domu/lv00</device>

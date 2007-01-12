@@ -1,0 +1,54 @@
+Created /etc/.fstab.swp 
+Created /etc/.fstab.swpx 
+Deleted /etc/.fstab.swpx
+Deleted /etc/.fstab.swp
+Changed /etc/.fstab.swp
+Changed /etc/.fstab.swp
+Changed /etc/printcap
+Changed /etc/printcap
+Changed /etc/printcap
+Changed /etc/.fstab.swp
+Created /etc/4913 
+Changed /etc/4913
+Deleted /etc/4913
+Deleted /etc/fstab
+Created /etc/fstab~ 
+Created /etc/fstab 
+Changed /etc/fstab
+Changed /etc/.fstab.swp
+Deleted /etc/fstab~
+Deleted /etc/.fstab.swp
+Created /etc/mtab~ 
+Changed /etc/mtab
+Deleted /etc/mtab~
+Created /etc/blkid/blkid.tab-iGzHGr 
+Changed /etc/blkid/blkid.tab-iGzHGr
+Deleted /etc/blkid/blkid.tab.old
+Created /etc/blkid/blkid.tab.old 
+Deleted /etc/blkid/blkid.tab-iGzHGr
+Created /etc/blkid/blkid.tab 
+Created /etc/mtab~24237 
+Created /etc/mtab~ 
+Deleted /etc/mtab~24237
+Created /etc/mtab.tmp 
+Changed /etc/mtab.tmp
+Deleted /etc/mtab.tmp
+Created /etc/mtab 
+Deleted /etc/mtab~
+Changed /etc/printcap
+Changed /etc/printcap
+Changed /etc/printcap
+Changed /etc/printcap
+Changed /etc/printcap
+/etc/fstab :: - + =
+cp -pr /etc/fstab /tmp/cft/mount/after/etc/fstab
+/etc/blkid/blkid.tab.old :: - +
+cp -pr /etc/blkid/blkid.tab.old /tmp/cft/mount/after/etc/blkid/blkid.tab.old
+/etc/mtab.tmp :: + = -
+/etc/blkid/blkid.tab :: +
+cp -pr /etc/blkid/blkid.tab /tmp/cft/mount/after/etc/blkid/blkid.tab
+/etc/mtab :: = +
+cp -pr /etc/mtab /tmp/cft/mount/after/etc/mtab
+/etc/mtab~24237 :: + -
+/etc/blkid/blkid.tab-iGzHGr :: + = -
+/etc/4913 :: + = -

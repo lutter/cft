@@ -301,5 +301,12 @@ module Cft::Puppet
             
             d.ignore "/etc/hosts"
         end
+
+        digester(:mount) do |d|
+            d.preserve
+            
+            d.ignore "/etc/fstab", "/etc/mtab"
+            d.ignore "/etc/blkid/*"
+        end
     end
 end
