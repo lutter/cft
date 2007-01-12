@@ -56,8 +56,7 @@ class TestMonitor < Test::Unit::TestCase
         s = use_session("bluetooth")
         digest = Cft::Puppet::Digest.new(s)
         trans = digest.transportable
-        # FIXME: Not quite yet, we have spurious subdaemons in the result
-        #assert_equal(1, trans.flatten.size)
+        assert_equal(1, trans.flatten.size)
         assert_resource(trans, :service, "bluetooth",
                         :ensure => "stopped")
     end
