@@ -3,7 +3,7 @@
 Summary: Config file tracker
 Name: cft
 
-Version: 0.0.1
+Version: 0.1.0
 Release: 1
 Group: System Environment/Base
 License: GPL

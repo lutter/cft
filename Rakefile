@@ -10,7 +10,7 @@ rescue LoadError
 end
 
 PKG_NAME='cft'
-PKG_VERSION='0.0.1'
+PKG_VERSION='0.1.0'
 
 PKG_FILES = FileList[
   "Rakefile", "AUTHORS", "COPYING", "INSTALL", "README", "TODO",
@@ -69,16 +69,19 @@ end
 
 desc "Build (S)RPM for #{PKG_NAME}"
 task :rpm => [ :package ] do |t|
-    Dir::chdir("pkg")
-    dir = Dir::getwd()
-    puts "Building RPM"
-    system("rpmbuild --define '_topdir #{dir}' --define '_sourcedir #{dir}' --define '_srcrpmdir #{dir}' --define '_rpmdir #{dir}' -ba ../#{PKG_NAME}.spec > rpmbuild.log 2>&1")
+    system("sed -i -e 's/^Version:.*$/Version: #{PKG_VERSION}/' cft.spec")
+    Dir::chdir("pkg") do |dir|
+        system("rpmbuild --define '_topdir #{dir}' --define '_sourcedir #{dir}' --define '_srcrpmdir #{dir}' --define '_rpmdir #{dir}' -ba ../#{PKG_NAME}.spec > rpmbuild.log 2>&1")
+    end
 end
 
 desc "Release a version to the site"
-task :dist => [ ] do |t|
+task :dist => [ :rpm, :test ] do |t|
     puts "Copying files"
     system "scp -p #{DIST_FILES.to_s} lutter@et.redhat.com:/var/www/sites/cft.et.redhat.com/download"
     puts "Making release links"
     system "ssh lutter@et.redhat.com /home/lutter/bin/cft-release #{PKG_VERSION}"
+    puts "Commit and tag #{PKG_VERSION}"
+    system "hg commit -m 'Released version #{PKG_VERSION}'"
+    system "hg tag -m 'Tag release #{PKG_VERSION}' #{PKG_NAME}-#{PKG_VERSION}"
 end
