@@ -1,0 +1,7 @@
+# Do not remove the following line, or various programs
+# that require network functionality will fail.
+127.0.0.1		localhost.localdomain localhost
+::1		localhost6.localdomain6 localhost6
+172.31.0.64		mango
+172.31.1.42              fluxbox.example.com
+172.31.1.2               delauren.example.com

@@ -1,0 +1,24 @@
+Created /etc/.hosts.swp 
+Created /etc/.hosts.swpx 
+Deleted /etc/.hosts.swpx
+Deleted /etc/.hosts.swp
+Changed /etc/.hosts.swp
+Changed /etc/printcap
+Changed /etc/.hosts.swp
+Changed /etc/printcap
+Changed /etc/printcap
+Changed /etc/printcap
+Changed /etc/printcap
+Created /etc/4913 
+Changed /etc/4913
+Deleted /etc/4913
+Deleted /etc/hosts
+Created /etc/hosts~ 
+Created /etc/hosts 
+Changed /etc/hosts
+Changed /etc/.hosts.swp
+Deleted /etc/hosts~
+Deleted /etc/.hosts.swp
+/etc/hosts :: - + =
+cp -pr /etc/hosts /tmp/cft/host/after/etc/hosts
+/etc/4913 :: + = -

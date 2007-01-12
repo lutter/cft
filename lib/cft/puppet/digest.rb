@@ -295,5 +295,11 @@ module Cft::Puppet
             d.ignore "/etc/yum/repos.d/*.repo"
             
         end
+
+        digester(:host) do |d|
+            d.preserve
+            
+            d.ignore "/etc/hosts"
+        end
     end
 end

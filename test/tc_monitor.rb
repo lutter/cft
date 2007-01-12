@@ -11,14 +11,11 @@ class TestMonitor < Test::Unit::TestCase
         s = use_session('basic_manifest')
         digest = Cft::Puppet::Digest.new(s)
         trans = digest.transportable
-        list = trans.flatten
-        assert_equal(1, list.size)
-        file = list[0]
-        assert_equal(:file, file.type)
-        assert_equal("/etc/nsswitch.conf", file.name)
-        assert_equal("0644", file[:mode])
-        assert_equal("/tmp/cft/basic_manifest/after/etc/nsswitch.conf", 
-                     file[:source])
+        assert_equal(1, trans.flatten.size)
+        assert_resource(trans, :file, "/etc/nsswitch.conf",
+                        :mode => "0644",
+                        :source => 
+                          "/tmp/cft/basic_manifest/after/etc/nsswitch.conf")
     end
 
     def test_postfix
@@ -129,6 +126,27 @@ class TestMonitor < Test::Unit::TestCase
                         :type => 'file',
                         :owner => 'lutter',
                         :mode => '0644')
+    end
+
+    def test_host
+        s = use_session("host")
+        digest = Cft::Puppet::Digest.new(s)
+        trans = digest.transportable
+        
+        assert_equal(3, trans.length)
+        assert_resource(trans, :host, 'gw.example.com',
+                        :ensure => :absent)
+ 
+        assert_resource(trans, :host, 'fluxbox.example.com',
+                        :target => '/etc/hosts',
+                        :ip => '172.31.1.42',
+                        :ensure => :present)
+ 
+        assert_resource(trans, :host, 'delauren.example.com',
+                        :target => '/etc/hosts',
+                        :ip => '172.31.1.2',
+                        :ensure => :present)
+ 
     end
 
 
