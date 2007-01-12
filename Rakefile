@@ -71,7 +71,11 @@ desc "Build (S)RPM for #{PKG_NAME}"
 task :rpm => [ :package ] do |t|
     system("sed -i -e 's/^Version:.*$/Version: #{PKG_VERSION}/' cft.spec")
     Dir::chdir("pkg") do |dir|
+        dir = File::expand_path(".")
         system("rpmbuild --define '_topdir #{dir}' --define '_sourcedir #{dir}' --define '_srcrpmdir #{dir}' --define '_rpmdir #{dir}' -ba ../#{PKG_NAME}.spec > rpmbuild.log 2>&1")
+        if $? != 0
+            raise "rpmbuild failed"
+        end
     end
 end
 
