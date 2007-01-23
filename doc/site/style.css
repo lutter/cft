@@ -126,7 +126,7 @@ div.callout-1 {
 }
 
 div.callout-2 {
-  background-color: gray;
+  background-color: maroon;
   padding: 6px 12px 32px 12px;
   margin-bottom: 48px;
 }
@@ -151,5 +151,5 @@ hr {
   background-image: url('img/black-red/hr.png');
 }
 
-div.callout-2 a { text-decoration: none; color: maroon }
+div.callout-2 a { text-decoration: none; color: white; font-weight: bold }
 div.callout-2 a:hover { text-decoration: underline }
