@@ -4,7 +4,7 @@ Summary: Config file tracker
 Name: cft
 
 Version: 0.1.0
-Release: 1
+Release: 2%{?dist}
 Group: System Environment/Base
 License: GPL
 URL: http://cft.et.redhat.com/
@@ -27,7 +27,7 @@ reusable bundle. Instead of the desktop though, cft is focused on
 traditional system admins and how they maintain machines, mostly with
 command line tools. Cft uses puppet as its backbone for expressing the
 configuration of a system, and for understanding in greater detail what
-changes the admin has made to the system.  %prep %setup -T -c
+changes the admin has made to the system.
 
 %prep
 %setup -q
@@ -39,7 +39,7 @@ rm -rf %{buildroot}
 install -d -m0755 %{buildroot}%{_sbindir}
 install -d -m0755 %{buildroot}%{ruby_sitelibdir}
 
-install -Dp -m0755 bin/cft %{buildroot}%{_sbindir}
+install -p -m0755 bin/cft %{buildroot}%{_sbindir}
 cp -pr lib/* %{buildroot}%{ruby_sitelibdir}
 
 %clean
@@ -53,6 +53,9 @@ cp -pr lib/* %{buildroot}%{ruby_sitelibdir}
 %{ruby_sitelibdir}/cft
 
 %changelog
+* Thu Jan 25 2007 David Lutterkort <dlutter@redhat.com> - 0.1.0-2
+- Fix typo in prep
+
 * Mon Jan  8 2007 David Lutterkort <dlutter@redhat.com> - 0.0.1-1
 - Initial specfile
 
