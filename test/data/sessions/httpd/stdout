@@ -1,0 +1,46 @@
+Changed /etc/httpd/logs/error_log
+Created /var/run/httpd.pid 
+Created /etc/httpd/run/httpd.pid 
+Changed /var/run/httpd.pid
+Changed /etc/httpd/run/httpd.pid
+Created /var/lock/subsys/httpd 
+Changed /var/lock/subsys/httpd
+Changed /etc/httpd/logs/error_log
+Deleted /etc/rc.d/rc2.d/S85httpd
+Deleted /etc/rc2.d/S85httpd
+Created /etc/rc.d/rc2.d/S85httpd 
+Created /etc/rc2.d/S85httpd 
+Deleted /etc/rc3.d/S85httpd
+Deleted /etc/rc.d/rc3.d/S85httpd
+Created /etc/rc3.d/S85httpd 
+Created /etc/rc.d/rc3.d/S85httpd 
+Deleted /etc/rc4.d/S85httpd
+Deleted /etc/rc.d/rc4.d/S85httpd
+Created /etc/rc4.d/S85httpd 
+Created /etc/rc.d/rc4.d/S85httpd 
+Deleted /etc/rc.d/rc5.d/S85httpd
+Deleted /etc/rc5.d/S85httpd
+Created /etc/rc.d/rc5.d/S85httpd 
+Created /etc/rc5.d/S85httpd 
+/etc/rc5.d/S85httpd :: - +
+cp -pr /etc/rc5.d/S85httpd /tmp/cft/test/after/etc/rc5.d/S85httpd
+/etc/rc4.d/S85httpd :: - +
+cp -pr /etc/rc4.d/S85httpd /tmp/cft/test/after/etc/rc4.d/S85httpd
+/etc/rc.d/rc5.d/S85httpd :: - +
+cp -pr /etc/rc.d/rc5.d/S85httpd /tmp/cft/test/after/etc/rc.d/rc5.d/S85httpd
+/etc/rc3.d/S85httpd :: - +
+cp -pr /etc/rc3.d/S85httpd /tmp/cft/test/after/etc/rc3.d/S85httpd
+/etc/rc2.d/S85httpd :: - +
+cp -pr /etc/rc2.d/S85httpd /tmp/cft/test/after/etc/rc2.d/S85httpd
+/etc/httpd/logs/error_log :: = =
+cp -pr /etc/httpd/logs/error_log /tmp/cft/test/after/etc/httpd/logs/error_log
+/etc/rc.d/rc4.d/S85httpd :: - +
+cp -pr /etc/rc.d/rc4.d/S85httpd /tmp/cft/test/after/etc/rc.d/rc4.d/S85httpd
+/etc/rc.d/rc3.d/S85httpd :: - +
+cp -pr /etc/rc.d/rc3.d/S85httpd /tmp/cft/test/after/etc/rc.d/rc3.d/S85httpd
+/etc/rc.d/rc2.d/S85httpd :: - +
+cp -pr /etc/rc.d/rc2.d/S85httpd /tmp/cft/test/after/etc/rc.d/rc2.d/S85httpd
+/var/lock/subsys/httpd :: + =
+cp -pr /var/lock/subsys/httpd /tmp/cft/test/after/var/lock/subsys/httpd
+/var/run/httpd.pid :: + =
+cp -pr /var/run/httpd.pid /tmp/cft/test/after/var/run/httpd.pid

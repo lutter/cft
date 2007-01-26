@@ -1,0 +1,13 @@
+[Thu Jan 25 17:54:49 2007] [notice] SELinux policy enabled; httpd running as context root:system_r:httpd_t:s0
+[Thu Jan 25 17:54:49 2007] [notice] suEXEC mechanism enabled (wrapper: /usr/sbin/suexec)
+[Thu Jan 25 17:54:49 2007] [notice] Digest: generating secret for digest authentication ...
+[Thu Jan 25 17:54:49 2007] [notice] Digest: done
+[Thu Jan 25 17:54:49 2007] [notice] Apache/2.2.3 (Fedora) configured -- resuming normal operations
+[Thu Jan 25 17:57:38 2007] [error] [client 172.31.0.3] Directory index forbidden by Options directive: /var/www/html/
+[Thu Jan 25 17:58:29 2007] [error] [client 172.31.0.3] client denied by server configuration: /usr/share/phpPgAdmin
+[Thu Jan 25 18:07:04 2007] [notice] caught SIGTERM, shutting down
+[Thu Jan 25 18:07:12 2007] [notice] SELinux policy enabled; httpd running as context root:system_r:httpd_t:s0
+[Thu Jan 25 18:07:12 2007] [notice] suEXEC mechanism enabled (wrapper: /usr/sbin/suexec)
+[Thu Jan 25 18:07:12 2007] [notice] Digest: generating secret for digest authentication ...
+[Thu Jan 25 18:07:12 2007] [notice] Digest: done
+[Thu Jan 25 18:07:12 2007] [notice] Apache/2.2.3 (Fedora) configured -- resuming normal operations

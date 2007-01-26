@@ -20,6 +20,7 @@ module Cft
                '*.swp', '*.swpx', '*.swx',    # vi leaves these behind
                '*~',                 # emacs backup files
                '/etc/httpd/run/**',  # symlink to /var/run
+               '/etc/httpd/logs/**', # symlink to /var/log/httpd
                '/etc/printcap'       # cups keeps rewriting this
               ]
 

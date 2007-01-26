@@ -1,0 +1,2031 @@
+--- !ruby/object:Puppet::TransBucket 
+children: 
+- !ruby/object:Puppet::TransBucket 
+  type: :mount
+  keyword: class
+  children: 
+  - !ruby/object:Puppet::TransObject 
+    type: :mount
+    collectable: false
+    tags: 
+    - :mount
+    params: 
+      :options: defaults
+      :ensure: :mounted
+      :loglevel: :notice
+      :provider: :parsed
+      :device: /dev/domu/lv00
+      :dump: "1"
+      :target: /etc/fstab
+      :fstype: ext3
+      :pass: "1"
+    name: /
+  - !ruby/object:Puppet::TransObject 
+    type: :mount
+    collectable: false
+    tags: 
+    - :mount
+    params: 
+      :options: defaults
+      :ensure: :mounted
+      :loglevel: :notice
+      :provider: :parsed
+      :device: LABEL=/boot
+      :dump: "1"
+      :target: /etc/fstab
+      :fstype: ext3
+      :pass: "2"
+    name: /boot
+  - !ruby/object:Puppet::TransObject 
+    type: :mount
+    collectable: false
+    tags: 
+    - :mount
+    params: 
+      :options: gid=5,mode=620
+      :ensure: :present
+      :loglevel: :notice
+      :provider: :parsed
+      :device: devpts
+      :dump: "0"
+      :target: /etc/fstab
+      :fstype: devpts
+      :pass: "0"
+    name: /dev/pts
+  - !ruby/object:Puppet::TransObject 
+    type: :mount
+    collectable: false
+    tags: 
+    - :mount
+    params: 
+      :options: defaults
+      :ensure: :mounted
+      :loglevel: :notice
+      :provider: :parsed
+      :device: tmpfs
+      :dump: "0"
+      :target: /etc/fstab
+      :fstype: tmpfs
+      :pass: "0"
+    name: /dev/shm
+  - !ruby/object:Puppet::TransObject 
+    type: :mount
+    collectable: false
+    tags: 
+    - :mount
+    params: 
+      :options: defaults
+      :ensure: :present
+      :loglevel: :notice
+      :provider: :parsed
+      :device: proc
+      :dump: "0"
+      :target: /etc/fstab
+      :fstype: proc
+      :pass: "0"
+    name: /proc
+  - !ruby/object:Puppet::TransObject 
+    type: :mount
+    collectable: false
+    tags: 
+    - :mount
+    params: 
+      :options: defaults
+      :ensure: :present
+      :loglevel: :notice
+      :provider: :parsed
+      :device: sysfs
+      :dump: "0"
+      :target: /etc/fstab
+      :fstype: sysfs
+      :pass: "0"
+    name: /sys
+  - !ruby/object:Puppet::TransObject 
+    type: :mount
+    collectable: false
+    tags: 
+    - :mount
+    params: 
+      :options: defaults
+      :ensure: :present
+      :loglevel: :notice
+      :provider: :parsed
+      :device: /dev/domu/lv01
+      :dump: "0"
+      :target: /etc/fstab
+      :fstype: swap
+      :pass: "0"
+    name: swap
+- !ruby/object:Puppet::TransBucket 
+  type: :host
+  keyword: class
+  children: 
+  - !ruby/object:Puppet::TransObject 
+    type: :host
+    collectable: false
+    tags: &id001 
+      - :host
+    params: 
+      :ensure: :present
+      :loglevel: :notice
+      :provider: :parsed
+      :target: /etc/hosts
+      :alias: &id002 
+        - localhost
+      :ip: 127.0.0.1
+    name: localhost.localdomain
+  - !ruby/object:Puppet::TransObject 
+    type: :host
+    collectable: false
+    tags: *id001
+    params: 
+      :ensure: :present
+      :loglevel: :notice
+      :provider: :parsed
+      :target: /etc/hosts
+      :alias: *id002
+      :ip: 127.0.0.1
+    name: localhost.localdomain
+  - !ruby/object:Puppet::TransObject 
+    type: :host
+    collectable: false
+    tags: 
+    - :host
+    params: 
+      :ensure: :present
+      :loglevel: :notice
+      :provider: :parsed
+      :target: /etc/hosts
+      :ip: 172.31.0.68
+    name: akee
+- !ruby/object:Puppet::TransBucket 
+  type: :group
+  keyword: class
+  children: 
+  - !ruby/object:Puppet::TransObject 
+    type: :group
+    collectable: false
+    tags: 
+    - :group
+    params: 
+      :check: 
+      - :ensure
+      - :gid
+      :ensure: :present
+      :loglevel: :notice
+      :provider: :groupadd
+      :allowdupe: :false
+      :gid: 40
+    name: dip
+  - !ruby/object:Puppet::TransObject 
+    type: :group
+    collectable: false
+    tags: 
+    - :group
+    params: 
+      :check: 
+      - :ensure
+      - :gid
+      :ensure: :present
+      :loglevel: :notice
+      :provider: :groupadd
+      :allowdupe: :false
+      :gid: 65534
+    name: nfsnobody
+  - !ruby/object:Puppet::TransObject 
+    type: :group
+    collectable: false
+    tags: 
+    - :group
+    params: 
+      :check: 
+      - :ensure
+      - :gid
+      :ensure: :present
+      :loglevel: :notice
+      :provider: :groupadd
+      :allowdupe: :false
+      :gid: 20
+    name: games
+  - !ruby/object:Puppet::TransObject 
+    type: :group
+    collectable: false
+    tags: 
+    - :group
+    params: 
+      :check: 
+      - :ensure
+      - :gid
+      :ensure: :present
+      :loglevel: :notice
+      :provider: :groupadd
+      :allowdupe: :false
+      :gid: 22
+    name: utmp
+  - !ruby/object:Puppet::TransObject 
+    type: :group
+    collectable: false
+    tags: 
+    - :group
+    params: 
+      :check: 
+      - :ensure
+      - :gid
+      :ensure: :present
+      :loglevel: :notice
+      :provider: :groupadd
+      :allowdupe: :false
+      :gid: 50
+    name: ftp
+  - !ruby/object:Puppet::TransObject 
+    type: :group
+    collectable: false
+    tags: 
+    - :group
+    params: 
+      :check: 
+      - :ensure
+      - :gid
+      :ensure: :present
+      :loglevel: :notice
+      :provider: :groupadd
+      :allowdupe: :false
+      :gid: 14
+    name: uucp
+  - !ruby/object:Puppet::TransObject 
+    type: :group
+    collectable: false
+    tags: 
+    - :group
+    params: 
+      :check: 
+      - :ensure
+      - :gid
+      :ensure: :present
+      :loglevel: :notice
+      :provider: :groupadd
+      :allowdupe: :false
+      :gid: 3
+    name: sys
+  - !ruby/object:Puppet::TransObject 
+    type: :group
+    collectable: false
+    tags: 
+    - :group
+    params: 
+      :check: 
+      - :ensure
+      - :gid
+      :ensure: :present
+      :loglevel: :notice
+      :provider: :groupadd
+      :allowdupe: :false
+      :gid: 503
+    name: build
+  - !ruby/object:Puppet::TransObject 
+    type: :group
+    collectable: false
+    tags: 
+    - :group
+    params: 
+      :check: 
+      - :ensure
+      - :gid
+      :ensure: :present
+      :loglevel: :notice
+      :provider: :groupadd
+      :allowdupe: :false
+      :gid: 99
+    name: nobody
+  - !ruby/object:Puppet::TransObject 
+    type: :group
+    collectable: false
+    tags: 
+    - :group
+    params: 
+      :check: 
+      - :ensure
+      - :gid
+      :ensure: :present
+      :loglevel: :notice
+      :provider: :groupadd
+      :allowdupe: :false
+      :gid: 9
+    name: kmem
+  - !ruby/object:Puppet::TransObject 
+    type: :group
+    collectable: false
+    tags: 
+    - :group
+    params: 
+      :check: 
+      - :ensure
+      - :gid
+      :ensure: :present
+      :loglevel: :notice
+      :provider: :groupadd
+      :allowdupe: :false
+      :gid: 5
+    name: tty
+  - !ruby/object:Puppet::TransObject 
+    type: :group
+    collectable: false
+    tags: 
+    - :group
+    params: 
+      :check: 
+      - :ensure
+      - :gid
+      :ensure: :present
+      :loglevel: :notice
+      :provider: :groupadd
+      :allowdupe: :false
+      :gid: 90
+    name: postdrop
+  - !ruby/object:Puppet::TransObject 
+    type: :group
+    collectable: false
+    tags: 
+    - :group
+    params: 
+      :check: 
+      - :ensure
+      - :gid
+      :ensure: :present
+      :loglevel: :notice
+      :provider: :groupadd
+      :allowdupe: :false
+      :gid: 500
+    name: lutter
+  - !ruby/object:Puppet::TransObject 
+    type: :group
+    collectable: false
+    tags: 
+    - :group
+    params: 
+      :check: 
+      - :ensure
+      - :gid
+      :ensure: :present
+      :loglevel: :notice
+      :provider: :groupadd
+      :allowdupe: :false
+      :gid: 37
+    name: rpm
+  - !ruby/object:Puppet::TransObject 
+    type: :group
+    collectable: false
+    tags: 
+    - :group
+    params: 
+      :check: 
+      - :ensure
+      - :gid
+      :ensure: :present
+      :loglevel: :notice
+      :provider: :groupadd
+      :allowdupe: :false
+      :gid: 54
+    name: lock
+  - !ruby/object:Puppet::TransObject 
+    type: :group
+    collectable: false
+    tags: 
+    - :group
+    params: 
+      :check: 
+      - :ensure
+      - :gid
+      :ensure: :present
+      :loglevel: :notice
+      :provider: :groupadd
+      :allowdupe: :false
+      :gid: 15
+    name: man
+  - !ruby/object:Puppet::TransObject 
+    type: :group
+    collectable: false
+    tags: 
+    - :group
+    params: 
+      :check: 
+      - :ensure
+      - :gid
+      :ensure: :present
+      :loglevel: :notice
+      :provider: :groupadd
+      :allowdupe: :false
+      :gid: 7
+    name: lp
+  - !ruby/object:Puppet::TransObject 
+    type: :group
+    collectable: false
+    tags: 
+    - :group
+    params: 
+      :check: 
+      - :ensure
+      - :gid
+      :ensure: :present
+      :loglevel: :notice
+      :provider: :groupadd
+      :allowdupe: :false
+      :gid: 32
+    name: rpc
+  - !ruby/object:Puppet::TransObject 
+    type: :group
+    collectable: false
+    tags: 
+    - :group
+    params: 
+      :check: 
+      - :ensure
+      - :gid
+      :ensure: :present
+      :loglevel: :notice
+      :provider: :groupadd
+      :allowdupe: :false
+      :gid: 68
+    name: haldaemon
+  - !ruby/object:Puppet::TransObject 
+    type: :group
+    collectable: false
+    tags: 
+    - :group
+    params: 
+      :check: 
+      - :ensure
+      - :gid
+      :ensure: :present
+      :loglevel: :notice
+      :provider: :groupadd
+      :allowdupe: :false
+      :gid: 12
+    name: mail
+  - !ruby/object:Puppet::TransObject 
+    type: :group
+    collectable: false
+    tags: 
+    - :group
+    params: 
+      :check: 
+      - :ensure
+      - :gid
+      :ensure: :present
+      :loglevel: :notice
+      :provider: :groupadd
+      :allowdupe: :false
+      :gid: 74
+    name: sshd
+  - !ruby/object:Puppet::TransObject 
+    type: :group
+    collectable: false
+    tags: 
+    - :group
+    params: 
+      :check: 
+      - :ensure
+      - :gid
+      :ensure: :present
+      :loglevel: :notice
+      :provider: :groupadd
+      :allowdupe: :false
+      :gid: 81
+    name: dbus
+  - !ruby/object:Puppet::TransObject 
+    type: :group
+    collectable: false
+    tags: 
+    - :group
+    params: 
+      :check: 
+      - :ensure
+      - :gid
+      :ensure: :present
+      :loglevel: :notice
+      :provider: :groupadd
+      :allowdupe: :false
+      :gid: 30
+    name: gopher
+  - !ruby/object:Puppet::TransObject 
+    type: :group
+    collectable: false
+    tags: 
+    - :group
+    params: 
+      :check: 
+      - :ensure
+      - :gid
+      :ensure: :present
+      :loglevel: :notice
+      :provider: :groupadd
+      :allowdupe: :false
+      :gid: 0
+    name: root
+  - !ruby/object:Puppet::TransObject 
+    type: :group
+    collectable: false
+    tags: 
+    - :group
+    params: 
+      :check: 
+      - :ensure
+      - :gid
+      :ensure: :present
+      :loglevel: :notice
+      :provider: :groupadd
+      :allowdupe: :false
+      :gid: 48
+    name: apache
+  - !ruby/object:Puppet::TransObject 
+    type: :group
+    collectable: false
+    tags: 
+    - :group
+    params: 
+      :check: 
+      - :ensure
+      - :gid
+      :ensure: :present
+      :loglevel: :notice
+      :provider: :groupadd
+      :allowdupe: :false
+      :gid: 26
+    name: postgres
+  - !ruby/object:Puppet::TransObject 
+    type: :group
+    collectable: false
+    tags: 
+    - :group
+    params: 
+      :check: 
+      - :ensure
+      - :gid
+      :ensure: :present
+      :loglevel: :notice
+      :provider: :groupadd
+      :allowdupe: :false
+      :gid: 6
+    name: disk
+  - !ruby/object:Puppet::TransObject 
+    type: :group
+    collectable: false
+    tags: 
+    - :group
+    params: 
+      :check: 
+      - :ensure
+      - :gid
+      :ensure: :present
+      :loglevel: :notice
+      :provider: :groupadd
+      :allowdupe: :false
+      :gid: 1
+    name: bin
+  - !ruby/object:Puppet::TransObject 
+    type: :group
+    collectable: false
+    tags: 
+    - :group
+    params: 
+      :check: 
+      - :ensure
+      - :gid
+      :ensure: :present
+      :loglevel: :notice
+      :provider: :groupadd
+      :allowdupe: :false
+      :gid: 100
+    name: users
+  - !ruby/object:Puppet::TransObject 
+    type: :group
+    collectable: false
+    tags: 
+    - :group
+    params: 
+      :check: 
+      - :ensure
+      - :gid
+      :ensure: :present
+      :loglevel: :notice
+      :provider: :groupadd
+      :allowdupe: :false
+      :gid: 13
+    name: news
+  - !ruby/object:Puppet::TransObject 
+    type: :group
+    collectable: false
+    tags: 
+    - :group
+    params: 
+      :check: 
+      - :ensure
+      - :gid
+      :ensure: :present
+      :loglevel: :notice
+      :provider: :groupadd
+      :allowdupe: :false
+      :gid: 2
+    name: daemon
+  - !ruby/object:Puppet::TransObject 
+    type: :group
+    collectable: false
+    tags: 
+    - :group
+    params: 
+      :check: 
+      - :ensure
+      - :gid
+      :ensure: :present
+      :loglevel: :notice
+      :provider: :groupadd
+      :allowdupe: :false
+      :gid: 101
+    name: puppet
+  - !ruby/object:Puppet::TransObject 
+    type: :group
+    collectable: false
+    tags: 
+    - :group
+    params: 
+      :check: 
+      - :ensure
+      - :gid
+      :ensure: :present
+      :loglevel: :notice
+      :provider: :groupadd
+      :allowdupe: :false
+      :gid: 29
+    name: rpcuser
+  - !ruby/object:Puppet::TransObject 
+    type: :group
+    collectable: false
+    tags: 
+    - :group
+    params: 
+      :check: 
+      - :ensure
+      - :gid
+      :ensure: :present
+      :loglevel: :notice
+      :provider: :groupadd
+      :allowdupe: :false
+      :gid: 69
+    name: vcsa
+  - !ruby/object:Puppet::TransObject 
+    type: :group
+    collectable: false
+    tags: 
+    - :group
+    params: 
+      :check: 
+      - :ensure
+      - :gid
+      :ensure: :present
+      :loglevel: :notice
+      :provider: :groupadd
+      :allowdupe: :false
+      :gid: 19
+    name: floppy
+  - !ruby/object:Puppet::TransObject 
+    type: :group
+    collectable: false
+    tags: 
+    - :group
+    params: 
+      :check: 
+      - :ensure
+      - :gid
+      :ensure: :present
+      :loglevel: :notice
+      :provider: :groupadd
+      :allowdupe: :false
+      :gid: 10
+    name: wheel
+  - !ruby/object:Puppet::TransObject 
+    type: :group
+    collectable: false
+    tags: 
+    - :group
+    params: 
+      :check: 
+      - :ensure
+      - :gid
+      :ensure: :present
+      :loglevel: :notice
+      :provider: :groupadd
+      :allowdupe: :false
+      :gid: 89
+    name: postfix
+  - !ruby/object:Puppet::TransObject 
+    type: :group
+    collectable: false
+    tags: 
+    - :group
+    params: 
+      :check: 
+      - :ensure
+      - :gid
+      :ensure: :present
+      :loglevel: :notice
+      :provider: :groupadd
+      :allowdupe: :false
+      :gid: 102
+    name: mock
+  - !ruby/object:Puppet::TransObject 
+    type: :group
+    collectable: false
+    tags: 
+    - :group
+    params: 
+      :check: 
+      - :ensure
+      - :gid
+      :ensure: :present
+      :loglevel: :notice
+      :provider: :groupadd
+      :allowdupe: :false
+      :gid: 8
+    name: mem
+  - !ruby/object:Puppet::TransObject 
+    type: :group
+    collectable: false
+    tags: 
+    - :group
+    params: 
+      :check: 
+      - :ensure
+      - :gid
+      :ensure: :present
+      :loglevel: :notice
+      :provider: :groupadd
+      :allowdupe: :false
+      :gid: 4
+    name: adm
+- !ruby/object:Puppet::TransBucket 
+  type: :user
+  keyword: class
+  children: 
+  - !ruby/object:Puppet::TransObject 
+    type: :user
+    collectable: false
+    tags: 
+    - :user
+    params: 
+      :check: 
+      - :ensure
+      - :groups
+      - :home
+      - :comment
+      - :uid
+      - :gid
+      - :shell
+      :ensure: :present
+      :loglevel: :notice
+      :provider: :useradd
+      :groups: []
+
+      :home: /var/lib/nfs
+      :comment: Anonymous NFS User
+      :uid: 65534
+      :allowdupe: :false
+      :membership: :minimum
+      :gid: 65534
+      :shell: /sbin/nologin
+    name: nfsnobody
+  - !ruby/object:Puppet::TransObject 
+    type: :user
+    collectable: false
+    tags: 
+    - :user
+    params: 
+      :check: 
+      - :ensure
+      - :groups
+      - :home
+      - :comment
+      - :uid
+      - :gid
+      - :shell
+      :ensure: :present
+      :loglevel: :notice
+      :provider: :useradd
+      :groups: []
+
+      :home: /usr/games
+      :comment: games
+      :uid: 12
+      :allowdupe: :false
+      :membership: :minimum
+      :gid: 100
+      :shell: /sbin/nologin
+    name: games
+  - !ruby/object:Puppet::TransObject 
+    type: :user
+    collectable: false
+    tags: 
+    - :user
+    params: 
+      :check: 
+      - :ensure
+      - :groups
+      - :home
+      - :comment
+      - :uid
+      - :gid
+      - :shell
+      :ensure: :present
+      :loglevel: :notice
+      :provider: :useradd
+      :groups: []
+
+      :home: /sbin
+      :comment: halt
+      :uid: 7
+      :allowdupe: :false
+      :membership: :minimum
+      :gid: 0
+      :shell: /sbin/halt
+    name: halt
+  - !ruby/object:Puppet::TransObject 
+    type: :user
+    collectable: false
+    tags: 
+    - :user
+    params: 
+      :check: 
+      - :ensure
+      - :groups
+      - :home
+      - :comment
+      - :uid
+      - :gid
+      - :shell
+      :ensure: :present
+      :loglevel: :notice
+      :provider: :useradd
+      :groups: []
+
+      :home: /var/ftp
+      :comment: FTP User
+      :uid: 14
+      :allowdupe: :false
+      :membership: :minimum
+      :gid: 50
+      :shell: /sbin/nologin
+    name: ftp
+  - !ruby/object:Puppet::TransObject 
+    type: :user
+    collectable: false
+    tags: 
+    - :user
+    params: 
+      :check: 
+      - :ensure
+      - :groups
+      - :home
+      - :comment
+      - :uid
+      - :gid
+      - :shell
+      :ensure: :present
+      :loglevel: :notice
+      :provider: :useradd
+      :groups: 
+      - uucp
+      :home: /var/spool/uucp
+      :comment: uucp
+      :uid: 10
+      :allowdupe: :false
+      :membership: :minimum
+      :gid: 14
+      :shell: /sbin/nologin
+    name: uucp
+  - !ruby/object:Puppet::TransObject 
+    type: :user
+    collectable: false
+    tags: 
+    - :user
+    params: 
+      :check: 
+      - :ensure
+      - :groups
+      - :home
+      - :comment
+      - :uid
+      - :gid
+      - :shell
+      :ensure: :present
+      :loglevel: :notice
+      :provider: :useradd
+      :groups: 
+      - mock
+      :home: /homes/build
+      :comment: Mock Build
+      :uid: 503
+      :allowdupe: :false
+      :membership: :minimum
+      :gid: 503
+      :shell: /bin/bash
+    name: build
+  - !ruby/object:Puppet::TransObject 
+    type: :user
+    collectable: false
+    tags: 
+    - :user
+    params: 
+      :check: 
+      - :ensure
+      - :groups
+      - :home
+      - :comment
+      - :uid
+      - :gid
+      - :shell
+      :ensure: :present
+      :loglevel: :notice
+      :provider: :useradd
+      :groups: []
+
+      :home: /
+      :comment: Nobody
+      :uid: 99
+      :allowdupe: :false
+      :membership: :minimum
+      :gid: 99
+      :shell: /sbin/nologin
+    name: nobody
+  - !ruby/object:Puppet::TransObject 
+    type: :user
+    collectable: false
+    tags: 
+    - :user
+    params: 
+      :check: 
+      - :ensure
+      - :groups
+      - :home
+      - :comment
+      - :uid
+      - :gid
+      - :shell
+      :ensure: :present
+      :loglevel: :notice
+      :provider: :useradd
+      :groups: []
+
+      :home: /homes/lutter
+      :comment: David Lutterkort
+      :uid: 500
+      :allowdupe: :false
+      :membership: :minimum
+      :gid: 500
+      :shell: /bin/bash
+    name: lutter
+  - !ruby/object:Puppet::TransObject 
+    type: :user
+    collectable: false
+    tags: 
+    - :user
+    params: 
+      :check: 
+      - :ensure
+      - :groups
+      - :home
+      - :comment
+      - :uid
+      - :gid
+      - :shell
+      :ensure: :present
+      :loglevel: :notice
+      :provider: :useradd
+      :groups: []
+
+      :home: /var/lib/rpm
+      :comment: ""
+      :uid: 37
+      :allowdupe: :false
+      :membership: :minimum
+      :gid: 37
+      :shell: /sbin/nologin
+    name: rpm
+  - !ruby/object:Puppet::TransObject 
+    type: :user
+    collectable: false
+    tags: 
+    - :user
+    params: 
+      :check: 
+      - :ensure
+      - :groups
+      - :home
+      - :comment
+      - :uid
+      - :gid
+      - :shell
+      :ensure: :present
+      :loglevel: :notice
+      :provider: :useradd
+      :groups: []
+
+      :home: /root
+      :comment: operator
+      :uid: 11
+      :allowdupe: :false
+      :membership: :minimum
+      :gid: 0
+      :shell: /sbin/nologin
+    name: operator
+  - !ruby/object:Puppet::TransObject 
+    type: :user
+    collectable: false
+    tags: 
+    - :user
+    params: 
+      :check: 
+      - :ensure
+      - :groups
+      - :home
+      - :comment
+      - :uid
+      - :gid
+      - :shell
+      :ensure: :present
+      :loglevel: :notice
+      :provider: :useradd
+      :groups: []
+
+      :home: /sbin
+      :comment: shutdown
+      :uid: 6
+      :allowdupe: :false
+      :membership: :minimum
+      :gid: 0
+      :shell: /sbin/shutdown
+    name: shutdown
+  - !ruby/object:Puppet::TransObject 
+    type: :user
+    collectable: false
+    tags: 
+    - :user
+    params: 
+      :check: 
+      - :ensure
+      - :groups
+      - :home
+      - :comment
+      - :uid
+      - :gid
+      - :shell
+      :ensure: :present
+      :loglevel: :notice
+      :provider: :useradd
+      :groups: 
+      - lp
+      :home: /var/spool/lpd
+      :comment: lp
+      :uid: 4
+      :allowdupe: :false
+      :membership: :minimum
+      :gid: 7
+      :shell: /sbin/nologin
+    name: lp
+  - !ruby/object:Puppet::TransObject 
+    type: :user
+    collectable: false
+    tags: 
+    - :user
+    params: 
+      :check: 
+      - :ensure
+      - :groups
+      - :home
+      - :comment
+      - :uid
+      - :gid
+      - :shell
+      :ensure: :present
+      :loglevel: :notice
+      :provider: :useradd
+      :groups: []
+
+      :home: /
+      :comment: Portmapper RPC user
+      :uid: 32
+      :allowdupe: :false
+      :membership: :minimum
+      :gid: 32
+      :shell: /sbin/nologin
+    name: rpc
+  - !ruby/object:Puppet::TransObject 
+    type: :user
+    collectable: false
+    tags: 
+    - :user
+    params: 
+      :check: 
+      - :ensure
+      - :groups
+      - :home
+      - :comment
+      - :uid
+      - :gid
+      - :shell
+      :ensure: :present
+      :loglevel: :notice
+      :provider: :useradd
+      :groups: []
+
+      :home: /
+      :comment: HAL daemon
+      :uid: 68
+      :allowdupe: :false
+      :membership: :minimum
+      :gid: 68
+      :shell: /sbin/nologin
+    name: haldaemon
+  - !ruby/object:Puppet::TransObject 
+    type: :user
+    collectable: false
+    tags: 
+    - :user
+    params: 
+      :check: 
+      - :ensure
+      - :groups
+      - :home
+      - :comment
+      - :uid
+      - :gid
+      - :shell
+      :ensure: :present
+      :loglevel: :notice
+      :provider: :useradd
+      :groups: 
+      - mail
+      :home: /var/spool/mail
+      :comment: mail
+      :uid: 8
+      :allowdupe: :false
+      :membership: :minimum
+      :gid: 12
+      :shell: /sbin/nologin
+    name: mail
+  - !ruby/object:Puppet::TransObject 
+    type: :user
+    collectable: false
+    tags: 
+    - :user
+    params: 
+      :check: 
+      - :ensure
+      - :groups
+      - :home
+      - :comment
+      - :uid
+      - :gid
+      - :shell
+      :ensure: :present
+      :loglevel: :notice
+      :provider: :useradd
+      :groups: []
+
+      :home: /sbin
+      :comment: sync
+      :uid: 5
+      :allowdupe: :false
+      :membership: :minimum
+      :gid: 0
+      :shell: /bin/sync
+    name: sync
+  - !ruby/object:Puppet::TransObject 
+    type: :user
+    collectable: false
+    tags: 
+    - :user
+    params: 
+      :check: 
+      - :ensure
+      - :groups
+      - :home
+      - :comment
+      - :uid
+      - :gid
+      - :shell
+      :ensure: :present
+      :loglevel: :notice
+      :provider: :useradd
+      :groups: []
+
+      :home: /var/empty/sshd
+      :comment: Privilege-separated SSH
+      :uid: 74
+      :allowdupe: :false
+      :membership: :minimum
+      :gid: 74
+      :shell: /sbin/nologin
+    name: sshd
+  - !ruby/object:Puppet::TransObject 
+    type: :user
+    collectable: false
+    tags: 
+    - :user
+    params: 
+      :check: 
+      - :ensure
+      - :groups
+      - :home
+      - :comment
+      - :uid
+      - :gid
+      - :shell
+      :ensure: :present
+      :loglevel: :notice
+      :provider: :useradd
+      :groups: []
+
+      :home: /
+      :comment: System message bus
+      :uid: 81
+      :allowdupe: :false
+      :membership: :minimum
+      :gid: 81
+      :shell: /sbin/nologin
+    name: dbus
+  - !ruby/object:Puppet::TransObject 
+    type: :user
+    collectable: false
+    tags: 
+    - :user
+    params: 
+      :check: 
+      - :ensure
+      - :groups
+      - :home
+      - :comment
+      - :uid
+      - :gid
+      - :shell
+      :ensure: :present
+      :loglevel: :notice
+      :provider: :useradd
+      :groups: []
+
+      :home: /var/gopher
+      :comment: gopher
+      :uid: 13
+      :allowdupe: :false
+      :membership: :minimum
+      :gid: 30
+      :shell: /sbin/nologin
+    name: gopher
+  - !ruby/object:Puppet::TransObject 
+    type: :user
+    collectable: false
+    tags: 
+    - :user
+    params: 
+      :check: 
+      - :ensure
+      - :groups
+      - :home
+      - :comment
+      - :uid
+      - :gid
+      - :shell
+      :ensure: :present
+      :loglevel: :notice
+      :provider: :useradd
+      :groups: 
+      - root
+      - bin
+      - daemon
+      - sys
+      - adm
+      - disk
+      - wheel
+      :home: /root
+      :comment: root
+      :uid: 0
+      :allowdupe: :false
+      :membership: :minimum
+      :gid: 0
+      :shell: /bin/bash
+    name: root
+  - !ruby/object:Puppet::TransObject 
+    type: :user
+    collectable: false
+    tags: 
+    - :user
+    params: 
+      :check: 
+      - :ensure
+      - :groups
+      - :home
+      - :comment
+      - :uid
+      - :gid
+      - :shell
+      :ensure: :present
+      :loglevel: :notice
+      :provider: :useradd
+      :groups: []
+
+      :home: /var/www
+      :comment: Apache
+      :uid: 48
+      :allowdupe: :false
+      :membership: :minimum
+      :gid: 48
+      :shell: /sbin/nologin
+    name: apache
+  - !ruby/object:Puppet::TransObject 
+    type: :user
+    collectable: false
+    tags: 
+    - :user
+    params: 
+      :check: 
+      - :ensure
+      - :groups
+      - :home
+      - :comment
+      - :uid
+      - :gid
+      - :shell
+      :ensure: :present
+      :loglevel: :notice
+      :provider: :useradd
+      :groups: []
+
+      :home: /var/lib/pgsql
+      :comment: PostgreSQL Server
+      :uid: 26
+      :allowdupe: :false
+      :membership: :minimum
+      :gid: 26
+      :shell: /bin/bash
+    name: postgres
+  - !ruby/object:Puppet::TransObject 
+    type: :user
+    collectable: false
+    tags: 
+    - :user
+    params: 
+      :check: 
+      - :ensure
+      - :groups
+      - :home
+      - :comment
+      - :uid
+      - :gid
+      - :shell
+      :ensure: :present
+      :loglevel: :notice
+      :provider: :useradd
+      :groups: 
+      - bin
+      - daemon
+      - sys
+      :home: /bin
+      :comment: bin
+      :uid: 1
+      :allowdupe: :false
+      :membership: :minimum
+      :gid: 1
+      :shell: /sbin/nologin
+    name: bin
+  - !ruby/object:Puppet::TransObject 
+    type: :user
+    collectable: false
+    tags: 
+    - :user
+    params: 
+      :check: 
+      - :ensure
+      - :groups
+      - :home
+      - :comment
+      - :uid
+      - :gid
+      - :shell
+      :ensure: :present
+      :loglevel: :notice
+      :provider: :useradd
+      :groups: 
+      - news
+      :home: /etc/news
+      :comment: news
+      :uid: 9
+      :allowdupe: :false
+      :membership: :minimum
+      :gid: 13
+      :shell: ""
+    name: news
+  - !ruby/object:Puppet::TransObject 
+    type: :user
+    collectable: false
+    tags: 
+    - :user
+    params: 
+      :check: 
+      - :ensure
+      - :groups
+      - :home
+      - :comment
+      - :uid
+      - :gid
+      - :shell
+      :ensure: :present
+      :loglevel: :notice
+      :provider: :useradd
+      :groups: 
+      - bin
+      - daemon
+      - adm
+      - lp
+      :home: /sbin
+      :comment: daemon
+      :uid: 2
+      :allowdupe: :false
+      :membership: :minimum
+      :gid: 2
+      :shell: /sbin/nologin
+    name: daemon
+  - !ruby/object:Puppet::TransObject 
+    type: :user
+    collectable: false
+    tags: 
+    - :user
+    params: 
+      :check: 
+      - :ensure
+      - :groups
+      - :home
+      - :comment
+      - :uid
+      - :gid
+      - :shell
+      :ensure: :present
+      :loglevel: :notice
+      :provider: :useradd
+      :groups: []
+
+      :home: /var/puppet
+      :comment: Puppet
+      :uid: 100
+      :allowdupe: :false
+      :membership: :minimum
+      :gid: 101
+      :shell: /sbin/nologin
+    name: puppet
+  - !ruby/object:Puppet::TransObject 
+    type: :user
+    collectable: false
+    tags: 
+    - :user
+    params: 
+      :check: 
+      - :ensure
+      - :groups
+      - :home
+      - :comment
+      - :uid
+      - :gid
+      - :shell
+      :ensure: :present
+      :loglevel: :notice
+      :provider: :useradd
+      :groups: []
+
+      :home: /var/lib/nfs
+      :comment: RPC Service User
+      :uid: 29
+      :allowdupe: :false
+      :membership: :minimum
+      :gid: 29
+      :shell: /sbin/nologin
+    name: rpcuser
+  - !ruby/object:Puppet::TransObject 
+    type: :user
+    collectable: false
+    tags: 
+    - :user
+    params: 
+      :check: 
+      - :ensure
+      - :groups
+      - :home
+      - :comment
+      - :uid
+      - :gid
+      - :shell
+      :ensure: :present
+      :loglevel: :notice
+      :provider: :useradd
+      :groups: []
+
+      :home: /dev
+      :comment: virtual console memory owner
+      :uid: 69
+      :allowdupe: :false
+      :membership: :minimum
+      :gid: 69
+      :shell: /sbin/nologin
+    name: vcsa
+  - !ruby/object:Puppet::TransObject 
+    type: :user
+    collectable: false
+    tags: 
+    - :user
+    params: 
+      :check: 
+      - :ensure
+      - :groups
+      - :home
+      - :comment
+      - :uid
+      - :gid
+      - :shell
+      :ensure: :present
+      :loglevel: :notice
+      :provider: :useradd
+      :groups: 
+      - mail
+      :home: /var/spool/postfix
+      :comment: ""
+      :uid: 89
+      :allowdupe: :false
+      :membership: :minimum
+      :gid: 89
+      :shell: /sbin/nologin
+    name: postfix
+  - !ruby/object:Puppet::TransObject 
+    type: :user
+    collectable: false
+    tags: 
+    - :user
+    params: 
+      :check: 
+      - :ensure
+      - :groups
+      - :home
+      - :comment
+      - :uid
+      - :gid
+      - :shell
+      :ensure: :present
+      :loglevel: :notice
+      :provider: :useradd
+      :groups: 
+      - sys
+      - adm
+      :home: /var/adm
+      :comment: adm
+      :uid: 3
+      :allowdupe: :false
+      :membership: :minimum
+      :gid: 4
+      :shell: /sbin/nologin
+    name: adm
+- !ruby/object:Puppet::TransBucket 
+  type: :service
+  keyword: class
+  children: 
+  - !ruby/object:Puppet::TransObject 
+    type: :service
+    collectable: false
+    tags: 
+    - :service
+    params: 
+      :check: &id003 
+        - :ensure
+        - :enable
+      :ensure: :stopped
+      :loglevel: :notice
+      :provider: :redhat
+      :enable: :false
+      :pattern: rdisc
+      :path: 
+      - /etc/init.d
+    name: rdisc
+  - !ruby/object:Puppet::TransObject 
+    type: :service
+    collectable: false
+    tags: 
+    - :service
+    params: 
+      :check: *id003
+      :ensure: :stopped
+      :loglevel: :notice
+      :provider: :redhat
+      :enable: :true
+      :pattern: rpcidmapd
+      :path: 
+      - /etc/init.d
+    name: rpcidmapd
+  - !ruby/object:Puppet::TransObject 
+    type: :service
+    collectable: false
+    tags: 
+    - :service
+    params: 
+      :check: *id003
+      :ensure: :stopped
+      :loglevel: :notice
+      :provider: :redhat
+      :enable: :false
+      :pattern: halt
+      :path: 
+      - /etc/init.d
+    name: halt
+  - !ruby/object:Puppet::TransObject 
+    type: :service
+    collectable: false
+    tags: 
+    - :service
+    params: 
+      :check: *id003
+      :ensure: :stopped
+      :loglevel: :notice
+      :provider: :redhat
+      :enable: :true
+      :pattern: iptables
+      :path: 
+      - /etc/init.d
+    name: iptables
+  - !ruby/object:Puppet::TransObject 
+    type: :service
+    collectable: false
+    tags: 
+    - :service
+    params: 
+      :check: *id003
+      :ensure: :running
+      :loglevel: :notice
+      :provider: :redhat
+      :enable: :true
+      :pattern: syslog
+      :path: 
+      - /etc/init.d
+    name: syslog
+  - !ruby/object:Puppet::TransObject 
+    type: :service
+    collectable: false
+    tags: 
+    - :service
+    params: 
+      :check: *id003
+      :ensure: :stopped
+      :loglevel: :notice
+      :provider: :redhat
+      :enable: :true
+      :pattern: rpcgssd
+      :path: 
+      - /etc/init.d
+    name: rpcgssd
+  - !ruby/object:Puppet::TransObject 
+    type: :service
+    collectable: false
+    tags: 
+    - :service
+    params: 
+      :check: *id003
+      :ensure: :stopped
+      :loglevel: :notice
+      :provider: :redhat
+      :enable: :false
+      :pattern: rpcsvcgssd
+      :path: 
+      - /etc/init.d
+    name: rpcsvcgssd
+  - !ruby/object:Puppet::TransObject 
+    type: :service
+    collectable: false
+    tags: 
+    - :service
+    params: 
+      :check: *id003
+      :ensure: :stopped
+      :loglevel: :notice
+      :provider: :redhat
+      :enable: :true
+      :pattern: ip6tables
+      :path: 
+      - /etc/init.d
+    name: ip6tables
+  - !ruby/object:Puppet::TransObject 
+    type: :service
+    collectable: false
+    tags: 
+    - :service
+    params: 
+      :check: *id003
+      :ensure: :stopped
+      :loglevel: :notice
+      :provider: :redhat
+      :enable: :true
+      :pattern: network
+      :path: 
+      - /etc/init.d
+    name: network
+  - !ruby/object:Puppet::TransObject 
+    type: :service
+    collectable: false
+    tags: 
+    - :service
+    params: 
+      :check: *id003
+      :ensure: :stopped
+      :loglevel: :notice
+      :provider: :redhat
+      :enable: :false
+      :pattern: netplugd
+      :path: 
+      - /etc/init.d
+    name: netplugd
+  - !ruby/object:Puppet::TransObject 
+    type: :service
+    collectable: false
+    tags: 
+    - :service
+    params: 
+      :check: *id003
+      :ensure: :stopped
+      :loglevel: :notice
+      :provider: :redhat
+      :enable: :false
+      :pattern: killall
+      :path: 
+      - /etc/init.d
+    name: killall
+  - !ruby/object:Puppet::TransObject 
+    type: :service
+    collectable: false
+    tags: 
+    - :service
+    params: 
+      :check: *id003
+      :ensure: :stopped
+      :loglevel: :notice
+      :provider: :redhat
+      :enable: :true
+      :pattern: kudzu
+      :path: 
+      - /etc/init.d
+    name: kudzu
+  - !ruby/object:Puppet::TransObject 
+    type: :service
+    collectable: false
+    tags: 
+    - :service
+    params: 
+      :check: *id003
+      :ensure: :stopped
+      :loglevel: :notice
+      :provider: :redhat
+      :enable: :true
+      :pattern: netfs
+      :path: 
+      - /etc/init.d
+    name: netfs
+  - !ruby/object:Puppet::TransObject 
+    type: :service
+    collectable: false
+    tags: 
+    - :service
+    params: 
+      :check: *id003
+      :ensure: :running
+      :loglevel: :notice
+      :provider: :redhat
+      :enable: :true
+      :pattern: mcstrans
+      :path: 
+      - /etc/init.d
+    name: mcstrans
+  - !ruby/object:Puppet::TransObject 
+    type: :service
+    collectable: false
+    tags: 
+    - :service
+    params: 
+      :check: *id003
+      :ensure: :stopped
+      :loglevel: :notice
+      :provider: :redhat
+      :enable: :true
+      :pattern: haldaemon
+      :path: 
+      - /etc/init.d
+    name: haldaemon
+  - !ruby/object:Puppet::TransObject 
+    type: :service
+    collectable: false
+    tags: 
+    - :service
+    params: 
+      :check: *id003
+      :ensure: :running
+      :loglevel: :notice
+      :provider: :redhat
+      :enable: :true
+      :pattern: restorecond
+      :path: 
+      - /etc/init.d
+    name: restorecond
+  - !ruby/object:Puppet::TransObject 
+    type: :service
+    collectable: false
+    tags: 
+    - :service
+    params: 
+      :check: *id003
+      :ensure: :stopped
+      :loglevel: :notice
+      :provider: :redhat
+      :enable: :false
+      :pattern: nfs
+      :path: 
+      - /etc/init.d
+    name: nfs
+  - !ruby/object:Puppet::TransObject 
+    type: :service
+    collectable: false
+    tags: 
+    - :service
+    params: 
+      :check: *id003
+      :ensure: :stopped
+      :loglevel: :notice
+      :provider: :redhat
+      :enable: :false
+      :pattern: functions
+      :path: 
+      - /etc/init.d
+    name: functions
+  - !ruby/object:Puppet::TransObject 
+    type: :service
+    collectable: false
+    tags: 
+    - :service
+    params: 
+      :check: *id003
+      :ensure: :stopped
+      :loglevel: :notice
+      :provider: :redhat
+      :enable: :true
+      :pattern: nfslock
+      :path: 
+      - /etc/init.d
+    name: nfslock
+  - !ruby/object:Puppet::TransObject 
+    type: :service
+    collectable: false
+    tags: 
+    - :service
+    params: 
+      :check: *id003
+      :ensure: :running
+      :loglevel: :notice
+      :provider: :redhat
+      :enable: :true
+      :pattern: sshd
+      :path: 
+      - /etc/init.d
+    name: sshd
+  - !ruby/object:Puppet::TransObject 
+    type: :service
+    collectable: false
+    tags: 
+    - :service
+    params: 
+      :check: *id003
+      :ensure: :stopped
+      :loglevel: :notice
+      :provider: :redhat
+      :enable: :true
+      :pattern: messagebus
+      :path: 
+      - /etc/init.d
+    name: messagebus
+  - !ruby/object:Puppet::TransObject 
+    type: :service
+    collectable: false
+    tags: 
+    - :service
+    params: 
+      :check: *id003
+      :ensure: :stopped
+      :loglevel: :notice
+      :provider: :redhat
+      :enable: :false
+      :pattern: single
+      :path: 
+      - /etc/init.d
+    name: single
+  - !ruby/object:Puppet::TransObject 
+    type: :service
+    collectable: false
+    tags: 
+    - :service
+    params: 
+      :check: *id003
+      :ensure: :stopped
+      :loglevel: :notice
+      :provider: :redhat
+      :enable: :true
+      :pattern: postgresql
+      :path: 
+      - /etc/init.d
+    name: postgresql
+  - !ruby/object:Puppet::TransObject 
+    type: :service
+    collectable: false
+    tags: 
+    - :service
+    params: 
+      :check: *id003
+      :ensure: :stopped
+      :loglevel: :notice
+      :provider: :redhat
+      :enable: :true
+      :pattern: puppet
+      :path: 
+      - /etc/init.d
+    name: puppet
+  - !ruby/object:Puppet::TransObject 
+    type: :service
+    collectable: false
+    tags: 
+    - :service
+    params: 
+      :check: *id003
+      :ensure: :running
+      :loglevel: :notice
+      :provider: :redhat
+      :enable: :true
+      :pattern: portmap
+      :path: 
+      - /etc/init.d
+    name: portmap
+  - !ruby/object:Puppet::TransObject 
+    type: :service
+    collectable: false
+    tags: 
+    - :service
+    params: 
+      :check: *id003
+      :ensure: :stopped
+      :loglevel: :notice
+      :provider: :redhat
+      :enable: :false
+      :pattern: saslauthd
+      :path: 
+      - /etc/init.d
+    name: saslauthd
+  - !ruby/object:Puppet::TransObject 
+    type: :service
+    collectable: false
+    tags: 
+    - :service
+    params: 
+      :check: *id003
+      :ensure: :stopped
+      :loglevel: :notice
+      :provider: :redhat
+      :enable: :true
+      :pattern: autofs
+      :path: 
+      - /etc/init.d
+    name: autofs
+  - !ruby/object:Puppet::TransObject 
+    type: :service
+    collectable: false
+    tags: 
+    - :service
+    params: 
+      :check: *id003
+      :ensure: :running
+      :loglevel: :notice
+      :provider: :redhat
+      :enable: :true
+      :pattern: postfix
+      :path: 
+      - /etc/init.d
+    name: postfix
+  - !ruby/object:Puppet::TransObject 
+    type: :service
+    collectable: false
+    tags: 
+    - :service
+    params: 
+      :check: *id003
+      :ensure: :running
+      :loglevel: :notice
+      :provider: :redhat
+      :enable: :true
+      :pattern: httpd
+      :path: 
+      - /etc/init.d
+    name: httpd

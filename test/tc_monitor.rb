@@ -168,4 +168,16 @@ class TestMonitor < Test::Unit::TestCase
                         :ensure => :mounted)
     end
 
+    # httpd touches some crazy files, make sure they are excluded
+    def test_httpd
+        s = use_session("httpd")
+        digest = Cft::Puppet::Digest.new(s)
+        trans = digest.transportable
+        puts trans.to_manifest
+        assert_equal(1, trans.length)
+        assert_resource(trans, :service, 'httpd',
+                        :ensure => "running",
+                        :enable => :true)
+    end
+
 end

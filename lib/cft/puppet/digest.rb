@@ -271,6 +271,7 @@ module Cft::Puppet
             end
 
             d.ignore "/etc/rc?.d/*", "/etc/rc.d/rc?.d/*"
+            d.ignore "/var/run/**"
         end
 
         digester(:user) do |d|
