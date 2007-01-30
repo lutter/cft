@@ -266,3 +266,4 @@ end
 
 require 'cft/puppet'
 require 'cft/commands'
+require 'cft/rpm'

@@ -5,3 +5,4 @@ require 'test/unit'
 
 require 'tc_monitor'
 require 'tc_session'
+require 'tc_rpm'
