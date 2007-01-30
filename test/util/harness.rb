@@ -82,7 +82,8 @@ module Cft
         end
 
         def datafile(path)
-            File::join(File::dirname(__FILE__), "..", "data", path)
+            p = File::join(File::dirname(__FILE__), "..", "data", path)
+            return File::expand_path(p)
         end
 
         # Create an fresh session
