@@ -173,7 +173,6 @@ class TestMonitor < Test::Unit::TestCase
         s = use_session("httpd")
         digest = Cft::Puppet::Digest.new(s)
         trans = digest.transportable
-        puts trans.to_manifest
         assert_equal(1, trans.length)
         assert_resource(trans, :service, 'httpd',
                         :ensure => "running",
