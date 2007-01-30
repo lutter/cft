@@ -5,12 +5,25 @@ Installation
 cft is written in Ruby, so you need a reasonably recent version of ruby
 installed. I use ruby-1.8.5, but older versions should be ok, too.
 
-You need ruby-fam and gamin installed; you can get ruby-fam from
-  SRPM: http://people.redhat.com/dlutter/yum/SRPMS/ruby-fam-0.2.0-1.src.rpm
-  binary RPM: dig around in http://people.redhat.com/dlutter/yum/
-  source: http://www.pablotron.org/software/fam-ruby/
+Prerequisites
+=============
 
-You need the puppet client installed on the machine running cft
+* ruby-fam and gamin/fam
+  Available from
+    SRPM: http://people.redhat.com/dlutter/yum/SRPMS/
+    binary RPM: dig around in http://people.redhat.com/dlutter/yum/
+    source: http://www.pablotron.org/software/fam-ruby/
+  gamin (or fam) should be part of your distro
+
+* ruby-rpm
+  Available from
+    SRPM: http://people.redhat.com/dlutter/yum/SRPMS/
+    binary RPM: dig around in http://people.redhat.com/dlutter/yum/
+    source: http://rubyforge.org/projects/ruby-rpm/
+
+* puppet client
+  Available from http://reductivelabs.com/projects/puppet
+  Should be in most major distributions by now
 
 There's no installation support yet for cft; to run it from a source
 checkout, all you need to do is
