@@ -158,6 +158,7 @@ module Cft::Commands
 
             def execute(session, args)
                 Cft::Puppet::genstate(session.path(:pp_before))
+                Cft::RPM::genstate(session.path(:rpm_before))
                 monitor = false
                 oldusr1 = trap("SIGUSR1") do
                     monitor = true
@@ -211,6 +212,7 @@ module Cft::Commands
                     monitor = true
                 end
                 Cft::Puppet::genstate(session.path(:pp_after))
+                Cft::RPM::genstate(session.path(:rpm_after))
                 File::delete(session.pid)
                 slept = 0
                 while not monitor and slept < 10

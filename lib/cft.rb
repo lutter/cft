@@ -45,6 +45,8 @@ module Cft
             :ppid => "ppid",
             :pp_before => "before.yaml", # List of puppet types
             :pp_after => "after.yaml",   # as transportables in yaml
+            :rpm_before => "rpm_before.txt", # Dump of installed rpm's
+            :rpm_after => "rpm_after.txt",   # before and after
             :stdout => "stdout",         # I/O for the daemon
             :stderr => "stderr",
             :orig => "orig",             # Dir where to store original files
