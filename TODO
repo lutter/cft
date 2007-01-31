@@ -1,3 +1,6 @@
+Todo
+====
+
 * Watch the rpm db
 
 * Use rsync instead of homegrown tree-copying code ?
@@ -19,7 +22,7 @@
   similar. The essential issue though is that there is no telling how long
   after gamin gets a request it will actually report events on them.
 
-* Replace gamin with somethign else
+* Replace gamin with something else
 
   Gamin causes weird races since there's no telling when it starts to
   actually monitor a dir. All we really need is some mechanism to tell us
@@ -27,11 +30,12 @@
   gamin is that we don't have to stat a huge amount of files, though that
   might turn out to be more robust than Gamin is.
 
+  This would be yet another great use for unionfs; or possibly a logging FUSE.
+
 * Resume a session
   Finished a session, realize more work is needed, allow to start the
   session again seamlessly
   Enough to just append to various output files ?
-
 
 * RPM based session
   Look at installed package(s) and their config files (or all files);
@@ -45,7 +49,9 @@
 * Add a way to document better what a session is about
 
   Jim Meyering suggests that users should be able to say sth like
-  cft begin postfix "Install postfix and set it up to relay to mail.example.com"
+  cft begin postfix "Install postfix and set it up to relay to
+  mail.example.com"
+
 Small fixes
 ===========
 
