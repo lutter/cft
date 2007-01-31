@@ -1,0 +1,4 @@
+0.1.0 2007-01-12
+  - First release, ever
+  - Support most simple puppet types, except for cron, sshkey, and package
+  - Produces manifest and/or tarball (bundle) of changes
