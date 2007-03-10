@@ -1,5 +1,8 @@
 %{!?ruby_sitelibdir: %define ruby_sitelibdir %(ruby -rrbconfig -e 'puts Config::CONFIG["sitelibdir"]')}
 
+%define has_ruby_abi 0%{?fedora:%fedora} >= 5 || 0%{?rhel:%rhel} >= 5
+%define has_ruby_noarch %has_ruby_abi
+
 Summary: Config file tracker
 Name: cft
 
@@ -10,12 +13,17 @@ License: GPL
 URL: http://cft.et.redhat.com/
 Source: http://cft.et.redhat.com/download/cft-%{version}.tgz
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
-Requires: ruby ruby(abi) = 1.8
+Requires: ruby
+%if %has_ruby_abi
+Requires: ruby(abi) = 1.8
+%endif
 # FIXME: what version ?
 Requires: puppet
 Requires: ruby-fam
 BuildRequires: ruby 
+%if %has_ruby_noarch
 BuildArch: noarch
+%endif
 Provides: ruby(cft) = %{version}
 
 %description
