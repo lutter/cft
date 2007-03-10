@@ -117,7 +117,7 @@ module Cft
             res = trans.find_obj(type, name)
             assert_not_nil(res, "Could not find #{type}[#{name}]")
             hash.each do |k, v|
-                assert_equal(v, res[k])
+                assert_equal(v, res[k], "Property #{k} for #{type}[#{name}]")
             end
         end
 
