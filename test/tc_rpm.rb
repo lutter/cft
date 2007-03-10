@@ -39,10 +39,36 @@ class TestMonitor < Test::Unit::TestCase
         assert_pkg_evr("0:5.1.19.0.2-1", u["nash.i386"])
     end
 
+    def test_transdiff
+        before = Cft::RPM::readstate(datafile("rpm/pkgs.txt"))
+        after = Cft::RPM::readstate(datafile("rpm/pkgs-after.txt"))
+        tb_bef, tb_aft = Cft::RPM::transdiff(before, after)
+        exp_bef = { 
+            'dhcpv6_client.i386' => '0:0.10-32.fc6',
+            'mkinitrd.i386' => '0:5.1.19-1',
+            'nash.i386' => '0:5.1.19-1'
+        }
+        exp_aft = {
+            'mkinitrd.i386' => '0:5.1.19.0.2-1',
+            'nash.i386' => '0:5.1.19.0.2-1',
+            'gamin.i386' => '0:0.1.7-8.fc6'
+        }
+        assert_package_bucket(exp_bef, tb_bef)
+        assert_package_bucket(exp_aft, tb_aft)
+    end
+
     private
     def assert_pkg_evr(vre, pkg)
         assert_not_nil(pkg)
         assert_equal(1, pkg.size)
         assert_equal(vre, pkg[0].to_vre)
+    end
+    
+    def assert_package_bucket(exp, bucket)
+        assert_equal(exp.size, bucket.flatten.size)
+        exp.each do |na, v|
+            assert_resource(bucket, :package, na,
+                            :ensure => v)
+        end
     end
 end

@@ -28,6 +28,7 @@ module Cft::RPM
     # list of RPM::Version
     def self.readstate(fname)
         result = {}
+        return result unless File::exist?(fname)
         File::open(fname, "r") do |f|
             f.each_line do |l|
                 na, e, v, r = l.split
@@ -52,15 +53,48 @@ module Cft::RPM
             elsif ! after.key?(na)
                 erased[na] = before[na]
             else
-                # FIXME: We can't just say after[na] - before[na]
-                # since that uses a hash internally, and RPM::Version
-                # does not fulfill v1 == v2 iff v1.hash == v2.hash
-                # (though ruby does not require that, strictly speaking)
-                upd = after[na].reject{ |v| before[na].include?(v) }
+                upd = setdiff(after[na], before[na])
                 updated[na] = upd unless upd.empty?
             end
         end
         return { :erased => erased, :installed => installed,
             :updated => updated }
+    end
+
+    # Return the diff between the two package sets +before+ and +after+ as 
+    # two +TransBuckets+. Each bucket contains package +TransObjects+
+    def self.transdiff(before, after)
+        tbef, taft = [ "package_before", "package_after"].collect do |n|
+            bucket = Puppet::TransBucket.new
+            bucket.keyword = :manifest
+            bucket.type = n
+            bucket
+        end
+        (before.keys + after.keys).uniq.each do |na|
+            if ! before.key?(na)
+                push_into_bucket(taft, na, after[na])
+            elsif ! after.key?(na)
+                push_into_bucket(tbef, na, before[na])
+            else
+                push_into_bucket(taft, na, setdiff(after[na], before[na]))
+                push_into_bucket(tbef, na, setdiff(before[na], after[na]))
+            end
+        end
+        return [tbef, taft]
+    end
+
+    private
+    def self.push_into_bucket(bucket, na, versions)
+        versions.each do |v|
+            tobj = Puppet::TransObject.new(na, :package)
+            tobj[:ensure] = v.to_vre
+            bucket << tobj
+        end
+    end
+
+    # Same as +a - b+, but works even if the elements in +a+ and +b+
+    # don't fulfill v1 == v2 iff v1.hash == v2.hash
+    def self.setdiff(a, b)
+        a.reject { |e| b.include?(e) }
     end
 end

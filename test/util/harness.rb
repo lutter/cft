@@ -47,7 +47,7 @@ module Cft
                 system("rm -rf #{@tmpdir}")
             end
             ::Puppet::Type.allclear
-            ::Puppet::Storage.clear
+            # ::Puppet::Storage.clear
             ::Puppet.clear
         end
 
@@ -115,7 +115,7 @@ module Cft
         # the values from _hash_
         def assert_resource(trans, type, name, hash)
             res = trans.find_obj(type, name)
-            assert_not_nil(res)
+            assert_not_nil(res, "Could not find #{type}[#{name}]")
             hash.each do |k, v|
                 assert_equal(v, res[k])
             end
