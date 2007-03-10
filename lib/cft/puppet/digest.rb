@@ -169,7 +169,7 @@ module Cft::Puppet
 
             def scrub_attr!(trans)
                 type.eachattr do |attr, kind|
-                    trans.delete(attr.name) if kind != :state
+                    trans.delete(attr.name) if kind != :property
                 end
                 trans
             end
@@ -192,10 +192,9 @@ module Cft::Puppet
                     # Dealing with :source is a PITA; setting it too early
                     # confuses puppet enormously
                     obj = type.create({ :name => digest.session.source(path) })
-                
-                    type.validstates.each { |n|
+                    type.validproperties.each { |n|
                         unless skipstate?(n) || obj.should(n)
-                            obj.newstate(n)
+                            obj.newattr(n)
                         end
                     }
                     obj.retrieve
