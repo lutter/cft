@@ -18,7 +18,10 @@ module Cft::RPM
                 end
             end
         ensure
+            # FIXME: Somehow we are not closing the rpmdb
+            # right; it stil seems to think we have a lock
             db.close() unless db.nil?
+            db = nil
         end
         return nil
     end
