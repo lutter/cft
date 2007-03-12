@@ -179,4 +179,21 @@ class TestMonitor < Test::Unit::TestCase
                         :enable => :true)
     end
 
+    def test_rpm_basic
+        s = use_session("rpm-basic")
+        digest = Cft::Puppet::Digest.new(s)
+        trans = digest.transportable
+        assert_equal(4, trans.length)
+        # Uninstalled
+        assert_resource(trans, :package, "dhcpv6_client.i386",
+                        :ensure => :absent)
+        # Both updated
+        assert_resource(trans, :package, "mkinitrd.i386",
+                        :ensure => "0:5.1.19.0.2-1")
+        assert_resource(trans, :package, "nash.i386",
+                        :ensure => "0:5.1.19.0.2-1")
+        # Installed
+        assert_resource(trans, :package, "gamin.i386",
+                        :ensure => "0:0.1.7-8.fc6")
+    end
 end

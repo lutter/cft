@@ -12,6 +12,7 @@ module Cft::Puppet
         def before
             if @before.nil?
                 @before = @session.trans(:before)
+                @before.push(packages(:before))
             end
             @before
         end
@@ -19,8 +20,24 @@ module Cft::Puppet
         def after
             if @after.nil?
                 @after = @session.trans(:after)
+                @after.push(packages(:after))
             end
             @after
+        end
+
+        def packages(kind)
+            if @pkg_bef.nil? || @pkg_after.nil?
+                bef = Cft::RPM::readstate(session.path(:rpm_before))
+                aft = Cft::RPM::readstate(session.path(:rpm_after))
+                @pkg_bef, @pkg_after = Cft::RPM::transdiff(bef, aft)
+            end
+            if kind == :before
+                return @pkg_bef
+            elsif kind == :after
+                return @pkg_after
+            else
+                raise Cft::InternalError, "Unknown package set #{kind}"
+            end
         end
 
         def obj_seen?(type, name)
