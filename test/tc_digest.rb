@@ -3,7 +3,7 @@ require File::join(File::dirname(__FILE__), "util/harness")
 require 'cft'
 require 'yaml'
 
-class TestMonitor < Test::Unit::TestCase
+class TestDigest < Test::Unit::TestCase
 
     include Cft::Harness
 
