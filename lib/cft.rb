@@ -175,21 +175,7 @@ module Cft
             @log.close()
             @fam.close()
             
-            # Figure out what was changed and squirrel that away
-            tgt = session.source
-            unless File::directory?(tgt)
-                FileUtils::mkdir_p(tgt)
-            end
-            
-            @changes.keys.each do |c|
-                Cft::log("#{c} :: #{@changes[c].join(' ')}")
-                if File::exist?(c)
-                    mkpath(c, tgt)
-                    d = File::join(tgt, c)
-                    Cft::log("cp -pr #{c} #{d}")
-                    FileUtils::cp_r(c, d, :preserve => true)
-                end
-            end
+            preserve_changes
         end
      
         def unmonitor_directory(dir)
@@ -232,6 +218,26 @@ module Cft
             end
             # FIXME: We should try to preserve owenrship/perms/mtime for the
             # directories
+        end
+
+        def preserve_changes()
+            # Figure out what was changed and squirrel that away
+            tgt = session.source
+            unless File::directory?(tgt)
+                FileUtils::mkdir_p(tgt)
+            end
+            
+            @changes.keys.each do |c|
+                Cft::log("#{c} :: #{@changes[c].join(' ')}")
+                if File::exist?(c)
+                    mkpath(c, tgt)
+                    d = File::join(tgt, c)
+                    Cft::log("cp -pr #{c} #{d}")
+                    # FileUtils::cp_r barfs when you try to copy symlinks
+                    # which might become dangling and you use :preserve
+                    system("cp -prT #{c} #{d}")
+                end
+            end
         end
     end
 
