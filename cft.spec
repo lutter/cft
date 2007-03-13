@@ -7,7 +7,7 @@ Summary: Config file tracker
 Name: cft
 
 Version: 0.1.0
-Release: 2%{?dist}
+Release: 3%{?dist}
 Group: System Environment/Base
 License: GPL
 URL: http://cft.et.redhat.com/
@@ -61,6 +61,9 @@ cp -pr lib/* %{buildroot}%{ruby_sitelibdir}
 %{ruby_sitelibdir}/cft
 
 %changelog
+* Tue Mar 13 2007 David Lutterkort <dlutter@redhat.com> - 0.1.0-3
+- Fix ruby(abi) dependency so that it builds on RHEL4
+
 * Thu Jan 25 2007 David Lutterkort <dlutter@redhat.com> - 0.1.0-2
 - Fix typo in prep
 
