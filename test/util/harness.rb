@@ -66,6 +66,12 @@ module Cft
             File::join(tmpdir, "root")
         end
 
+        def mktmpdir(path)
+            dir = File::join(tmpdir, path)
+            FileUtils::mkdir_p(dir)
+            return dir
+        end
+
         def populate(map)
             map.each do |dst, src|
                 src = datafile(src)

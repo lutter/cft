@@ -167,8 +167,13 @@ module Cft::Commands
                     $stdout = File::open(session.path(:stdout), "w")
                     $stderr = File::open(session.path(:stderr), "w")
                     $stdin = File::open("/dev/null", "r")
-                    m = Cft::Monitor.new(session, roots)
-                    m.monitor()
+                    begin
+                        m = Cft::Monitor.new(session, roots)
+                        m.monitor()
+                    rescue => detail
+                        $stderr.puts "Monitoring failed: #{detail} at"
+                        $stderr.puts detail.backtrace
+                    end
                     # The process stopping us by removing the pid file
                     # leaves its pid in ppid. Tell it that we are done
                     ppid = session.path(:ppid)

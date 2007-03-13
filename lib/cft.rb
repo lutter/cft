@@ -125,13 +125,13 @@ module Cft
             # Store changes to files
             @changes = {}
             @filters = FILTERS
+            @log = File::open(session.path(:changes), "w")
         end
         
         def monitor()
             @fam = Fam::Connection.new(@session.name)
             @fam.no_exists()
-            @log = File::open(session.path(:changes), "w")
-        
+
             File::open(@lock, "w") do |f|
                 f.puts(Process::pid)
             end
@@ -213,7 +213,7 @@ module Cft
                 src = File::dirname(src)
             end
             tgt = File::join(dst, src)
-            if ! File::directory?(tgt)
+            unless File::directory?(tgt) || File::symlink?(tgt)
                 FileUtils::mkpath(tgt)
             end
             # FIXME: We should try to preserve owenrship/perms/mtime for the
