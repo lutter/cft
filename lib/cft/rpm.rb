@@ -86,6 +86,15 @@ module Cft::RPM
         return [tbef, taft]
     end
 
+    # Return a list of the packages that own the file +fname+
+    def self.byfile(db, fname)
+        fname = fname.sub(%r@#{File::SEPARATOR}$@, "")
+        iter = db.init_iterator(nil, nil)
+        pkgs = iter.regexp(RPM::TAG_BASENAMES, RPM::MIRE_DEFAULT, 
+                           File::basename(fname))
+        return pkgs.select { |k| k.files.find { |f| f.path == fname } }
+    end
+
     private
     def self.push_into_bucket(bucket, na, versions)
         versions.each do |v|

@@ -57,6 +57,20 @@ class TestMonitor < Test::Unit::TestCase
         assert_package_bucket(exp_aft, tb_aft)
     end
 
+    def test_byfile
+        db = RPM::DB::open(false, nil)
+        pkgs = Cft::RPM::byfile(db, "/bin/sh")
+        assert_equal(1, pkgs.size)
+        assert_equal('bash', pkgs[0].name)
+        
+        pkgs = Cft::RPM::byfile(db, "/etc/sysconfig/")
+        assert_equal(1, pkgs.size)
+        assert_equal('filesystem', pkgs[0].name)
+        
+        pkgs = Cft::RPM::byfile(db, " /not /a /file")
+        assert_equal(0, pkgs.size)
+    end
+
     private
     def assert_pkg_evr(vre, pkg)
         assert_not_nil(pkg)
