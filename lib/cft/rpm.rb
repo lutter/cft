@@ -122,6 +122,7 @@ module Cft::RPM
         end
 
         def self.readlist(fname)
+            return [] unless File::exist?(fname)
             File::open(fname, "r") { |f| YAML::load(f) }
         end
     end

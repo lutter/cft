@@ -125,6 +125,15 @@ class TestMonitor < Test::Unit::TestCase
         assert_equal(0755, pkgs[2].file.mode)
     end
 
+    def test_filelist_not_there
+        fname = File::join(tmpdir, "no such file")
+        pkgs = nil
+        assert_nothing_raised {
+            pkgs = Cft::RPM::PackageFile::readlist(fname)
+        }
+        assert_equal([], pkgs)
+    end
+
     private
     def assert_pkg_evr(vre, pkg)
         assert_not_nil(pkg)
