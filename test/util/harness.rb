@@ -104,8 +104,11 @@ module Cft
             result = Cft::Session.new(name)
             cmd = find_cmd(:erase)
             cmd.execute(result, [])
-            FileUtils::cp_r(datafile(File::join("sessions", name)),
-                            Cft::OUTPUT_DIR, :preserve => true)
+            src = datafile(File::join("sessions", name))
+            dst = Cft::OUTPUT_DIR
+            system("cp -pr #{src} #{dst}")
+            #FileUtils::cp_r(datafile(File::join("sessions", name)),
+            #                Cft::OUTPUT_DIR, :preserve => true)
             result
         end
 
