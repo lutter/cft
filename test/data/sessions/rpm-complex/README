@@ -1,0 +1,9 @@
+Session:
+1) yum install httpd (which had previously not been installed and 
+   caused a number of other packages to be pulled in)
+2) vi /etc/httpd/conf.d/welcome.conf
+
+Test using this session should demonstrate that we can
+a) avoid reporting config files installed by the rpm as changed when they
+   are still identical to the rpm provided ones
+b) reduce the set of installed rpm's to the leaf ones

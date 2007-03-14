@@ -30,6 +30,10 @@ module Puppet
             flatten.find { |to| to.type == type && to.name == name }
         end
 
+        def find_all(type)
+            flatten.select { |to| to.type == type }
+        end
+
         def get_obj(type, name, params = {})
             obj = find_obj(type, name)
             unless obj

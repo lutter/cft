@@ -122,7 +122,7 @@ module Cft
         # Assert that the resource _type_[_name_] in _trans_
         # exists and has the attributes listed in _hash_ with
         # the values from _hash_
-        def assert_resource(trans, type, name, hash)
+        def assert_resource(trans, type, name, hash = {})
             res = trans.find_obj(type, name)
             assert_not_nil(res, "Could not find #{type}[#{name}]")
             hash.each do |k, v|

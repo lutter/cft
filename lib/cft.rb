@@ -21,7 +21,8 @@ module Cft
                '*~',                 # emacs backup files
                '/etc/httpd/run/**',  # symlink to /var/run
                '/etc/httpd/logs/**', # symlink to /var/log/httpd
-               '/etc/printcap'       # cups keeps rewriting this
+               '/etc/printcap',      # cups keeps rewriting this
+               '/etc/ld.so.cache'    # gets recreated a lot
               ]
 
     # Markers for the changes applied to files
@@ -47,6 +48,7 @@ module Cft
             :pp_after => "after.yaml",   # as transportables in yaml
             :rpm_before => "rpm_before.txt", # Dump of installed rpm's
             :rpm_after => "rpm_after.txt",   # before and after
+            :rpm_files => "rpm_files.yaml", # RPM's info on changed files
             :stdout => "stdout",         # I/O for the daemon
             :stderr => "stderr",
             :orig => "orig",             # Dir where to store original files
@@ -238,6 +240,8 @@ module Cft
                     system("cp -prT #{c} #{d}")
                 end
             end
+            Cft::RPM::PackageFile::genlist(session.path(:rpm_files), 
+                                           @changes.keys)
         end
     end
 

@@ -196,4 +196,37 @@ class TestDigest < Test::Unit::TestCase
         assert_resource(trans, :package, "gamin.i386",
                         :ensure => "0:0.1.7-8.fc6")
     end
+
+    def test_rpm_complex
+        s = use_session("rpm-complex")
+        digest = Cft::Puppet::Digest.new(s)
+        trans = digest.transportable
+        assert_equal(1, trans.find_all(:service).size)
+        assert_resource(trans, :service, 'httpd',
+                        :ensure => :running,
+                        :enable => :false)
+        assert_equal(1, trans.find_all(:user).size)
+        assert_resource(trans, :user, 'apache',
+                        :comment => 'Apache',
+                        :home => '/var/www',
+                        :shell => '/sbin/nologin',
+                        :uid => 48,
+                        :ensure => :present)
+        assert_equal(1, trans.find_all(:group).size)
+        assert_resource(trans, :group, 'apache',
+                        :ensure => :present,
+                        :gid => 48)
+        # FIXME: Eventually, we should only get one package (httpd) here
+        # Right now, we also see the dependencies that got pulled in
+        pkgs = trans.find_all(:package)
+        assert_equal(5, pkgs.size)
+        assert_resource(trans, :package, 'httpd.i386')
+        # FIXME: We should only get one file (welcome.conf)
+        # but we also get the /etc/httpd dir and /etc/init.d/httpd
+        # since we are not smart about symlinks
+        assert_equal(3, trans.find_all(:file).size)
+        assert_resource(trans, :file, '/etc/httpd/conf.d/welcome.conf',
+                        :ensure => :file,
+                        :mode => "0644")
+    end
 end

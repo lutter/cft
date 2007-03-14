@@ -1,0 +1,204 @@
+Created /var/run/yum.pid 
+Changed /var/run/yum.pid
+Created /etc/ld.so.cache~ 
+Changed /etc/ld.so.cache~
+Deleted /etc/ld.so.cache~
+Created /etc/ld.so.cache 
+Created /etc/mailcap;45f849c6 
+Changed /etc/mailcap;45f849c6
+Deleted /etc/mailcap;45f849c6
+Created /etc/mailcap 
+Changed /etc/mailcap
+Created /etc/mime.types;45f849c6 
+Changed /etc/mime.types;45f849c6
+Deleted /etc/mime.types;45f849c6
+Created /etc/mime.types 
+Changed /etc/mime.types
+Created /etc/ld.so.cache~ 
+Changed /etc/ld.so.cache~
+Deleted /etc/ld.so.cache~
+Created /etc/ld.so.cache 
+Created /etc/ld.so.cache~ 
+Changed /etc/ld.so.cache~
+Deleted /etc/ld.so.cache~
+Created /etc/ld.so.cache 
+Created /etc/passwd.1697 
+Changed /etc/passwd.1697
+Created /etc/passwd.lock 
+Deleted /etc/passwd.1697
+Created /etc/shadow.1697 
+Changed /etc/shadow.1697
+Created /etc/shadow.lock 
+Deleted /etc/shadow.1697
+Created /etc/group.1697 
+Changed /etc/group.1697
+Created /etc/group.lock 
+Deleted /etc/group.1697
+Created /etc/gshadow.1697 
+Changed /etc/gshadow.1697
+Created /etc/gshadow.lock 
+Deleted /etc/gshadow.1697
+Changed /etc/passwd-
+Created /etc/passwd+ 
+Changed /etc/passwd+
+Deleted /etc/passwd+
+Created /etc/passwd 
+Changed /etc/shadow-
+Created /etc/shadow+ 
+Changed /etc/shadow+
+Deleted /etc/shadow+
+Created /etc/shadow 
+Changed /etc/group-
+Created /etc/group+ 
+Changed /etc/group+
+Deleted /etc/group+
+Created /etc/group 
+Changed /etc/gshadow-
+Created /etc/gshadow+ 
+Changed /etc/gshadow+
+Deleted /etc/gshadow+
+Created /etc/gshadow 
+Deleted /etc/shadow.lock
+Deleted /etc/passwd.lock
+Deleted /etc/group.lock
+Deleted /etc/gshadow.lock
+Created /etc/httpd 
+Changed /etc/httpd
+Created /etc/logrotate.d/httpd;45f849c6 
+Changed /etc/logrotate.d/httpd;45f849c6
+Deleted /etc/logrotate.d/httpd;45f849c6
+Created /etc/logrotate.d/httpd 
+Changed /etc/logrotate.d/httpd
+Created /etc/rc.d/init.d/httpd;45f849c6 
+Created /etc/init.d/httpd;45f849c6 
+Changed /etc/rc.d/init.d/httpd;45f849c6
+Changed /etc/init.d/httpd;45f849c6
+Deleted /etc/rc.d/init.d/httpd;45f849c6
+Deleted /etc/init.d/httpd;45f849c6
+Created /etc/rc.d/init.d/httpd 
+Created /etc/init.d/httpd 
+Changed /etc/rc.d/init.d/httpd
+Changed /etc/init.d/httpd
+Changed /etc/rc.d/init.d/httpd
+Changed /etc/init.d/httpd
+Changed /etc/rc.d/init.d/httpd
+Changed /etc/init.d/httpd
+Changed /etc/rc.d/init.d/httpd
+Changed /etc/init.d/httpd
+Created /etc/sysconfig/httpd;45f849c6 
+Changed /etc/sysconfig/httpd;45f849c6
+Deleted /etc/sysconfig/httpd;45f849c6
+Created /etc/sysconfig/httpd 
+Changed /etc/sysconfig/httpd
+Created /etc/rc0.d/K15httpd 
+Created /etc/rc.d/rc0.d/K15httpd 
+Created /etc/rc.d/rc1.d/K15httpd 
+Created /etc/rc1.d/K15httpd 
+Created /etc/rc.d/rc2.d/K15httpd 
+Created /etc/rc2.d/K15httpd 
+Created /etc/rc.d/rc3.d/K15httpd 
+Created /etc/rc3.d/K15httpd 
+Created /etc/rc.d/rc4.d/K15httpd 
+Created /etc/rc4.d/K15httpd 
+Created /etc/rc.d/rc5.d/K15httpd 
+Created /etc/rc5.d/K15httpd 
+Created /etc/rc6.d/K15httpd 
+Created /etc/rc.d/rc6.d/K15httpd 
+Deleted /etc/httpd/run/yum.pid
+Deleted /var/run/yum.pid
+Created /etc/httpd/conf.d/.welcome.conf.swp 
+Created /etc/httpd/conf.d/.welcome.conf.swx 
+Deleted /etc/httpd/conf.d/.welcome.conf.swx
+Deleted /etc/httpd/conf.d/.welcome.conf.swp
+Changed /etc/httpd/conf.d/.welcome.conf.swp
+Changed /etc/httpd/conf.d/.welcome.conf.swp
+Created /etc/httpd/conf.d/4913 
+Changed /etc/httpd/conf.d/4913
+Deleted /etc/httpd/conf.d/4913
+Deleted /etc/httpd/conf.d/welcome.conf
+Created /etc/httpd/conf.d/welcome.conf~ 
+Created /etc/httpd/conf.d/welcome.conf 
+Changed /etc/httpd/conf.d/welcome.conf
+Changed /etc/httpd/conf.d/.welcome.conf.swp
+Deleted /etc/httpd/conf.d/welcome.conf~
+Deleted /etc/httpd/conf.d/.welcome.conf.swp
+/etc/rc6.d/K15httpd :: +
+cp -pr /etc/rc6.d/K15httpd /tmp/cft/httpd/after/etc/rc6.d/K15httpd
+/etc/sysconfig/httpd :: + =
+cp -pr /etc/sysconfig/httpd /tmp/cft/httpd/after/etc/sysconfig/httpd
+/etc/init.d/httpd :: + = = = =
+cp -pr /etc/init.d/httpd /tmp/cft/httpd/after/etc/init.d/httpd
+/etc/httpd :: + =
+cp -pr /etc/httpd /tmp/cft/httpd/after/etc/httpd
+/etc/group+ :: + = -
+/etc/mime.types;45f849c6 :: + = -
+/etc/httpd/conf.d/welcome.conf :: - + =
+cp -pr /etc/httpd/conf.d/welcome.conf /tmp/cft/httpd/after/etc/httpd/conf.d/welcome.conf
+/etc/rc5.d/K15httpd :: +
+cp -pr /etc/rc5.d/K15httpd /tmp/cft/httpd/after/etc/rc5.d/K15httpd
+/etc/shadow+ :: + = -
+/etc/httpd/conf.d/4913 :: + = -
+/etc/rc.d/rc6.d/K15httpd :: +
+cp -pr /etc/rc.d/rc6.d/K15httpd /tmp/cft/httpd/after/etc/rc.d/rc6.d/K15httpd
+/etc/rc4.d/K15httpd :: +
+cp -pr /etc/rc4.d/K15httpd /tmp/cft/httpd/after/etc/rc4.d/K15httpd
+/etc/sysconfig/httpd;45f849c6 :: + = -
+/etc/logrotate.d/httpd :: + =
+cp -pr /etc/logrotate.d/httpd /tmp/cft/httpd/after/etc/logrotate.d/httpd
+/etc/group- :: =
+cp -pr /etc/group- /tmp/cft/httpd/after/etc/group-
+/etc/passwd.1697 :: + = -
+/etc/mime.types :: + =
+cp -pr /etc/mime.types /tmp/cft/httpd/after/etc/mime.types
+/etc/rc3.d/K15httpd :: +
+cp -pr /etc/rc3.d/K15httpd /tmp/cft/httpd/after/etc/rc3.d/K15httpd
+/etc/group :: +
+cp -pr /etc/group /tmp/cft/httpd/after/etc/group
+/etc/shadow- :: =
+cp -pr /etc/shadow- /tmp/cft/httpd/after/etc/shadow-
+/etc/mailcap;45f849c6 :: + = -
+/etc/rc.d/rc5.d/K15httpd :: +
+cp -pr /etc/rc.d/rc5.d/K15httpd /tmp/cft/httpd/after/etc/rc.d/rc5.d/K15httpd
+/etc/rc2.d/K15httpd :: +
+cp -pr /etc/rc2.d/K15httpd /tmp/cft/httpd/after/etc/rc2.d/K15httpd
+/etc/group.lock :: + -
+/etc/shadow.lock :: + -
+/etc/rc.d/rc4.d/K15httpd :: +
+cp -pr /etc/rc.d/rc4.d/K15httpd /tmp/cft/httpd/after/etc/rc.d/rc4.d/K15httpd
+/etc/rc1.d/K15httpd :: +
+cp -pr /etc/rc1.d/K15httpd /tmp/cft/httpd/after/etc/rc1.d/K15httpd
+/etc/rc.d/rc3.d/K15httpd :: +
+cp -pr /etc/rc.d/rc3.d/K15httpd /tmp/cft/httpd/after/etc/rc.d/rc3.d/K15httpd
+/etc/rc0.d/K15httpd :: +
+cp -pr /etc/rc0.d/K15httpd /tmp/cft/httpd/after/etc/rc0.d/K15httpd
+/etc/gshadow.lock :: + -
+/etc/group.1697 :: + = -
+/etc/mailcap :: + =
+cp -pr /etc/mailcap /tmp/cft/httpd/after/etc/mailcap
+/etc/rc.d/rc2.d/K15httpd :: +
+cp -pr /etc/rc.d/rc2.d/K15httpd /tmp/cft/httpd/after/etc/rc.d/rc2.d/K15httpd
+/etc/logrotate.d/httpd;45f849c6 :: + = -
+/etc/gshadow :: +
+cp -pr /etc/gshadow /tmp/cft/httpd/after/etc/gshadow
+/etc/gshadow+ :: + = -
+/etc/passwd+ :: + = -
+/etc/shadow.1697 :: + = -
+/etc/rc.d/rc1.d/K15httpd :: +
+cp -pr /etc/rc.d/rc1.d/K15httpd /tmp/cft/httpd/after/etc/rc.d/rc1.d/K15httpd
+/etc/passwd :: +
+cp -pr /etc/passwd /tmp/cft/httpd/after/etc/passwd
+/var/run/yum.pid :: + = -
+/etc/rc.d/rc0.d/K15httpd :: +
+cp -pr /etc/rc.d/rc0.d/K15httpd /tmp/cft/httpd/after/etc/rc.d/rc0.d/K15httpd
+/etc/init.d/httpd;45f849c6 :: + = -
+/etc/gshadow- :: =
+cp -pr /etc/gshadow- /tmp/cft/httpd/after/etc/gshadow-
+/etc/passwd- :: =
+cp -pr /etc/passwd- /tmp/cft/httpd/after/etc/passwd-
+/etc/gshadow.1697 :: + = -
+/etc/rc.d/init.d/httpd :: + = = = =
+cp -pr /etc/rc.d/init.d/httpd /tmp/cft/httpd/after/etc/rc.d/init.d/httpd
+/etc/rc.d/init.d/httpd;45f849c6 :: + = -
+/etc/shadow :: +
+cp -pr /etc/shadow /tmp/cft/httpd/after/etc/shadow
+/etc/passwd.lock :: + -

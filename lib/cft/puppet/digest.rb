@@ -25,6 +25,14 @@ module Cft::Puppet
             @after
         end
 
+        def package_files
+            if @package_files.nil?
+                fname = @session.path(:rpm_files)
+                @package_files = Cft::RPM::PackageFile::readlist(fname)
+            end
+            @package_files
+        end
+
         def packages(kind)
             if @pkg_bef.nil? || @pkg_after.nil?
                 bef = Cft::RPM::readstate(session.path(:rpm_before))
@@ -200,11 +208,12 @@ module Cft::Puppet
         digester(:file) do |d|
 
             def d.skipstate?(name)
-                [:source, :content, :checksum, :target].include?(name)
+                [:source, :content, :target].include?(name)
             end
-
+            
             d.glob "*" do |digest, path|
                 trans = nil
+                exclude = false
                 if digest.session.changes.exist?(path)
                     # Dealing with :source is a PITA; setting it too early
                     # confuses puppet enormously
@@ -221,6 +230,21 @@ module Cft::Puppet
                     trans[:group] = gid_to_s(trans[:group])
                     trans[:owner] = uid_to_s(trans[:owner])
                     trans[:mode] = mode_to_s(trans[:mode])
+                    # Check whether this belongs to an rpm
+                    # and is unchanged
+                    # FIXME: We need to check owner and group, too
+                    # but that is hard for unit tests since we can't
+                    # expect to create files as root
+                    # FIXME: We get fooled by symlinks, e.g.
+                    # we think /etc/init.d/httpd has changed
+                    # but it is really /etc/rc.d/init.d/httpd and
+                    # we don't realize that it's owned by the httpd package
+                    exclude = digest.package_files.select { |pf|
+                        pf.file.path == path
+                    }.select { |pf|
+                        "{md5}#{pf.file.md5sum}" == trans[:checksum] &&
+                        mode_to_s(pf.file.mode) == trans[:mode]
+                    }
                 else
                     # PATH was deleted
                     c = digest.session.changes.paths[path]
@@ -237,7 +261,7 @@ module Cft::Puppet
                 if trans
                     scrub_attr!(trans)
                 end
-                digest.bucket << trans
+                digest.bucket << trans unless exclude && ! exclude.empty?
             end
 
             private
