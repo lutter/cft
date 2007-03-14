@@ -58,17 +58,71 @@ class TestMonitor < Test::Unit::TestCase
     end
 
     def test_byfile
-        db = RPM::DB::open(false, nil)
-        pkgs = Cft::RPM::byfile(db, "/bin/sh")
-        assert_equal(1, pkgs.size)
+        Cft::RPM::withdb do |db|
+            pkgs = Cft::RPM::byfile(db, "/bin/sh")
+            assert_equal(1, pkgs.size)
+            assert_equal('bash', pkgs[0].name)
+            assert_equal("/bin/sh", pkgs[0].file.path)
+            
+            pkgs = Cft::RPM::byfile(db, "/etc/sysconfig/")
+            assert_equal(1, pkgs.size)
+            assert_equal('filesystem', pkgs[0].name)
+            assert_equal("/etc/sysconfig", pkgs[0].file.path)
+            
+            pkgs = Cft::RPM::byfile(db, " /not /a /file")
+            assert_equal(0, pkgs.size)
+        end
+    end
+
+    def test_filelist
+        fname = File::join(tmpdir, "files.txt")
+        files = [ "/bin/sh", "/bin/bash", "/etc/sysconfig/",
+                  " /not /a /file" ]
+        pkgs = nil
+        assert_nothing_raised {
+            Cft::RPM::PackageFile::genlist(fname, files)
+            pkgs = Cft::RPM::PackageFile::readlist(fname)
+        }
+        assert_equal(3, pkgs.size)
         assert_equal('bash', pkgs[0].name)
-        
-        pkgs = Cft::RPM::byfile(db, "/etc/sysconfig/")
-        assert_equal(1, pkgs.size)
-        assert_equal('filesystem', pkgs[0].name)
-        
-        pkgs = Cft::RPM::byfile(db, " /not /a /file")
-        assert_equal(0, pkgs.size)
+        assert_equal("/bin/sh", pkgs[0].file.path)
+
+        assert_equal('bash', pkgs[1].name)
+        assert_equal("/bin/bash", pkgs[1].file.path)
+
+        assert_equal('filesystem', pkgs[2].name)
+        assert_equal("/etc/sysconfig", pkgs[2].file.path)
+    end
+
+    def test_filelist_load
+        pkgs = nil
+        assert_nothing_raised {
+            fname = datafile("rpm/filelist.txt")
+            pkgs = Cft::RPM::PackageFile::readlist(fname)
+        }
+        assert_equal(3, pkgs.size)
+        pkgs.each do |p|
+            assert_equal('i386', p.arch)
+            assert_equal('root', p.file.owner)
+            assert_equal('root', p.file.group)
+        end
+        assert_equal('bash', pkgs[0].name)
+        assert_equal("/bin/sh", pkgs[0].file.path)
+        assert_equal('0:3.1-16.1', pkgs[0].version.to_vre)
+        assert_equal('bash', pkgs[0].file.link_to)
+        assert_equal(0777, pkgs[0].file.mode)
+
+        assert_equal('bash', pkgs[1].name)
+        assert_equal("/bin/bash", pkgs[1].file.path)
+        assert_equal('0:3.1-16.1', pkgs[1].version.to_vre)
+        assert_nil(pkgs[1].file.link_to)
+        assert_equal(0755, pkgs[1].file.mode)
+
+        assert_equal('filesystem', pkgs[2].name)
+        assert_equal("/etc/sysconfig", pkgs[2].file.path)
+        assert_equal('0:2.4.0-1', pkgs[2].version.to_vre)
+        assert_nil(pkgs[2].file.link_to)
+        assert_equal(0755, pkgs[2].file.mode)
     end
 
     private
