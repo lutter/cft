@@ -7,6 +7,9 @@ Todo
 
 * Integrate with an SCM ?
 
+* Why is some state saved in the begin/finish command and other state
+  inside Cft::Monitor ?
+
 * If you keep a session running for a while you get false change info
   from various daemons scribbling all over the place (e.g. /etc/printcap
   and /etc/mtab)
