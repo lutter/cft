@@ -1,3 +1,10 @@
+0.2.0
+  - Understand package operations (install/update/erase) Be smart about
+    files put down by the rpm, but otherwise unchanged
+  - Add 'pack' command to make moving raw sessions around easier
+  - Require puppet > 0.22.1 (puppet changed some internal API's, 
+    aka "the state -> property rename")
+
 0.1.0 2007-01-12
   - First release, ever
   - Support most simple puppet types, except for cron, sshkey, and package
