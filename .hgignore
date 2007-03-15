@@ -1,3 +1,4 @@
 .*~$
 ^pkg/
 test/data/rpm/var/lib/rpm/__db.00\d
+^tools/
