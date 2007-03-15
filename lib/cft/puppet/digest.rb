@@ -235,10 +235,6 @@ module Cft::Puppet
                     # FIXME: We need to check owner and group, too
                     # but that is hard for unit tests since we can't
                     # expect to create files as root
-                    # FIXME: We get fooled by symlinks, e.g.
-                    # we think /etc/init.d/httpd has changed
-                    # but it is really /etc/rc.d/init.d/httpd and
-                    # we don't realize that it's owned by the httpd package
                     exclude = digest.package_files.select { |pf|
                         pf.path == path
                     }.select { |pf|
