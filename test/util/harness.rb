@@ -106,9 +106,13 @@ module Cft
             cmd.execute(result, [])
             src = datafile(File::join("sessions", name))
             dst = Cft::OUTPUT_DIR
-            system("cp -pr #{src} #{dst}")
-            #FileUtils::cp_r(datafile(File::join("sessions", name)),
-            #                Cft::OUTPUT_DIR, :preserve => true)
+            if File::exist?("#{src}.tgz")
+                system("tar xzf #{src}.tgz -C #{dst}")
+            elsif File::directory?(src)
+                system("cp -pr #{src} #{dst}")
+            else
+                raise "Could not find session #{name}"
+            end
             result
         end
 
