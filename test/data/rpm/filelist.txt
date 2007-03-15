@@ -1,6 +1,5 @@
 --- 
 - !ruby/object:Cft::RPM::PackageFile 
-  arch: i386
   file: !ruby.rpm.org,2007/file 
     path: /bin/bash
     md5sum: 607bd967e7df373bd6ff9964680ce478
@@ -13,14 +12,15 @@
     mode: 493
     attr: 0
     state: 0
-  name: bash
+  package: !ruby/object:Cft::RPM::PackageHandle 
+    arch: i386
+    name: bash
+    version: !ruby.rpm.org,2007/version 
+      v: "3.1"
+      r: "16.1"
+      e: 
   path: /bin/sh
-  version: !ruby.rpm.org,2007/version 
-    v: "3.1"
-    r: "16.1"
-    e: 
 - !ruby/object:Cft::RPM::PackageFile 
-  arch: i386
   file: !ruby.rpm.org,2007/file 
     path: /bin/bash
     md5sum: 607bd967e7df373bd6ff9964680ce478
@@ -33,14 +33,15 @@
     mode: 493
     attr: 0
     state: 0
-  name: bash
+  package: !ruby/object:Cft::RPM::PackageHandle 
+    arch: i386
+    name: bash
+    version: !ruby.rpm.org,2007/version 
+      v: "3.1"
+      r: "16.1"
+      e: 
   path: /bin/bash
-  version: !ruby.rpm.org,2007/version 
-    v: "3.1"
-    r: "16.1"
-    e: 
 - !ruby/object:Cft::RPM::PackageFile 
-  arch: i386
   file: !ruby.rpm.org,2007/file 
     path: /etc/sysconfig
     md5sum: ""
@@ -53,9 +54,11 @@
     mode: 493
     attr: 0
     state: 0
-  name: filesystem
+  package: !ruby/object:Cft::RPM::PackageHandle 
+    arch: i386
+    name: filesystem
+    version: !ruby.rpm.org,2007/version 
+      v: 2.4.0
+      r: "1"
+      e: 
   path: /etc/sysconfig
-  version: !ruby.rpm.org,2007/version 
-    v: 2.4.0
-    r: "1"
-    e: 

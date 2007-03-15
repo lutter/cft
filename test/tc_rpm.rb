@@ -61,19 +61,19 @@ class TestMonitor < Test::Unit::TestCase
         Cft::RPM::withdb do |db|
             pkgs = Cft::RPM::byfile(db, "/bin/sh")
             assert_equal(1, pkgs.size)
-            assert_equal('bash', pkgs[0].name)
+            assert_equal('bash', pkgs[0].package.name)
             assert_equal("/bin/sh", pkgs[0].path)
             assert_equal("/bin/bash", pkgs[0].file.path)
             
             pkgs = Cft::RPM::byfile(db, "/etc/sysconfig/")
             assert_equal(1, pkgs.size)
-            assert_equal('filesystem', pkgs[0].name)
+            assert_equal('filesystem', pkgs[0].package.name)
             assert_equal("/etc/sysconfig", pkgs[0].path)
             assert_equal("/etc/sysconfig", pkgs[0].file.path)
 
             pkgs = Cft::RPM::byfile(db, "/etc/init.d/killall")
             assert_equal(1, pkgs.size)
-            assert_equal('initscripts', pkgs[0].name)
+            assert_equal('initscripts', pkgs[0].package.name)
             assert_equal("/etc/init.d/killall", pkgs[0].path)
             assert_equal("/etc/rc.d/init.d/killall", pkgs[0].file.path)
             

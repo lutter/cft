@@ -98,17 +98,37 @@ module Cft::RPM
         end 
     end
 
+    # The 'id' of a package, just its name, version and arch
+    class PackageHandle
+        attr_reader :name, :arch, :version
+        def initialize(package)
+            @name = package.name
+            @version = package.version
+            @arch = package.arch
+        end
+    end
+
     # A file in a package; this class is mainly uised for serialization
     # and identifies the package by its name, arch and version
     class PackageFile
-        attr_reader :path, :file, :name, :arch, :version
+        attr_reader :path, :file, :package
 
         def initialize(path, package, file)
             @path = path
             @file = file
-            @name = package.name
-            @version = package.version
-            @arch = package.arch
+            @package = PackageHandle.new(package)
+        end
+
+        def name 
+            @package.name
+        end
+        
+        def arch 
+            @package.arch
+        end
+        
+        def version 
+            @package.version
         end
 
         # Write a list of +PackageFile+ objects to the file +fname+
