@@ -22,7 +22,8 @@ module Cft
                '/etc/httpd/run/**',  # symlink to /var/run
                '/etc/httpd/logs/**', # symlink to /var/log/httpd
                '/etc/printcap',      # cups keeps rewriting this
-               '/etc/ld.so.cache'    # gets recreated a lot
+               '/etc/ld.so.cache',   # gets recreated a lot
+               '/etc/shadow*'        # don't store passwords
               ]
 
     # Markers for the changes applied to files
