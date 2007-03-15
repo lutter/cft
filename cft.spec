@@ -20,6 +20,7 @@ Requires: ruby(abi) = 1.8
 # FIXME: what version ?
 Requires: puppet > 0.22.1
 Requires: ruby-fam
+Requires: ruby-rpm >= 1.2.2
 BuildRequires: ruby 
 %if %has_ruby_noarch
 BuildArch: noarch
