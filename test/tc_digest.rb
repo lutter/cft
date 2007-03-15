@@ -197,8 +197,8 @@ class TestDigest < Test::Unit::TestCase
                         :ensure => "0:0.1.7-8.fc6")
     end
 
-    def test_rpm_complex
-        s = use_session("rpm-complex")
+    def test_rpm_install
+        s = use_session("rpm-install")
         digest = Cft::Puppet::Digest.new(s)
         trans = digest.transportable
         assert_equal(1, trans.find_all(:service).size)
@@ -222,9 +222,8 @@ class TestDigest < Test::Unit::TestCase
         assert_equal(5, pkgs.size)
         assert_resource(trans, :package, 'httpd.i386')
         # FIXME: We should only get one file (welcome.conf)
-        # but we also get the /etc/httpd dir and /etc/init.d/httpd
-        # since we are not smart about symlinks
-        assert_equal(3, trans.find_all(:file).size)
+        # but we also get the /etc/httpd dir
+        assert_equal(2, trans.find_all(:file).size)
         assert_resource(trans, :file, '/etc/httpd/conf.d/welcome.conf',
                         :ensure => :file,
                         :mode => "0644")

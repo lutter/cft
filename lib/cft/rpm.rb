@@ -1,5 +1,6 @@
 require 'rpm'
 require 'yaml'
+require 'pathname'
 
 module Cft::RPM
     # Generate the state of the RPM DB +root+ in file +fname+
@@ -82,14 +83,16 @@ module Cft::RPM
 
     # Return a list of the packages that own the file +fname+
     # The returned list consists of +PackageFile+ objects
-    def self.byfile(db, fname)
-        fname = fname.sub(%r@#{File::SEPARATOR}$@, "")
+    def self.byfile(db, path)
+        path = Pathname.new(path).cleanpath
+        return [] unless path.exist?
+        realpath = path.realpath.to_str
         iter = db.init_iterator(nil, nil)
         pkgs = iter.regexp(RPM::TAG_BASENAMES, RPM::MIRE_DEFAULT, 
-                           File::basename(fname))
+                           File::basename(realpath))
         return pkgs.inject([]) do |result, k|
-            if file = k.files.find { |f| f.path == fname }
-                result << PackageFile.new(k, file)
+            if file = k.files.find { |f| f.path == realpath }
+                result << PackageFile.new(path.to_str, k, file)
             end
             result
         end 
@@ -98,9 +101,10 @@ module Cft::RPM
     # A file in a package; this class is mainly uised for serialization
     # and identifies the package by its name, arch and version
     class PackageFile
-        attr_reader :file, :name, :arch, :version
+        attr_reader :path, :file, :name, :arch, :version
 
-        def initialize(package, file)
+        def initialize(path, package, file)
+            @path = path
             @file = file
             @name = package.name
             @version = package.version

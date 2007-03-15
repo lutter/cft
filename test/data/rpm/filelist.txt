@@ -2,18 +2,19 @@
 - !ruby/object:Cft::RPM::PackageFile 
   arch: i386
   file: !ruby.rpm.org,2007/file 
-    path: /bin/sh
-    md5sum: ""
-    link_to: bash
-    size: 4
-    mtime: 2006-07-12 00:11:52 -07:00
+    path: /bin/bash
+    md5sum: 607bd967e7df373bd6ff9964680ce478
+    link_to: 
+    size: 716972
+    mtime: 2006-07-12 00:11:53 -07:00
     owner: root
     group: root
     rdev: 0
-    mode: 511
+    mode: 493
     attr: 0
     state: 0
   name: bash
+  path: /bin/sh
   version: !ruby.rpm.org,2007/version 
     v: "3.1"
     r: "16.1"
@@ -33,6 +34,7 @@
     attr: 0
     state: 0
   name: bash
+  path: /bin/bash
   version: !ruby.rpm.org,2007/version 
     v: "3.1"
     r: "16.1"
@@ -52,6 +54,7 @@
     attr: 0
     state: 0
   name: filesystem
+  path: /etc/sysconfig
   version: !ruby.rpm.org,2007/version 
     v: 2.4.0
     r: "1"

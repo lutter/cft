@@ -240,7 +240,7 @@ module Cft::Puppet
                     # but it is really /etc/rc.d/init.d/httpd and
                     # we don't realize that it's owned by the httpd package
                     exclude = digest.package_files.select { |pf|
-                        pf.file.path == path
+                        pf.path == path
                     }.select { |pf|
                         "{md5}#{pf.file.md5sum}" == trans[:checksum] &&
                         mode_to_s(pf.file.mode) == trans[:mode]
