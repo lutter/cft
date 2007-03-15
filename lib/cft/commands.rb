@@ -302,3 +302,5 @@ module Cft::Commands
     end
 
 end
+
+require 'cft/commands/pack'
