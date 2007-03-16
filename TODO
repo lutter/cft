@@ -1,8 +1,6 @@
 Todo
 ====
 
-* Watch the rpm db
-
 * Use rsync instead of homegrown tree-copying code ?
 
 * Integrate with an SCM ?
@@ -13,12 +11,6 @@ Todo
 * If you keep a session running for a while you get false change info
   from various daemons scribbling all over the place (e.g. /etc/printcap
   and /etc/mtab)
-
-* Analyse the output
-  - Reconstruct events from certain things (e.g. service start/stop/restart
-    from how files appear and disappear in /var/run)
-  - Find packages that were installed from txn timestamps in rpm DB (and
-    clean the bare log from changes that are due to package installs)
 
 * The synchronzation between the demon and the cmdline prog in Session is
   full of races. Instead of whacky gamin stuff, we should use pipes or
@@ -40,16 +32,6 @@ Todo
   session again seamlessly
   Enough to just append to various output files ?
 
-* RPM based session
-  Look at installed package(s) and their config files (or all files);
-  deduce changes and manifests from rpm -V for those packages
-
-** Make that work on systems other than the one on which the session was run
-
-   RPM analysis depends on having all the packages used in the session 
-   installed and available, and therefore only works on the system on which
-   the session was performed until a package used in a session is uninstalled
-
 * Use case: 
   
   Yumrepo config has wrong baseurl; change on a system, map
@@ -60,6 +42,12 @@ Todo
   Jim Meyering suggests that users should be able to say sth like
   cft begin postfix "Install postfix and set it up to relay to
   mail.example.com"
+
+* Finish RPM 'shadowing'
+  
+  Only include leaf packages in final manifest, not packages pulled
+  in by dependencies. Requires that some dependency information based on
+  Cft::RPM::shadow is stored at the end of the session
 
 Small fixes
 ===========
@@ -72,6 +60,3 @@ Small fixes
 
 * Missing types
   cron, sshkey
-  
-* Support package type (requires some smarts since we can't just list all
-  packages)
