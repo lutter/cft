@@ -144,6 +144,23 @@ class TestMonitor < Test::Unit::TestCase
         assert_equal([], pkgs)
     end
 
+    def test_shadow
+        Cft::RPM::withdb(datafile("rpm")) do |db|
+            i = package(db, 'initscripts')
+            c = package(db, 'chkconfig')
+            g = package(db, 'glibc')
+            b = package(db, 'basesystem')
+            shadow = Cft::RPM::shadow([i, c, g, b])
+            exp = {
+                i => [ c, g ],
+                c => [ g ],
+                g => [ b ],
+                b => []
+            }
+            assert_equal(exp, shadow)
+        end
+    end
+
     private
     def assert_pkg_evr(vre, pkg)
         assert_not_nil(pkg)
@@ -157,5 +174,9 @@ class TestMonitor < Test::Unit::TestCase
             assert_resource(bucket, :package, na,
                             :ensure => v)
         end
+    end
+
+    def package(db, name)
+        db.each_match(RPM::TAG_NAME, name) { |k| return k }
     end
 end

@@ -98,6 +98,31 @@ module Cft::RPM
         end 
     end
 
+    # Compute which packages on +packages+ shadow other packages on the list
+    # by requiring them. The +packages+ must be a list of +RPM::Package+
+    # objects. The result is a dict where the keys are +RPM::Package+
+    # objects and the values are lists of +RPM::Package+ objects. The list
+    # contains all the packages that are directly required by the key
+    def self.shadow(packages)
+        result = {}
+        packages.each do |leaf|
+            result[leaf] ||= []
+            leaf.requires.each do |req|
+                packages.reject{ |k| k == leaf }.each do |k|
+                    if req.name[0,1] == '/'
+                        if k.files.find { |file| file.path == req.name }
+                            result[leaf] << k
+                        end
+                    else
+                        result[leaf] << k if req.satisfy?(k)
+                    end
+                end
+            end
+        end
+        result.each_value { |v| v.uniq! }
+        return result
+    end
+
     # The 'id' of a package, just its name, version and arch
     class PackageHandle
         attr_reader :name, :arch, :version
