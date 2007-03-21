@@ -5,14 +5,6 @@ $:.unshift(File::join(File::dirname(__FILE__), ".."))
 # Do whacky stuff to the PATH, so that we can run as a normal user
 ENV['PATH'] = "#{ENV['PATH']}:/sbin:/usr/sbin"
 
-# Use the svn version of puppet
-begin
-    pdir = File::expand_path("~/code/puppet/lib")
-    if File::directory? pdir
-        $:.unshift(pdir)
-    end
-end
-
 require 'test/unit'
 
 require 'tmpdir'

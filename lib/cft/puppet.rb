@@ -1,4 +1,5 @@
 require 'puppet'
+require 'puppet/network/client'  # FIXME: THis should be fixed in puppet
 
 module Cft::Puppet
 
