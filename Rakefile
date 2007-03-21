@@ -10,10 +10,10 @@ rescue LoadError
 end
 
 PKG_NAME='cft'
-PKG_VERSION='0.1.0'
+PKG_VERSION='0.2.0'
 
 PKG_FILES = FileList[
-  "Rakefile", "AUTHORS", "COPYING", "INSTALL", "README", "TODO",
+  "Rakefile", "AUTHORS", "COPYING", "INSTALL", "README", "TODO", "NEWS",
   "cft.spec",
   "bin/cft",
   "lib/**/*.rb",
@@ -69,7 +69,7 @@ end
 
 desc "Build (S)RPM for #{PKG_NAME}"
 task :rpm => [ :package ] do |t|
-    system("sed -i -e 's/^Version:.*$/Version: #{PKG_VERSION}/' cft.spec")
+    system("sed -i -e 's/^Version:.*$/Version: #{PKG_VERSION}/;s/^Release:.*$/Release: 1%{?dist}/' cft.spec")
     Dir::chdir("pkg") do |dir|
         dir = File::expand_path(".")
         system("rpmbuild --define '_topdir #{dir}' --define '_sourcedir #{dir}' --define '_srcrpmdir #{dir}' --define '_rpmdir #{dir}' -ba ../#{PKG_NAME}.spec > rpmbuild.log 2>&1")
