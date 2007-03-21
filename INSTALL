@@ -15,18 +15,33 @@ Prerequisites
     source: http://www.pablotron.org/software/fam-ruby/
   gamin (or fam) should be part of your distro
 
-* ruby-rpm
+* ruby-rpm >= 1.2.2
   Available from
     SRPM: http://people.redhat.com/dlutter/yum/SRPMS/
     binary RPM: dig around in http://people.redhat.com/dlutter/yum/
     source: http://rubyforge.org/projects/ruby-rpm/
 
-* puppet client
+* puppet client >= 0.2.2
   Available from http://reductivelabs.com/projects/puppet
   Should be in most major distributions by now
 
-There's no installation support yet for cft; to run it from a source
-checkout, all you need to do is
+Install
+=======
+
+The Rakefile contains various targets for creating tarballs, rpms
+etc. Running 'rake -T' will tell you more
+
+Hacking
+=======
+
+The sources are kept in mercurial at 
+  http://hg.et.redhat.com/hg/emd/applications/cft
+
+To run it from a source checkout, all you need to do is
   > export RUBYLIB=$source_checkout/lib
   > $source_checkout/bin/cft --help
+
+From time to time, cft might depend on the latest unreleased code for
+puppet. If that's the case, you also need to check out puppet and add the
+lib/ directory of that checkout to RUBYLIB.
 
