@@ -17,8 +17,7 @@ Requires: ruby
 %if %has_ruby_abi
 Requires: ruby(abi) = 1.8
 %endif
-# FIXME: what version ?
-Requires: puppet > 0.22.1
+Requires: puppet >= 0.22.2
 Requires: ruby-fam
 Requires: ruby-rpm >= 1.2.2
 BuildRequires: ruby 
