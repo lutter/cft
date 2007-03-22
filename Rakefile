@@ -80,11 +80,17 @@ task :rpm => [ :package ] do |t|
 end
 
 desc "Release a version to the site"
-task :dist => [ :rpm, :test ] do |t|
+task :dist => [ :rpm ] do |t|
     puts "Copying files"
-    system "scp -p #{DIST_FILES.to_s} lutter@et.redhat.com:/var/www/sites/cft.et.redhat.com/download"
+    unless sh "scp -p #{DIST_FILES.to_s} lutter@et.redhat.com:/var/www/sites/cft.et.redhat.com/download"
+        $stderr.puts "Copy to et.redhat.com failed"
+        break
+    end
     puts "Making release links"
-    system "ssh lutter@et.redhat.com /home/lutter/bin/cft-release #{PKG_VERSION}"
+    unless sh "ssh lutter@et.redhat.com /home/lutter/bin/cft-release #{PKG_VERSION}"
+        $stderr.puts "Making release links failed"
+        break
+    end
     puts "Commit and tag #{PKG_VERSION}"
     system "hg commit -m 'Released version #{PKG_VERSION}'"
     system "hg tag -m 'Tag release #{PKG_VERSION}' #{PKG_NAME}-#{PKG_VERSION}"
