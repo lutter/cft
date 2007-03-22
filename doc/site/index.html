@@ -123,6 +123,17 @@ convenient methods of integrating changes back into a central
 </p>
 
 <h2 id="news">News</h2>
+<p><b>Cft 0.2.0</b><br/>
+This release understands package operations, so that running
+<tt>yum&nbsp;-y&nbsp;install&nbsp;httpd</tt> (or <tt>rpm -Uvh
+foo.i386.rpm</tt>) will produce appropriate <tt>package</tt> statements in
+the resulting manifest.<br/>
+
+You will need the <a
+href="http://rubyforge.org/projects/ruby-rpm/">ruby-rpm</a>
+bindings. Packages can be found in <a
+href="http://people.redhat.com/dlutter/yum">my yum repo</a>
+
 <p><b>Cft 0.1.0</b><br/>
 The very first release of Cft. Understands most of puppet's builtin types
 &mdash; only cron, sshkey, and package are missing.<br/>
@@ -180,6 +191,16 @@ Honestly, I don't know; I would be very interested in making sure that Cft
 works on all the Linux distributions and OS's that Puppet works on, though
 I will have to rely on help from others for most of the work there. If you
 are using (or trying to use) Cft on one of those OS's, drop me a line.
+</p>
+
+
+<p>
+<B>How do I install cft?</B><br/>
+The easiest way is to enable the appropriate branch of <a
+href="http://people.redhat.com/dlutter/yum">my yum repo</a> on a machine
+and installing from there. The repo should always have proper packages of
+cft and its dependencies, as long as they are not part ofhte base
+distribution.
 </p>
 
 <p>
