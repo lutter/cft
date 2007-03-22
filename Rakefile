@@ -72,7 +72,15 @@ task :rpm => [ :package ] do |t|
     system("sed -i -e 's/^Version:.*$/Version: #{PKG_VERSION}/;s/^Release:.*$/Release: 1%{?dist}/' cft.spec")
     Dir::chdir("pkg") do |dir|
         dir = File::expand_path(".")
-        system("rpmbuild --define '_topdir #{dir}' --define '_sourcedir #{dir}' --define '_srcrpmdir #{dir}' --define '_rpmdir #{dir}' -ba ../#{PKG_NAME}.spec > rpmbuild.log 2>&1")
+        macros = {
+            "_topdir" => dir,
+            "_sourcedir" => dir,
+            "_srcrpmdir" => dir,
+            "_rpmdir" => dir,
+            "fedora" => "6"
+        }
+        defines = macros.collect { |k,v| "--define '#{k} #{v}'" }.join(" ")
+        system("rpmbuild #{defines} -ba ../#{PKG_NAME}.spec > rpmbuild.log 2>&1")
         if $? != 0
             raise "rpmbuild failed"
         end
