@@ -64,10 +64,11 @@ entail root running the following commands:
 
 <pre>
   tux:1# cft begin postfix
-  tux:2# vi /etc/postfix/main.cf
-  tux:3# chkconfig postfix on
-  tux:4# service postfix start
-  tux:5# cft finish postfix
+  tux:2# yum -y install postfix
+  tux:3# vi /etc/postfix/main.cf
+  tux:4# chkconfig postfix on
+  tux:5# service postfix start
+  tux:6# cft finish postfix
 </pre>
 
 <p>Note that the user only had to issue two additonal commands to begin and
@@ -83,24 +84,28 @@ manifest:</p>
 <pre>
   tux:6# cft manifest postfix
     class postfix {
-        service { "postfix":
-            enable => "true",
-            pattern => "postfix",
-            ensure => "running"
+        package { 'postfix.i386':
+          ensure => '2:2.3.3-2'
+        }
+
+        service { 'postfix':
+            enable => 'true',
+            pattern => 'postfix',
+            ensure => 'running'
         }
     
-        file { "/etc/aliases.db":
-            group => "smmsp",
-            owner => "root",
-            mode => "0640",
-            source => "/tmp/cft/postfix/after/etc/aliases.db"
+        file { '/etc/aliases.db':
+            group => 'smmsp',
+            owner => 'root',
+            mode => '0640',
+            source => '/tmp/cft/postfix/after/etc/aliases.db'
         }
     
-        file { "/etc/postfix/main.cf":
-            group => "root",
-            owner => "root",
-            mode => "0644",
-            source => "/tmp/cft/postfix/after/etc/postfix/main.cf"
+        file { '/etc/postfix/main.cf':
+            group => 'root',
+            owner => 'root',
+            mode => '0644',
+            source => '/tmp/cft/postfix/after/etc/postfix/main.cf'
         }
     }
 </pre>
