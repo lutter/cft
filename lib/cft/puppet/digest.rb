@@ -102,7 +102,7 @@ module Cft::Puppet
             trans = transportable
             trans.each_obj do |f|
                 if f.type == :file
-                    src = f[:source]
+                    next unless src
                     tgt = File::join(bpath, File::basename(src))
                     FileUtils::cp_r(src, tgt)
                     # FIXME: What if file names from different file elements
