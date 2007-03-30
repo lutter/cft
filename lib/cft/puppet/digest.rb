@@ -53,6 +53,12 @@ module Cft::Puppet
                 after.find_obj(type, name)
         end
 
+        # Should the property with name prop_name be ignored for
+        # comparison purposes
+        def self.ignore_property?(prop_name)
+            [ :check, :loglevel ].include?(prop_name.to_sym)
+        end
+
         def diff
             result = Puppet::TransBucket.new
             result.keyword = :manifest
@@ -64,7 +70,9 @@ module Cft::Puppet
                     to = Puppet::TransObject.new(bto.name, bto.type)
                     to[:ensure] = :absent
                     result << to
-                elsif ato.any? { |p, v| ato[p] != bto[p] }
+                elsif ato.any? do |p, v| 
+                        ! Digest::ignore_property?(p) && ato[p] != bto[p]
+                    end
                     # At least one param was changed
                     result << ato
                 end
@@ -195,7 +203,9 @@ module Cft::Puppet
 
             def scrub_attr!(trans)
                 type.eachattr do |attr, kind|
-                    trans.delete(attr.name) if kind != :property
+                    if kind != :property || Digest::ignore_property?(attr.name)
+                        trans.delete(attr.name)
+                    end
                 end
                 trans
             end
