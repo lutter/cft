@@ -6,7 +6,7 @@ require 'yaml'
 module Cft
 
     # All sessions are stored here
-    OUTPUT_DIR = "/tmp/cft"
+    SESSION_DIR = "/tmp/cft"
 
     # The directories we watch during a session
     WATCH_DIRS = [ 
@@ -58,12 +58,13 @@ module Cft
             :bundle => "bundle"          # Dir for bundle creation
         }
 
-        def initialize(name)
+        def initialize(name, session_dir=SESSION_DIR)
             @name = name
+            @session_dir = session_dir
         end
 
         def path(entry = nil)
-            path = File::join(OUTPUT_DIR, name)
+            path = File::join(@session_dir, name)
             unless File::directory?(path)
                 FileUtils::mkdir_p(path)
             end

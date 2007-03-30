@@ -26,13 +26,14 @@ module Cft::Commands
             end
 
             def require_session(errs)
-                define_method(:create_session) do |argv|
+                define_method(:create_session) do |argv, global_opts|
                     if argv.size < 1
                         $stderr.puts "Missing session name"
                         $stderr.puts opts
                         return nil
                     else
-                        s = Cft::Session.new(argv.shift)
+                        s = Cft::Session.new(argv.shift, 
+                                             global_opts[:session_dir])
                         if errs[:active] && s.active?
                             $stderr.puts "Session #{s.name}: #{errs[:active]}"
                             return nil
@@ -74,7 +75,14 @@ module Cft::Commands
         end
 
         newcommand(:main) do
-            
+
+            def initialize(name)
+                super
+                @global_opts = {
+                    :session_dir => ENV["CFT_SESSION_DIR"] || Cft::SESSION_DIR
+                }
+            end
+
             def opts
                 name = File::basename $0
                 opts = OptionParser.new("#{name} GLOBAL_OPTS MODE OPTS")
@@ -90,6 +98,10 @@ module Cft::Commands
                 opts.separator ""
                 
                 opts.separator "Global options:"
+                opts.on("-s", "--session-dir DIR", 
+                  "Store sessions in DIR instead of #{Cft::SESSION_DIR}") do
+                    |val|  @global_opts[:session_dir] = val 
+                end
                 return opts
             end
 
@@ -131,7 +143,7 @@ module Cft::Commands
                 end
                 
                 if cmd.respond_to?(:create_session)
-                    session = cmd.create_session(rest)
+                    session = cmd.create_session(rest, @global_opts)
                     return 1 if session.nil?
                     return cmd.execute(session, rest)
                 else
