@@ -118,7 +118,7 @@ module Cft
     class Monitor
         attr_reader :session, :filters
 
-        def initialize(session, roots)
+        def initialize(session, roots, resume=false)
             @session = session
             @lock = session.path(:pid)
             @roots = roots
@@ -129,7 +129,8 @@ module Cft
             # Store changes to files
             @changes = {}
             @filters = FILTERS
-            @log = File::open(session.path(:changes), "w")
+            mode = resume ? "a" : "w"
+            @log = File::open(session.path(:changes), mode)
         end
         
         def monitor()

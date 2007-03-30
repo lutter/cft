@@ -159,28 +159,36 @@ module Cft::Commands
             def initialize(name)
                 super(name)
                 @roots = Cft::WATCH_DIRS
+                @resume = false
             end
 
             def opts
                 opts = super("cft begin [options] SESSION")
+                opts.on("-r", "--resume", 
+                        "Bundle manifest and needed files") do |val|
+                    @resume = true
+                end
                 opts
             end
 
             require_session :active => "already running"
 
             def execute(session, args)
-                Cft::Puppet::genstate(session.path(:pp_before))
-                Cft::RPM::genstate(session.path(:rpm_before))
+                unless @resume
+                    Cft::Puppet::genstate(session.path(:pp_before))
+                    Cft::RPM::genstate(session.path(:rpm_before))
+                end
                 monitor = false
                 oldusr1 = trap("SIGUSR1") do
                     monitor = true
                 end
                 fork do
-                    $stdout = File::open(session.path(:stdout), "w")
-                    $stderr = File::open(session.path(:stderr), "w")
+                    mode = @resume ? "a" : "w"
+                    $stdout = File::open(session.path(:stdout), mode)
+                    $stderr = File::open(session.path(:stderr), mode)
                     $stdin = File::open("/dev/null", "r")
                     begin
-                        m = Cft::Monitor.new(session, roots)
+                        m = Cft::Monitor.new(session, roots, @resume)
                         m.monitor()
                     rescue => detail
                         $stderr.puts "Monitoring failed: #{detail} at"
