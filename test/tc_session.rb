@@ -31,7 +31,7 @@ class TestSession < Test::Unit::TestCase
 
     def test_path
         s = create_session
-        assert_equal(File::join(Cft::OUTPUT_DIR, s.name, "pid"), s.pid)
+        assert_equal(File::join(Cft::SESSION_DIR, s.name, "pid"), s.pid)
         assert_raise(Cft::InternalError) {
             s.path(:xyzzy)
         }

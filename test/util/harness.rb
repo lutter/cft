@@ -97,7 +97,7 @@ module Cft
             cmd = find_cmd(:erase)
             cmd.execute(result, [])
             src = datafile(File::join("sessions", name))
-            dst = Cft::OUTPUT_DIR
+            dst = Cft::SESSION_DIR
             if File::exist?("#{src}.tgz")
                 system("tar xzf #{src}.tgz -C #{dst}")
             elsif File::directory?(src)
