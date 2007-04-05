@@ -102,24 +102,28 @@ module Cft::Puppet
         # Create a bundle (tarball) of the manifest and all needed files
         # for +session+ The tarball will be put in a file named +fname+
         def create_bundle(fname)
-            bpath = @session.path(:bundle)
+            bpath = File::join(session.path(:bundle), session.name)
+            fpath = File::join(bpath, Puppet::Module::FILES)
+            mpath = File::join(bpath, Puppet::Module::MANIFESTS)
+
             if File::exists?(bpath)
                 system("rm -rf #{bpath}")
             end
-            FileUtils::mkdir_p(bpath)
+            [bpath, mpath, fpath].each { |p| FileUtils::mkdir_p(p) }
+            
             trans = transportable
             trans.each_obj do |f|
                 if f.type == :file
                     src = f[:source]
                     next unless src
-                    tgt = File::join(bpath, File::basename(src))
+                    tgt = File::join(fpath, File::basename(src))
                     FileUtils::cp_r(src, tgt)
                     # FIXME: What if file names from different file elements
                     # conflict ?
-                    f[:source] = File::basename(src)
+                    f[:source] = "module://#{session.name}/" + File::basename(src)
                 end
             end
-            File::open(File::join(bpath, "manifest.pp"), "w") do |f|
+            File::open(File::join(mpath, "init.pp"), "w") do |f|
                 f.puts(trans.to_manifest)
             end
             %x{tar -czf #{fname} -C #{File::join(bpath, "..")} #{File::basename(bpath)} 2>&1}
