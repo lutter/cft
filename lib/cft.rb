@@ -126,11 +126,14 @@ module Cft
             # at all the ROOTS
             @directories = {}
             @bases = {}
-            # Store changes to files
-            @changes = {}
             @filters = FILTERS
-            mode = resume ? "a" : "w"
-            @log = File::open(session.path(:changes), mode)
+            if resume
+                @changes = Changes.new(session.path(:changes)).paths
+                @log = File::open(session.path(:changes), "a")
+            else
+                @changes = {}
+                @log = File::open(session.path(:changes), "w")
+            end
         end
         
         def monitor()
