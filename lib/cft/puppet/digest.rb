@@ -106,6 +106,8 @@ module Cft::Puppet
             fpath = File::join(bpath, Puppet::Module::FILES)
             mpath = File::join(bpath, Puppet::Module::MANIFESTS)
 
+            after = session.path(:after)
+
             if File::exists?(bpath)
                 system("rm -rf #{bpath}")
             end
@@ -116,10 +118,12 @@ module Cft::Puppet
                 if f.type == :file
                     src = f[:source]
                     next unless src
-                    tgt = File::join(fpath, File::basename(src))
+                    tgt = File::join(fpath, src[after.size..-1])
+                    tgt_dir = File::dirname(tgt)
+                    unless File::directory?(tgt_dir)
+                        FileUtils::mkdir_p(tgt_dir)
+                    end
                     FileUtils::cp_r(src, tgt)
-                    # FIXME: What if file names from different file elements
-                    # conflict ?
                     f[:source] = "module://#{session.name}/" + File::basename(src)
                 end
             end

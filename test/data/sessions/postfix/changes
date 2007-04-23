@@ -12,6 +12,9 @@
 /etc/postfix/main.cf//-
 /etc/postfix/main.cf//+
 /etc/postfix/main.cf//=
+/etc/bogus/main.cf//-
+/etc/bogus/main.cf//+
+/etc/bogus/main.cf//=
 /var/lock/subsys/postfix//-
 /etc/aliases.db//=
 /var/lock/subsys/postfix//+

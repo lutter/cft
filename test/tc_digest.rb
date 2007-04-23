@@ -38,9 +38,13 @@ class TestDigest < Test::Unit::TestCase
         assert(File::exist?(bundle))
         files = %x{tar tzf #{bundle}}.split.sort
         assert_equal(0, $?.exitstatus)
-        assert_equal(["postfix/", "postfix/files/", 
-                      "postfix/files/aliases", "postfix/files/aliases.db", 
-                      "postfix/files/main.cf", 
+        assert_equal(["postfix/", "postfix/files/", "postfix/files/etc/", 
+                      "postfix/files/etc/aliases", 
+                      "postfix/files/etc/aliases.db", 
+                      "postfix/files/etc/bogus/",
+                      "postfix/files/etc/bogus/main.cf",
+                      "postfix/files/etc/postfix/",
+                      "postfix/files/etc/postfix/main.cf",
                       "postfix/manifests/", "postfix/manifests/init.pp"],
                      files)
     end
