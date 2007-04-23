@@ -39,6 +39,7 @@ fedora-release.noarch 0 6 4
 file.i386 0 4.17 8
 filesystem.i386 0 2.4.0 1
 findutils.i386 1 4.2.27 4.1
+gamin.i386 0 0.1.7 8.fc6
 gawk.i386 0 3.1.5 11
 gdbm.i386 0 1.8.0 26.2.1
 glib2.i386 0 2.12.3 2.fc6
@@ -114,11 +115,11 @@ popt.i386 0 1.10.2 32
 portmap.i386 0 4.0 65.2.2.1
 postfix.i386 2 2.3.3 2
 prelink.i386 0 0.3.9 2
-procps.i386 0 3.2.7 8
+procps.i386 0 3.2.7 7
 psmisc.i386 0 22.2 5
 puppet.noarch 0 0.22.0 1.fc6
 python-elementtree.i386 0 1.2.6 5
-python-sqlite.i386 0 1.1.7 1.2.1
+python-sqlite.i386 0 1.1.7 1.2.0
 python-urlgrabber.noarch 0 2.9.9 2
 python.i386 0 2.4.3 18.fc6
 readline.i386 0 5.1 1.1
@@ -136,7 +137,7 @@ setserial.i386 0 2.17 19.2.2
 setup.noarch 0 2.5.55 1
 shadow-utils.i386 2 4.0.17 5
 slang.i386 0 2.0.6 3
-sqlite.i386 0 3.3.6 2
+sqlite.i386 0 3.3.6 1
 sysklogd.i386 0 1.4.1 39.2
 system-config-securitylevel-tui.i386 0 1.6.27 1
 tar.i386 2 1.15.1 19
@@ -150,5 +151,4 @@ vim-minimal.i386 2 7.0.109 3
 which.i386 0 2.16 7
 wireless-tools.i386 1 28 1.fc6
 yum-metadata-parser.i386 0 1.0 8.fc6
-yum.noarch 0 3.0 6
 zlib.i386 0 1.2.3 3

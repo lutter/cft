@@ -12,7 +12,7 @@ class TestMonitor < Test::Unit::TestCase
         Cft::RPM::genstate(gs_fname, datafile("rpm"))
         gs = Cft::RPM::readstate(gs_fname)
         gs.each { |k, v| v.sort! }
-        ps = Cft::RPM::readstate(datafile("rpm/pkgs.txt"))
+        ps = Cft::RPM::readstate(datafile("rpm/pkgs-after.txt"))
         ps.each { |k, v| v.sort! }
         (gs.keys + ps.keys).uniq.each do |na|
             assert_equal(ps[na], gs[na], "package #{na}")
@@ -24,34 +24,38 @@ class TestMonitor < Test::Unit::TestCase
         after = Cft::RPM::readstate(datafile("rpm/pkgs-after.txt"))
         diff = Cft::RPM::diff(before, after)
         e, i, u = diff[:erased], diff[:installed], diff[:updated]
-        # erased: dhcpv6_client.i386 0 0.10 32.fc6
-        # installed: gamin.i386 0 0.1.7 8.fc6
-        # updated: mkinitrd.i386 0 5.1.19.0.2 1
-        #          nash.i386 0 5.1.19.0.2 1
+        # erased: gamin.i386 0:0.1.7-8.fc6
+        # installed: yum.noarch 0:3.0-6
+        # updated: python-sqlite.i386 0:1.1.7-1.2.1
+        #          procps.i386 0:3.2.7-8
+        #          sqlite.i386 0:3.3.6-2
         assert_equal(1, e.size)
-        assert_pkg_evr("0:0.10-32.fc6", e["dhcpv6_client.i386"])
+        assert_pkg_evr("0:0.1.7-8.fc6", e["gamin.i386"])
         
         assert_equal(1, i.size)
-        assert_pkg_evr("0:0.1.7-8.fc6", i["gamin.i386"])
+        assert_pkg_evr("0:3.0-6", i["yum.noarch"])
 
-        assert_equal(2, u.size)
-        assert_pkg_evr("0:5.1.19.0.2-1", u["mkinitrd.i386"])
-        assert_pkg_evr("0:5.1.19.0.2-1", u["nash.i386"])
+        assert_equal(3, u.size)
+        assert_pkg_evr("0:1.1.7-1.2.1", u["python-sqlite.i386"])
+        assert_pkg_evr("0:3.2.7-8", u["procps.i386"])
+        assert_pkg_evr("0:3.3.6-2", u["sqlite.i386"])
     end
 
     def test_transdiff
         before = Cft::RPM::readstate(datafile("rpm/pkgs.txt"))
         after = Cft::RPM::readstate(datafile("rpm/pkgs-after.txt"))
         tb_bef, tb_aft = Cft::RPM::transdiff(before, after)
-        exp_bef = { 
-            'dhcpv6_client.i386' => '0:0.10-32.fc6',
-            'mkinitrd.i386' => '0:5.1.19-1',
-            'nash.i386' => '0:5.1.19-1'
+        exp_bef = {
+            'gamin.i386' => '0:0.1.7-8.fc6',
+            'python-sqlite.i386' => '0:1.1.7-1.2.0',
+            'procps.i386' => '0:3.2.7-7',
+            'sqlite.i386' => '0:3.3.6-1'
         }
         exp_aft = {
-            'mkinitrd.i386' => '0:5.1.19.0.2-1',
-            'nash.i386' => '0:5.1.19.0.2-1',
-            'gamin.i386' => '0:0.1.7-8.fc6'
+            'yum.noarch' => '0:3.0-6',
+            'python-sqlite.i386' => '0:1.1.7-1.2.1',
+            'procps.i386' => '0:3.2.7-8',
+            'sqlite.i386' => '0:3.3.6-2'
         }
         assert_package_bucket(exp_bef, tb_bef)
         assert_package_bucket(exp_aft, tb_aft)
