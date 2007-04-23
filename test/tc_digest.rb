@@ -122,7 +122,6 @@ class TestDigest < Test::Unit::TestCase
                         :baseurl => 'http://people.redhat.com/dlutter/yum/rhel5/',
                         :enabled => '1',
                         :gpgcheck => '0',
-                        :loglevel => :notice,
                         :descr => 'Additional RHEL5 packages')
  
         assert_resource(trans, :file, "/etc/yum.conf",
