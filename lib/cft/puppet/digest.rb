@@ -96,6 +96,13 @@ module Cft::Puppet
                 dig = Cft::Puppet::Digest::find(p)
                 dig.transportable(self, p)
             end
+            @bucket.each_obj do |to|
+                Digest::digesters.each do |dig|
+                    if to.type == dig.type.name
+                        dig.scrub_attr!(to)
+                    end
+                end
+            end
             return @bucket
         end
 
@@ -163,6 +170,7 @@ module Cft::Puppet
                 @typnam = typnam
                 @preserve = false
                 @globs = {}
+                @omit_attr = []
                 yield(self)
             end
             
@@ -209,9 +217,18 @@ module Cft::Puppet
                 }
             end
 
+            # Omit these attributes from the final output
+            # +attr+ should be a list of symbols, naming
+            # attributes
+            def omit_attr(*attr)
+                @omit_attr.concat(attr)
+            end
+
             def scrub_attr!(trans)
                 type.eachattr do |attr, kind|
-                    if kind != :property || Digest::ignore_property?(attr.name)
+                    if kind != :property || 
+                            Digest::ignore_property?(attr.name) ||
+                            @omit_attr.include?(attr.name)
                         trans.delete(attr.name)
                     end
                 end
@@ -229,7 +246,9 @@ module Cft::Puppet
             def d.skipstate?(name)
                 [:source, :content, :target].include?(name)
             end
-            
+
+            d.omit_attr :checksum
+
             d.glob "*" do |digest, path|
                 trans = nil
                 exclude = false
