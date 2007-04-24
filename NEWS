@@ -1,4 +1,12 @@
-0.2.0
+0.3.0
+  - Remove lots of unneeded attributes from generated manifest
+  - Previously finished sessions can now be resumed 
+    (with `cft begin -r SESSION')
+  - Prune RPM package set to only leaf packages; packages that were 
+    updated/installed and depend on other packages that were 
+    updated/installed during the session are not included in the manifest
+
+0.2.0 2007-03-21
   - Understand package operations (install/update/erase) Be smart about
     files put down by the rpm, but otherwise unchanged
   - Add 'pack' command to make moving raw sessions around easier
