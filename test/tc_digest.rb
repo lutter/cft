@@ -188,14 +188,12 @@ class TestDigest < Test::Unit::TestCase
         s = use_session("rpm-basic")
         digest = Cft::Puppet::Digest.new(s)
         trans = digest.transportable
-        assert_equal(4, trans.length)
+        assert_equal(3, trans.length)
         # Uninstalled
         assert_resource(trans, :package, "dhcpv6_client.i386",
                         :ensure => :absent)
-        # Both updated
+        # Updated
         assert_resource(trans, :package, "mkinitrd.i386",
-                        :ensure => "0:5.1.19.0.2-1")
-        assert_resource(trans, :package, "nash.i386",
                         :ensure => "0:5.1.19.0.2-1")
         # Installed
         assert_resource(trans, :package, "gamin.i386",
@@ -221,10 +219,8 @@ class TestDigest < Test::Unit::TestCase
         assert_resource(trans, :group, 'apache',
                         :ensure => :present,
                         :gid => 48)
-        # FIXME: Eventually, we should only get one package (httpd) here
-        # Right now, we also see the dependencies that got pulled in
         pkgs = trans.find_all(:package)
-        assert_equal(5, pkgs.size)
+        assert_equal(1, pkgs.size)
         assert_resource(trans, :package, 'httpd.i386')
         # FIXME: We should only get one file (welcome.conf)
         # but we also get the /etc/httpd dir

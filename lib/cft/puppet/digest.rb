@@ -99,15 +99,20 @@ module Cft::Puppet
             # Prune shadowed packages
             pkgs = @bucket.find_all(:package)
             shadow = Cft::RPM::readshadow(session.path(:rpm_shadow))
-            shadowed = shadow.values.flatten
-            roots = shadow.keys.reject { 
-                |k| shadowed.include?(k) 
-            }.collect {
-                |k| k.na
-            }
-            pkgs.each do |p|
-                unless roots.include?(p.name)
-                    @bucket.delete_obj(:package, p.name) 
+            unless shadow.empty?
+                # For safety only: don't prune if there's no shadow info
+                shadowed = shadow.values.flatten
+                # FIXME: This will fail spectacularly with circular 
+                # dependencies
+                roots = shadow.keys.reject { 
+                    |k| shadowed.include?(k) 
+                }.collect {
+                    |k| k.na
+                }
+                pkgs.each do |p|
+                    unless roots.include?(p.name)
+                        @bucket.delete_obj(:package, p.name) 
+                    end
                 end
             end
             # Pare down attributes

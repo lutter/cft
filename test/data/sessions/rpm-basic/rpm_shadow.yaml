@@ -1,0 +1,42 @@
+--- 
+- - !ruby/object:Cft::RPM::PackageHandle 
+    arch: i386
+    name: mkinitrd
+    version: !ruby.rpm.org,2007/version 
+      v: 5.1.19.0.2
+      r: "1"
+      e: 0
+  - - !ruby/object:Cft::RPM::PackageHandle 
+      arch: i386
+      name: nash
+      version: !ruby.rpm.org,2007/version 
+        v: 5.1.19.0.2
+        r: "1"
+        e: 0
+- - !ruby/object:Cft::RPM::PackageHandle 
+    arch: i386
+    name: nash
+    version: !ruby.rpm.org,2007/version 
+      v: 5.1.19.0.2
+      r: "1"
+      e: 0
+  - []
+
+- - !ruby/object:Cft::RPM::PackageHandle 
+    arch: i386
+    name: gamin
+    version: !ruby.rpm.org,2007/version 
+      v: 0.1.7
+      r: 8.fc6
+      e: 0
+  - []
+
+- - !ruby/object:Cft::RPM::PackageHandle 
+    arch: i386
+    name: dhcpv6_client
+    version: !ruby.rpm.org,2007/version 
+      v: "0.10"
+      r: 32.fc6
+      e: 
+  - []
+
