@@ -95,14 +95,15 @@ module Cft::RPM
                 result << PackageFile.new(path.to_str, k, file)
             end
             result
-        end 
+        end
     end
 
-    # Compute which packages on +packages+ shadow other packages on the list
-    # by requiring them. The +packages+ must be a list of +RPM::Package+
-    # objects. The result is a dict where the keys are +RPM::Package+
-    # objects and the values are lists of +RPM::Package+ objects. The list
-    # contains all the packages that are directly required by the key
+    # Compute which packages on +packages+ shadow other packages on the
+    # list by requiring them. The +packages+ must be a list of
+    # +RPM::Package+ objects. The result is a dict where the keys are
+    # +RPM::Package+ objects and the values are lists of +RPM::Package+
+    # objects. The list contains all the packages in +packages+ that are
+    # directly required by the key
     def self.shadow(packages)
         result = {}
         packages.each do |leaf|
@@ -123,13 +124,77 @@ module Cft::RPM
         return result
     end
 
+    # Compute dependency information for packages that have been
+    # changed between +before_file+ and +after_file+
+    # and store that in +shadow_file+
+    def self.genshadow(shadow_file, before_file, after_file, root=nil)
+        before = readstate(before_file)
+        after = readstate(after_file)
+        diff = diff(before, after)
+        lst = diff[:installed].merge(diff[:updated]) { |k, o, n| (o + n).uniq }
+        pkgs = []
+        withdb(root) do |db|
+            lst.each do |na, versions|
+                comps = na.split(".")
+                arch = comps.pop
+                name = comps.join(".")
+                iter = db.init_iterator(RPM::TAG_NAME, name) || []
+                pkgs += iter.select do |pkg|
+                    arch == pkg.arch && versions.include?(pkg.version)
+                end
+            end
+        end
+        sh = {}
+        shadow(pkgs).each do |k,v|
+            sh[PackageHandle.new(k)] = v.collect { |p| PackageHandle.new(p) }
+        end
+        File::open(shadow_file, "w") do |out|
+            # We have to dump as arrays, otherwise YAML chokes
+            YAML.dump(sh.to_a, out)
+        end
+        return sh
+    end
+
+    # Return the shadow stored by +genshadow+ in +shadow_file+
+    # as a hash mapping +PackageHandle+ objects to lists of 
+    # +PackageHandle+ objects. The meaning of the hash is the same as the
+    # one returned by +shadow+
+    def self.readshadow(fname)
+        return {} unless File::exist?(fname)
+        File::open(fname, "r") do |f| 
+            YAML::load(f).inject({}) { |m, e| m[e[0]] = e[1] ; m }
+        end
+    end
+
     # The 'id' of a package, just its name, version and arch
     class PackageHandle
+        include Comparable
+
         attr_reader :name, :arch, :version
         def initialize(package)
             @name = package.name
             @version = package.version
             @arch = package.arch
+        end
+
+        def <=>(other)
+            r = (name <=> other.name)
+            return r unless r == 0
+            r = version <=> other.version
+            return r unless r == 0
+            return arch <=> other.arch
+        end
+        
+        def eql?(other)
+            self == other
+        end
+
+        def hash
+            return 37 * (name.hash + 37 * version.hash) + arch.hash
+        end
+
+        def to_s
+            "#{name}-#{version}.#{arch}"
         end
     end
 

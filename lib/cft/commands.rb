@@ -238,6 +238,9 @@ module Cft::Commands
                 end
                 Cft::Puppet::genstate(session.path(:pp_after))
                 Cft::RPM::genstate(session.path(:rpm_after))
+                Cft::RPM::genshadow(session.path(:rpm_shadow),
+                                    session.path(:rpm_before),
+                                    session.path(:rpm_after))
                 File::delete(session.pid)
                 slept = 0
                 while not monitor and slept < 10

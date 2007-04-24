@@ -49,7 +49,9 @@ module Cft
             :pp_after => "after.yaml",   # as transportables in yaml
             :rpm_before => "rpm_before.txt", # Dump of installed rpm's
             :rpm_after => "rpm_after.txt",   # before and after
-            :rpm_files => "rpm_files.yaml", # RPM's info on changed files
+            :rpm_files => "rpm_files.yaml",  # RPM's info on changed files
+            :rpm_shadow => "rpm_shadow.yaml",# Dependency info for 
+                                             # changed packages
             :stdout => "stdout",         # I/O for the daemon
             :stderr => "stderr",
             :orig => "orig",             # Dir where to store original files

@@ -165,6 +165,29 @@ class TestMonitor < Test::Unit::TestCase
         end
     end
 
+    def test_genshadow
+        before_file = datafile("rpm/pkgs.txt")
+        after_file = datafile("rpm/pkgs-after.txt")
+        root = datafile("rpm")
+        shadow_file = File::join(tmpdir, "shadow.yaml")
+        sh = Cft::RPM::genshadow(shadow_file, before_file, after_file, root)
+        # Convert all those PackageHandles into strings
+        shs = {}
+        sh.each { |k,v| shs[k.to_s] = v.collect { |x| x.to_s } }
+        exp = { 
+            "procps-3.2.7-8.i386" => [],
+            "sqlite-3.3.6-2.i386" => [],
+            "yum-3.0-6.noarch" => ["python-sqlite-1.1.7-1.2.1.i386"],
+            "python-sqlite-1.1.7-1.2.1.i386" => ["sqlite-3.3.6-2.i386"]
+        }
+        assert_equal(exp, shs)
+        # Check we can read it back, too
+        shr = Cft::RPM::readshadow(shadow_file)
+        assert_equal(4, sh.size)
+        assert_equal(sh.keys.sort, shr.keys.sort)
+        sh.keys.each { |k| assert_equal(sh[k].sort, shr[k].sort) }
+    end
+
     private
     def assert_pkg_evr(vre, pkg)
         assert_not_nil(pkg)
