@@ -184,7 +184,11 @@ module Cft::RPM
             return r unless r == 0
             return arch <=> other.arch
         end
-        
+
+        def na
+            "#{name}.#{arch}"
+        end
+
         def eql?(other)
             self == other
         end

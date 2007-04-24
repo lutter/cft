@@ -96,6 +96,21 @@ module Cft::Puppet
                 dig = Cft::Puppet::Digest::find(p)
                 dig.transportable(self, p)
             end
+            # Prune shadowed packages
+            pkgs = @bucket.find_all(:package)
+            shadow = Cft::RPM::readshadow(session.path(:rpm_shadow))
+            shadowed = shadow.values.flatten
+            roots = shadow.keys.reject { 
+                |k| shadowed.include?(k) 
+            }.collect {
+                |k| k.na
+            }
+            pkgs.each do |p|
+                unless roots.include?(p.name)
+                    @bucket.delete_obj(:package, p.name) 
+                end
+            end
+            # Pare down attributes
             @bucket.each_obj do |to|
                 Digest::digesters.each do |dig|
                     if to.type == dig.type.name
