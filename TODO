@@ -27,11 +27,6 @@ Todo
 
   This would be yet another great use for unionfs; or possibly a logging FUSE.
 
-* Resume a session
-  Finished a session, realize more work is needed, allow to start the
-  session again seamlessly
-  Enough to just append to various output files ?
-
 * Use case: 
   
   Yumrepo config has wrong baseurl; change on a system, map
@@ -43,11 +38,15 @@ Todo
   cft begin postfix "Install postfix and set it up to relay to
   mail.example.com"
 
-* Finish RPM 'shadowing'
-  
-  Only include leaf packages in final manifest, not packages pulled
-  in by dependencies. Requires that some dependency information based on
-  Cft::RPM::shadow is stored at the end of the session
+* Add more paths to watch at runtime
+
+  While a session is running, user should be able to say 'also, watch
+  /var/lib/pgsql'
+
+* Bring some sanity to the storage of the per-session data
+
+* Try to guess some relationships, e.g. have a file require a package if
+  the file belongs to the package
 
 Small fixes
 ===========
@@ -55,8 +54,15 @@ Small fixes
 * Running 'manifest SESSION' creates an empty session if one doesn't exist - 
   kinda ugly
 
-* 'cft manifest' should accept a complete path to a session (for moving
-  tarred up sessions around)
-
 * Missing types
   cron, sshkey
+
+Based on kronolith
+==================
+
+* Can't watch /var/lib/pgsql/data/pg_hba.conf
+
+::::::::::::::::
+Local Variables:
+mode: text
+End:
