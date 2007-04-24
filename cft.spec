@@ -19,7 +19,7 @@ Requires: ruby(abi) = 1.8
 %endif
 Requires: puppet >= 0.22.2
 Requires: ruby-fam
-Requires: ruby-rpm >= 1.2.2
+Requires: ruby-rpm >= 1.2.3
 BuildRequires: ruby 
 %if %has_ruby_noarch
 BuildArch: noarch
