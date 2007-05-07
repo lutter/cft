@@ -6,7 +6,7 @@
 Summary: Config file tracker
 Name: cft
 
-Version: 0.2.0
+Version: 0.2.1
 Release: 1%{?dist}
 Group: System Environment/Base
 License: GPL
@@ -61,6 +61,9 @@ cp -pr lib/* %{buildroot}%{ruby_sitelibdir}
 %{ruby_sitelibdir}/cft
 
 %changelog
+* Mon May  7 2007 David Lutterkort <dlutter@redhat.com> - 0.2.1-1
+- New version
+
 * Wed Mar 21 2007 David Lutterkort <dlutter@redhat.com> - 0.2.0-1
 - New version
 

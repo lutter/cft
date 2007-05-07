@@ -1,4 +1,4 @@
-0.3.0
+0.3.0 2007-05-07
   - Remove lots of unneeded attributes from generated manifest
   - Previously finished sessions can now be resumed 
     (with `cft begin -r SESSION')

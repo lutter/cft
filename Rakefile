@@ -10,7 +10,7 @@ rescue LoadError
 end
 
 PKG_NAME='cft'
-PKG_VERSION='0.2.0'
+PKG_VERSION='0.2.1'
 
 PKG_FILES = FileList[
   "Rakefile", "AUTHORS", "COPYING", "INSTALL", "README", "TODO", "NEWS",
