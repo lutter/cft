@@ -2,9 +2,21 @@
 
 require 'puppet'
 
+def fix_bucket!(bucket)
+    if bucket.top
+        bucket.keyword ||= 'manifest'
+    else
+        bucket.keyword ||= 'bucket'
+    end
+    bucket.each do |c|
+        if c.is_a? Puppet::TransBucket
+            fix_bucket!(c)
+        end
+    end
+end
 # Convert a puppet YAML file into a manifest
 File::open(ARGV[0], "r") do |f|
     cfg = YAML::load(f)
-    cfg.keyword = 'manifest'
+    fix_bucket!(cfg)
     puts cfg.to_manifest
 end
