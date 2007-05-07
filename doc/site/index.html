@@ -128,6 +128,13 @@ convenient methods of integrating changes back into a central
 </p>
 
 <h2 id="news">News</h2>
+<p><b>Cft 0.2.1</b><br/>
+Previously finished sessions can now be resumed  (with `cft begin -r SESSION')<br/>
+Remove lots of unneeded attributes from generated manifest<br/>
+Prune RPM package set to only leaf packages; packages that were
+updated/installed and depend on other packages that were updated/installed
+during the session are not included in the manifest
+
 <p><b>Cft 0.2.0</b><br/>
 This release understands package operations, so that running
 <tt>yum&nbsp;-y&nbsp;install&nbsp;httpd</tt> (or <tt>rpm -Uvh
