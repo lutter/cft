@@ -151,7 +151,7 @@ module Cft::Puppet
                         FileUtils::mkdir_p(tgt_dir)
                     end
                     FileUtils::cp_r(src, tgt)
-                    f[:source] = "module://#{session.name}/" + File::basename(src)
+                    f[:source] = "puppet:///#{session.name}/" + File::basename(src)
                 end
             end
             File::open(File::join(mpath, "init.pp"), "w") do |f|
