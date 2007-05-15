@@ -267,7 +267,7 @@ module Cft::Puppet
                 [:source, :content, :target].include?(name)
             end
 
-            d.omit_attr :checksum
+            d.omit_attr :checksum, :type
 
             d.glob "*" do |digest, path|
                 trans = nil
@@ -283,7 +283,9 @@ module Cft::Puppet
                     }
                     obj.retrieve
                     trans = obj.to_trans
-                    trans[:source] = trans.name
+                    if trans[:type] == "file"
+                        trans[:source] = trans.name
+                    end
                     trans.name = path
                     trans[:group] = gid_to_s(trans[:group])
                     trans[:owner] = uid_to_s(trans[:owner])

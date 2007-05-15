@@ -11,11 +11,18 @@ class TestDigest < Test::Unit::TestCase
         s = use_session('basic_manifest')
         digest = Cft::Puppet::Digest.new(s)
         trans = digest.transportable
-        assert_equal(1, trans.flatten.size)
+        assert_equal(2, trans.flatten.size)
         assert_resource(trans, :file, "/etc/nsswitch.conf",
                         :mode => "0644",
                         :source => 
-                          "/tmp/cft/basic_manifest/after/etc/nsswitch.conf")
+                          "/tmp/cft/basic_manifest/after/etc/nsswitch.conf",
+                        :type => nil,
+                        :ensure => :file)
+        assert_resource(trans, :file, "/etc",
+                        :mode => "0775",
+                        :source => nil,
+                        :type => nil,
+                        :ensure => :directory)
     end
 
     def test_postfix
@@ -128,7 +135,7 @@ class TestDigest < Test::Unit::TestCase
                         :group => 'lutter',
                         :ensure => :file,
                         :source => '/tmp/cft/yumrepo/after/etc/yum.conf',
-                        :type => 'file',
+                        :type => nil,
                         :owner => 'lutter',
                         :mode => '0644')
     end
