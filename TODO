@@ -57,6 +57,9 @@ Small fixes
 * Missing types
   cron, sshkey
 
+* File copying gets majorly confused with recursion (e.g. when handling
+  horde/kronolith) 
+
 Based on kronolith
 ==================
 
