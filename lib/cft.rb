@@ -1,6 +1,5 @@
 require 'fam'
 require 'fileutils'
-require 'find'
 require 'yaml'
 
 module Cft
@@ -201,13 +200,16 @@ module Cft
                 return
             end
             # FIXME: We should apply filters here already
-            Find::find(dir) do |f|
-                if File::directory?(f)
-                    req = @fam.dir(f)
-                    @directories[f] = req
-                    @bases[req.num] = f
-                end
-            end
+            req = @fam.dir(dir)
+            @directories[dir] = req
+            @bases[req.num] = dir
+            Dir::entries(dir).collect { |n|
+                File::join(dir, n)
+            }.select { |p|
+                File::directory?(p)
+            }.each { |p|
+                monitor_directory(p)
+            }
         end
 
         def record(path, event)
