@@ -6,7 +6,7 @@ module Cft::Puppet
     def self.genstate(fname)
         result = Puppet::TransBucket.new
         Cft::Puppet::Digest::digesters.select { |dig|
-            unless dig.type.respond_to?(:list)
+            unless dig.type.respond_to?(:instances)
                 $stderr.puts "Warning: type #{dig.type.name} can not be listed, ignoring"
                 next false
             end
@@ -16,7 +16,7 @@ module Cft::Puppet
             bucket = Puppet::TransBucket.new
             bucket.keyword = "class"
             bucket.type = type.name
-            type.list.each do |elt|
+            type.instances.each do |elt|
                 bucket.push(elt.to_trans)
             end
             result.push(bucket)
