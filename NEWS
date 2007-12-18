@@ -1,5 +1,5 @@
 0.2.2 2007-12-18
-  - Make monitoring od directories safer against races 
+  - Make monitoring of directories safer against races 
     (http://osdir.com/ml/gnome.dashboard.devel/2004-10/msg00022.html)
   - Adapt for puppet 0.24.0
 
