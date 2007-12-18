@@ -10,7 +10,9 @@ module Puppet
     class TransBucket
 
         def delete_obj(type, name)
-            c = @children.find { |c| c.type == type && c.name == name }
+            type = canonical(type)
+            c = @children.find { |c| canonical(c.type) == type && 
+                c.name == name }
             if c.nil?
                 @children.each do |c|
                     if c.is_a? self.class
@@ -27,13 +29,13 @@ module Puppet
         end
 
         def find_obj(type, name)
-            type = type.to_s.downcase
-            flatten.find { |to| to.type.to_s == type && to.name == name }
+            type = canonical(type)
+            flatten.find { |to| canonical(to.type) == type && to.name == name }
         end
 
         def find_all(type)
             type = type.to_s.downcase
-            flatten.select { |to| to.type.to_s == type }
+            flatten.select { |to| canonical(to.type) == type }
         end
 
         def get_obj(type, name, params = {})
@@ -46,6 +48,10 @@ module Puppet
             return obj
         end
 
+        private
+        def canonical(type)
+            type.to_s.downcase
+        end
     end
 end
 

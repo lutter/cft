@@ -142,7 +142,7 @@ module Cft::Puppet
             
             trans = transportable
             trans.each_obj do |f|
-                if f.type == :file
+                if f.type.to_sym == :file
                     src = f[:source]
                     next unless src
                     tgt = File::join(fpath, src[after.size..-1])
