@@ -286,6 +286,8 @@ module Cft
     end
 end
 
-require 'cft/puppet'
 require 'cft/commands'
 require 'cft/rpm'
+# Puppet _must_ be loaded last ... otherwise there's weird interactions
+# with the rubygems loading code
+require 'cft/puppet'
