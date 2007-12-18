@@ -203,7 +203,9 @@ module Cft
             req = @fam.dir(dir)
             @directories[dir] = req
             @bases[req.num] = dir
-            Dir::entries(dir).collect { |n|
+            Dir::entries(dir).reject { |n|
+                n == "." || n == ".."
+            }.collect { |n|
                 File::join(dir, n)
             }.select { |p|
                 File::directory?(p)
