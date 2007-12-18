@@ -1,4 +1,9 @@
-0.3.0 2007-05-07
+0.2.2 2007-12-18
+  - Make monitoring od directories safer against races 
+    (http://osdir.com/ml/gnome.dashboard.devel/2004-10/msg00022.html)
+  - Adapt for puppet 0.24.0
+
+0.2.1 2007-05-07
   - Remove lots of unneeded attributes from generated manifest
   - Previously finished sessions can now be resumed 
     (with `cft begin -r SESSION')
