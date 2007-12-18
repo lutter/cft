@@ -6,7 +6,7 @@
 Summary: Config file tracker
 Name: cft
 
-Version: 0.2.1
+Version: 0.2.2
 Release: 1%{?dist}
 Group: System Environment/Base
 License: GPL
@@ -17,7 +17,7 @@ Requires: ruby
 %if %has_ruby_abi
 Requires: ruby(abi) = 1.8
 %endif
-Requires: puppet >= 0.22.2
+Requires: puppet >= 0.24.0
 Requires: ruby-fam
 Requires: ruby-rpm >= 1.2.3
 BuildRequires: ruby 
@@ -61,6 +61,9 @@ cp -pr lib/* %{buildroot}%{ruby_sitelibdir}
 %{ruby_sitelibdir}/cft
 
 %changelog
+* Mon Dec 17 2007 David Lutterkort <dlutter@redhat.com> - 0.2.2-1
+- New version
+
 * Mon May  7 2007 David Lutterkort <dlutter@redhat.com> - 0.2.1-1
 - New version
 
