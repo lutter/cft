@@ -27,11 +27,13 @@ module Puppet
         end
 
         def find_obj(type, name)
-            flatten.find { |to| to.type == type && to.name == name }
+            type = type.to_s.downcase
+            flatten.find { |to| to.type.to_s == type && to.name == name }
         end
 
         def find_all(type)
-            flatten.select { |to| to.type == type }
+            type = type.to_s.downcase
+            flatten.select { |to| to.type.to_s == type }
         end
 
         def get_obj(type, name, params = {})
