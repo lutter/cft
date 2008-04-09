@@ -4,7 +4,7 @@
 # WARNING: Will not work for anybody else unmodified
 
 CFT_DIR=`dirname $0`
-PUPPET_DIR=${CFT_DIR}/../puppet
+PUPPET_DIR=${CFT_DIR}/../puppet/git
 RUBY_RPM_DIR=${CFT_DIR}/../ruby-rpm
 export RUBYLIB=${CFT_DIR}/lib:${PUPPET_DIR}/lib:${CFT_DIR}/../../packages/fam-ruby-0.2.0:${RUBY_RPM_DIR}/lib:${RUBY_RPM_DIR}/ext/rpm
 
