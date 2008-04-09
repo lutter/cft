@@ -158,15 +158,23 @@ module Cft::Commands
 
             def initialize(name)
                 super(name)
-                @roots = Cft::WATCH_DIRS
+                @roots = Cft::WATCH_DIRS.dup
+                if ENV["CFT_WATCH_DIRS"]
+                    @roots.concat(ENV["CFT_WATCH_DIRS"].split(":"))
+                end
                 @resume = false
             end
 
             def opts
                 opts = super("cft begin [options] SESSION")
-                opts.on("-r", "--resume", 
+                opts.on("-r", "--resume",
                         "Bundle manifest and needed files") do |val|
                     @resume = true
+                end
+                opts.on("-w", "--watch DIR",
+                        "Watch additional directory " +
+                        "(can be given multiple times)") do |val|
+                    @roots.push(val)
                 end
                 opts
             end
