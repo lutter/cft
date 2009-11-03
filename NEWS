@@ -1,3 +1,7 @@
+0.2.3 2008-04-09
+  - Watch additional dirs specified in the CFT_WATCH_DIRS env var or with
+    the -w command line switch to teh BEGIN command
+
 0.2.2 2007-12-18
   - Make monitoring of directories safer against races 
     (http://osdir.com/ml/gnome.dashboard.devel/2004-10/msg00022.html)
