@@ -1,0 +1,46 @@
+The big feature that will make cft ultimately useful is being able to take
+the differences between the client's state and the manifest and integrate
+them back into the manifest. Some random thoughts:
+
+For integration, different pieces of information will be needed:
+
+  * The client's 'is' state, as a list of resources
+
+  * The client's 'should' state, as a list of resources
+
+  * The entire manifest from which the client's state was computed,
+    as a parse tree or similar data structure that allows following how
+    values in the 'should' state were arrived at from the manifest text. In
+    particular, it has to be possible to modify the parse tree and generate
+    the manifest from it again
+
+For new clients, cft right now saves the 'before' state of the client, and
+diffs that with the 'after' state - with the exception of files, where
+there is no 'before' state.
+
+The differences between client state and manifest fall into several
+categories, which should be handled slightly differently:
+
+  * New resource on client that is not in manifest yet. Where in the
+    manifest should this be put ? Logically (in which class/node/whatever)
+    and physically (on which source line)
+  * Resource removed from client, same as changing resource's ensure to
+    absent
+  * New attribute on client
+  * Attribute deleted
+  * Attribute changed
+
+The value for each attribute of each resource in the 'should' state is
+computed by
+  * Expanding defines
+  * Evaluating classes
+  * Interpolating variables
+all of which need to be reversed to find the proper place where a resource
+definition in the manifest has to be changed.
+
+In general, when a change is made, it can mean one of two things:
+  * Change the manifest in the place in which the value was set
+  * Subclass the containing class if the value was last set inside a class
+  * Copy the component and change the new component definition
+
+The difficult part is how the manifest should be edited.
